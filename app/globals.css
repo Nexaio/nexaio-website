@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Brand-wide defaults */
+:root {
+  /* Brand colors (from your Tailwind config + logo) */
+  --nexaio-navy: #0b1f32;
+  --nexaio-offwhite: #f9f9f8;
+  --nexaio-gray: #aab0b4;
+  --nexaio-slate: #555d66;
+
+  /* App tokens */
+  --background: var(--nexaio-navy);
+  --foreground: var(--nexaio-offwhite);
+}
+
+/* Modern font stack (no external downloads yet) */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica,
+    Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
