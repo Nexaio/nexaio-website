@@ -1,0 +1,25 @@
+<svg width="1440" height="720" viewBox="0 0 1440 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Base -->
+  <rect width="1440" height="720" fill="#0B1F32"/>
+
+  <!-- Large diagonal slabs (different from other pages) -->
+  <path d="M-120 620 L720 120 L1560 360 L1560 720 L-120 720 Z" fill="#07223B" opacity="0.75"/>
+  <path d="M-120 720 L720 240 L1560 480 L1560 720 Z" fill="#0B1F32" opacity="0.55"/>
+
+  <!-- Accent panel -->
+  <path d="M980 40 L1560 260 L1560 420 L920 170 Z" fill="#AAB0B4" opacity="0.10"/>
+
+  <!-- “Geode”/contour cluster left -->
+  <g opacity="0.55">
+    <path d="M140 530 C70 480, 70 400, 150 360 C230 320, 330 340, 370 410 C410 480, 340 560, 250 570 C205 575, 170 560, 140 530 Z" stroke="#AAB0B4" stroke-width="2" opacity="0.35"/>
+    <path d="M165 510 C110 470, 120 410, 185 380 C255 350, 320 370, 345 420 C370 470, 320 525, 255 535 C215 540, 190 530, 165 510 Z" stroke="#AAB0B4" stroke-width="2" opacity="0.25"/>
+    <path d="M195 490 C155 460, 160 420, 205 400 C255 380, 300 395, 315 430 C330 465, 295 505, 245 510 C220 512, 205 505, 195 490 Z" stroke="#AAB0B4" stroke-width="2" opacity="0.18"/>
+  </g>
+
+  <!-- Thin contour lines across the bottom band -->
+  <g opacity="0.25">
+    <path d="M-40 640 C220 610, 520 610, 760 640 C980 668, 1220 680, 1500 650" stroke="#AAB0B4" stroke-width="1.5" opacity="0.35"/>
+    <path d="M-40 675 C240 648, 520 650, 780 680 C1030 708, 1240 715, 1500 688" stroke="#AAB0B4" stroke-width="1.5" opacity="0.22"/>
+    <path d="M-40 705 C260 682, 560 690, 820 712 C1060 732, 1260 735, 1500 715" stroke="#AAB0B4" stroke-width="1.5" opacity="0.15"/>
+  </g>
+</svg>
