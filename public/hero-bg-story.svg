@@ -1,0 +1,53 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Base brand gradient -->
+    <linearGradient id="g1" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0B1F32"/>
+      <stop offset="1" stop-color="#07223B"/>
+    </linearGradient>
+
+    <!-- Light panel gradients (match existing asset language) -->
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#AAB0B4" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#AAB0B4" stop-opacity="0.06"/>
+    </linearGradient>
+
+    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9DB7C6" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#9DB7C6" stop-opacity="0.05"/>
+    </linearGradient>
+
+    <filter id="soft" x="-60" y="-60" width="1720" height="1020" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+
+  <!-- Base -->
+  <rect width="1600" height="900" fill="url(#g1)"/>
+
+  <!-- RIGHT geode cluster (top-right) -->
+  <path d="M1600 0H990L1315 380H1600V0Z" fill="url(#g3)"/>
+  <path d="M1515 0H870L1210 500H1600L1515 0Z" fill="url(#g2)"/>
+  <path d="M1600 0H1210L1510 210H1600V0Z" fill="url(#g2)" opacity="0.75"/>
+
+  <!-- LEFT geode cluster (bottom-left; subtle so it doesn't compete with content) -->
+  <path d="M0 900H520L350 620H0V900Z" fill="url(#g3)" opacity="0.80"/>
+  <path d="M0 900H430L260 690H0V900Z" fill="url(#g2)" opacity="0.78"/>
+  <path d="M0 900H300L190 760H0V900Z" fill="url(#g2)" opacity="0.60"/>
+
+  <!-- big diagonal dark slab (center) -->
+  <path d="M1400 610L680 130H0V900H1600L1400 610Z" fill="#061D33" opacity="0.52"/>
+
+  <!-- contour lines on LEFT (primary) -->
+  <g opacity="0.12" filter="url(#soft)" stroke="#AAB0B4" stroke-width="6">
+    <path d="M520 90C320 180 300 310 470 410C640 510 600 610 370 680C150 750 120 830 290 885"/>
+    <path d="M440 45C250 150 235 285 410 385C585 485 545 600 320 670C95 740 70 835 235 900"/>
+    <path d="M600 150C380 225 360 360 545 465C730 570 695 675 455 740C225 805 205 875 355 930"/>
+  </g>
+
+  <!-- secondary contour lines on RIGHT (lighter, to balance both sides) -->
+  <g opacity="0.07" filter="url(#soft)" stroke="#AAB0B4" stroke-width="6">
+    <path d="M1180 80C1360 160 1380 270 1210 360C1040 450 1060 560 1270 635C1480 710 1510 800 1350 870"/>
+    <path d="M1250 35C1430 130 1450 250 1280 345C1110 440 1130 565 1340 635C1550 705 1580 820 1420 900"/>
+  </g>
+</svg>

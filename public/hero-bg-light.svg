@@ -1,0 +1,38 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F9F9F8"/>
+      <stop offset="1" stop-color="#EEF2F5"/>
+    </linearGradient>
+
+    <linearGradient id="panel1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#AAB0B4" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#AAB0B4" stop-opacity="0.10"/>
+    </linearGradient>
+
+    <linearGradient id="panel2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8FA8B8" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#8FA8B8" stop-opacity="0.06"/>
+    </linearGradient>
+
+    <filter id="blur" x="-60" y="-60" width="1720" height="1020" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#base)"/>
+
+  <!-- angled light panels (top-left) -->
+  <path d="M0 0H700L360 470H0V0Z" fill="url(#panel2)"/>
+  <path d="M160 0H860L480 560H0L160 0Z" fill="url(#panel1)"/>
+
+  <!-- soft diagonal slab -->
+  <path d="M300 600L1030 140H1600V900H0L300 600Z" fill="#0B1F32" opacity="0.10"/>
+
+  <!-- faint contour lines -->
+  <g opacity="0.10" filter="url(#blur)" stroke="#0B1F32" stroke-width="6">
+    <path d="M1180 80C1360 160 1370 290 1200 390C1030 490 1060 600 1270 670C1480 740 1500 830 1340 890"/>
+    <path d="M1260 40C1440 140 1450 280 1280 380C1110 480 1140 600 1350 670C1560 740 1580 840 1420 910"/>
+    <path d="M1120 130C1310 200 1320 330 1140 430C960 530 990 640 1210 710C1430 780 1450 870 1290 930"/>
+  </g>
+</svg>
