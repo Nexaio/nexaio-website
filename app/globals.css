@@ -9,6 +9,7 @@
   --card:rgba(255,255,255,0.04);--card-2:rgba(255,255,255,0.06);--maxw:1140px;
   --background:var(--navy);--foreground:var(--offwhite);
 }
+html{scroll-behavior:smooth}
 html,body{height:100%}
 body{margin:0;background:var(--navy);color:var(--offwhite);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.6;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
@@ -177,6 +178,48 @@ body.motion-ready .reveal.in{opacity:1;transform:none}
   body.motion-ready .reveal{opacity:1;transform:none;transition:none}
   .grad,.glow-1,.glow-2,.grid-lines,.marquee-track,.pipe::before,.pipe-step .dot{animation:none}
 }
+
+/* ---- POLISH PASS: flow, stagger, depth ---- */
+/* Soft gradient section dividers instead of hard borders */
+.block{border-top:none}
+.block::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(100%,1140px);height:1px;background:linear-gradient(90deg,transparent,var(--line-2),transparent)}
+.block.no-divider::before{display:none}
+
+/* Staggered reveals across grids */
+.cards > .reveal:nth-child(2){transition-delay:.09s}
+.cards > .reveal:nth-child(3){transition-delay:.18s}
+.cards.two-col > .reveal:nth-child(2){transition-delay:.07s}
+.cards.two-col > .reveal:nth-child(3){transition-delay:.14s}
+.cards.two-col > .reveal:nth-child(4){transition-delay:.21s}
+body.motion-ready .featlist.reveal .feat{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+body.motion-ready .featlist.reveal.in .feat{opacity:1;transform:none}
+.featlist.reveal.in .feat:nth-child(2){transition-delay:.09s}
+.featlist.reveal.in .feat:nth-child(3){transition-delay:.18s}
+.featlist.reveal.in .feat:nth-child(4){transition-delay:.27s}
+
+/* Interior hero: decorative slow-rotating rings for life */
+.phero-decor{position:absolute;top:50%;right:-60px;transform:translateY(-50%);width:420px;height:420px;z-index:0;pointer-events:none;opacity:.6;max-width:46vw}
+.phero-decor::before,.phero-decor::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid var(--line)}
+.phero-decor::after{inset:64px;border-top-color:rgba(111,168,220,0.55);border-right-color:rgba(111,168,220,0.18);animation:spin 16s linear infinite}
+.phero-ring2{position:absolute;inset:128px;border-radius:50%;border:1px solid transparent;border-top-color:rgba(159,199,232,0.4);animation:spin 10s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Story narrative rhythm */
+.lead-para{font-size:clamp(19px,2.2vw,23px);line-height:1.6;color:var(--offwhite);font-weight:300;margin-bottom:26px}
+.accent-bar{width:54px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--accent),rgba(111,168,220,0));margin:0 auto 24px}
+body.motion-ready .prose.stagger p{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+body.motion-ready .prose.stagger.in p{opacity:1;transform:none}
+.prose.stagger.in p:nth-child(2){transition-delay:.08s}
+.prose.stagger.in p:nth-child(3){transition-delay:.16s}
+.prose.stagger.in p:nth-child(4){transition-delay:.24s}
+.prose.stagger.in p:nth-child(5){transition-delay:.32s}
+.prose.stagger.in p:nth-child(6){transition-delay:.40s}
+
+@media (prefers-reduced-motion: reduce){
+  .phero-decor::after,.phero-ring2{animation:none}
+  body.motion-ready .featlist.reveal .feat,body.motion-ready .prose.stagger p{opacity:1;transform:none;transition:none}
+}
+@media(max-width:900px){.phero-decor{display:none}}
 
 @media(max-width:860px){
   .nav-links,.nav .btn{display:none}

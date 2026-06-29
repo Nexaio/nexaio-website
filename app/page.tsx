@@ -8,7 +8,7 @@ export default function Home() {
     <>
       {/* HERO */}
       <section className="hero">
-        <div className="hero-bg" id="heroBg">
+        <div className="hero-bg" id="heroBg" data-parallax="0.25">
           <div className="glow glow-1" />
           <div className="glow glow-2" />
           <div className="grid-lines" />

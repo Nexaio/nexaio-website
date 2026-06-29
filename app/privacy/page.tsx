@@ -10,7 +10,7 @@ export default function PrivacyPage() {
   return (
     <>
       <section className="phero" style={{ textAlign: "left", paddingBottom: 40 }}>
-        <div className="phero-bg">
+        <div className="phero-bg" data-parallax="0.15">
           <div className="glow glow-1" />
           <div className="grid-lines" />
         </div>

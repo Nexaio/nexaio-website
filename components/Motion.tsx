@@ -28,10 +28,15 @@ export default function Motion() {
       el.style.setProperty("--my", me.clientY - r.top + "px");
     };
 
-    const heroBg = document.getElementById("heroBg");
+    const parallaxEls = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-parallax]")
+    );
     const onScroll = () => {
-      if (heroBg)
-        heroBg.style.transform = `translateY(${window.scrollY * 0.25}px)`;
+      const y = window.scrollY;
+      for (const el of parallaxEls) {
+        const sp = parseFloat(el.dataset.parallax || "0.2");
+        el.style.transform = `translateY(${y * sp}px)`;
+      }
     };
 
     // Run after the new route's DOM has committed.

@@ -13,14 +13,18 @@ export default function ContactPage() {
   return (
     <>
       <section className="phero" style={{ paddingBottom: 40 }}>
-        <div className="phero-bg">
+        <div className="phero-bg" data-parallax="0.18">
           <div className="glow glow-1" />
           <div className="glow glow-2" />
           <div className="grid-lines" />
+          <div className="phero-decor"><div className="phero-ring2" /></div>
         </div>
         <div className="wrap">
           <p className="eyebrow">Contact</p>
-          <h1>Let&apos;s figure out if this is worth building.</h1>
+          <h1>
+            Let&apos;s figure out if this is{" "}
+            <span className="grad">worth building.</span>
+          </h1>
           <p className="lede">
             This isn&apos;t a sales call. It&apos;s a discovery and walkthrough to
             see what systems would actually create leverage in your business.

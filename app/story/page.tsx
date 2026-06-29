@@ -50,7 +50,8 @@ export default function StoryPage() {
                 maxWidth: 720,
               }}
             >
-              Built by doing the work the hard way first.
+              Built by doing the work{" "}
+              <span className="grad">the hard way first.</span>
             </h1>
             <p
               style={{
@@ -81,20 +82,23 @@ export default function StoryPage() {
       {/* STORY BODY */}
       <section className="block" style={{ borderTop: "none" }}>
         <div className="wrap">
-          <div className="reveal" style={{ maxWidth: 720, margin: "0 auto" }}>
-            <h2
-              style={{
-                fontSize: "clamp(24px,3vw,34px)",
-                fontWeight: 600,
-                letterSpacing: "-0.02em",
-                textAlign: "center",
-                marginBottom: 28,
-              }}
-            >
-              Where it really began
-            </h2>
-            <div className="prose">
-              <p>
+          <div style={{ maxWidth: 760, margin: "0 auto" }}>
+            <div className="reveal">
+              <div className="accent-bar" />
+              <h2
+                style={{
+                  fontSize: "clamp(24px,3vw,34px)",
+                  fontWeight: 600,
+                  letterSpacing: "-0.02em",
+                  textAlign: "center",
+                  marginBottom: 28,
+                }}
+              >
+                Where it really began
+              </h2>
+            </div>
+            <div className="prose stagger reveal">
+              <p className="lead-para">
                 Before automation, before systems, before Nexaio had a name, we
                 were running a landscaping operation. Some days meant waking up
                 before sunrise, renting two aerators, and starting work before
@@ -151,10 +155,11 @@ export default function StoryPage() {
                   marginTop: 12,
                 }}
               >
-                Systems should remove pressure, not create it.
+                Systems should remove pressure,{" "}
+                <span className="grad">not create it.</span>
               </h2>
             </div>
-            <div className="prose" style={{ textAlign: "center", maxWidth: 680, margin: "24px auto 0" }}>
+            <div className="prose stagger reveal" style={{ textAlign: "center", maxWidth: 680, margin: "24px auto 0" }}>
               <p>
                 We refuse to build brittle, one-off automations that only work as
                 long as the original builder is around. We don&apos;t ship demos.

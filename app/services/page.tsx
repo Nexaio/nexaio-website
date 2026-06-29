@@ -11,6 +11,7 @@ const BOOK = "https://calendar.app.google/kNiFGpgUmyJUtZat5";
 
 const services = [
   {
+    icon: "▤",
     title: "CRM & Pipeline Automation",
     body: "Keep pipelines clean and predictable across the team.",
     bullets: [
@@ -21,6 +22,7 @@ const services = [
     ],
   },
   {
+    icon: "⇄",
     title: "Integrations & Workflows",
     body: "Connect tools with real logic — not brittle one-offs.",
     bullets: [
@@ -31,6 +33,7 @@ const services = [
     ],
   },
   {
+    icon: "✦",
     title: "AI-Assisted Operations",
     body: "Use AI where it helps — classification, drafting, routing — with guardrails.",
     bullets: [
@@ -44,16 +47,19 @@ const services = [
 
 const tooling = [
   {
+    icon: "◰",
     title: "GoHighLevel Builds",
     body: "Pipelines, triggers, automations, conversation routing, calendars, and reporting structures.",
     chips: ["Pipelines + stages", "Triggers + workflows", "Inbound routing", "Calendar flows"],
   },
   {
+    icon: "⚙",
     title: "n8n Systems",
     body: "Multi-step logic, webhooks, APIs, branching, retries, and data shaping across apps.",
     chips: ["Webhooks", "APIs", "Branching logic", "Retries + alerts"],
   },
   {
+    icon: "⇆",
     title: "Integrations Layer",
     body: "Email, spreadsheets, CRMs, forms, Stripe, Slack, Notion, Airtable — whatever the workflow requires.",
     chips: ["Data sync", "Normalization", "Source of truth", "Monitoring"],
@@ -64,14 +70,17 @@ export default function ServicesPage() {
   return (
     <>
       <section className="phero">
-        <div className="phero-bg">
+        <div className="phero-bg" data-parallax="0.18">
           <div className="glow glow-1" />
           <div className="glow glow-2" />
           <div className="grid-lines" />
+          <div className="phero-decor"><div className="phero-ring2" /></div>
         </div>
         <div className="wrap">
           <p className="eyebrow">Services</p>
-          <h1>Automation across your entire stack.</h1>
+          <h1>
+            Automation across your <span className="grad">entire stack.</span>
+          </h1>
           <p className="lede">
             We build operational automation that connects tools, moves data
             cleanly, and keeps workflows reliable. Not &ldquo;random zaps&rdquo;
@@ -106,6 +115,7 @@ export default function ServicesPage() {
           <div className="cards">
             {services.map((s) => (
               <div className="card glow-card reveal" key={s.title}>
+                <div className="ic">{s.icon}</div>
                 <h4>{s.title}</h4>
                 <p>{s.body}</p>
                 <ul className="clist">
@@ -133,6 +143,7 @@ export default function ServicesPage() {
           <div className="cards">
             {tooling.map((t) => (
               <div className="card glow-card reveal" key={t.title}>
+                <div className="ic">{t.icon}</div>
                 <h4>{t.title}</h4>
                 <p>{t.body}</p>
                 <div className="chips">

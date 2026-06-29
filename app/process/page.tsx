@@ -60,14 +60,18 @@ export default function ProcessPage() {
   return (
     <>
       <section className="phero">
-        <div className="phero-bg">
+        <div className="phero-bg" data-parallax="0.18">
           <div className="glow glow-1" />
           <div className="glow glow-2" />
           <div className="grid-lines" />
+          <div className="phero-decor"><div className="phero-ring2" /></div>
         </div>
         <div className="wrap">
           <p className="eyebrow">Process</p>
-          <h1>Clear steps. Clean handoffs. Systems you can rely on.</h1>
+          <h1>
+            Clear steps. Clean handoffs.{" "}
+            <span className="grad">Systems you can rely on.</span>
+          </h1>
           <p className="lede">
             Most automation fails because it&apos;s built like a demo: no edge
             cases, no ownership, no monitoring. We build like it matters — so the
