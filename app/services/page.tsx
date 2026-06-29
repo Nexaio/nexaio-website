@@ -366,11 +366,19 @@ export default function ServicesPage() {
       </section>
 
       <footer className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-8 text-sm text-nexaio-offwhite/60">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-8 text-sm text-nexaio-offwhite/60 sm:flex-row">
           <span>© {new Date().getFullYear()} Nexaio</span>
-          <Link href="/contact" className="hover:text-nexaio-offwhite">
-            Contact
-          </Link>
+          <div className="flex items-center gap-6">
+            <a href="tel:+13853265746" className="hover:text-nexaio-offwhite">
+              +1 (385) 326-5746
+            </a>
+            <Link href="/privacy" className="hover:text-nexaio-offwhite">
+              Privacy
+            </Link>
+            <Link href="/contact" className="hover:text-nexaio-offwhite">
+              Contact
+            </Link>
+          </div>
         </div>
       </footer>
     </main>
