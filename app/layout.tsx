@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "./globals.css";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Motion from "../components/Motion";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -9,9 +12,21 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  title: "Nexaio",
+  metadataBase: new URL("https://nexaio.co"),
+  title: {
+    default: "Nexaio — Operational automation built to scale",
+    template: "%s — Nexaio",
+  },
   description:
-    "Operational automation built to scale—systems designed and owned for reliability.",
+    "Nexaio designs and owns automation systems that keep operations clean, reliable, and scalable as businesses grow.",
+  openGraph: {
+    title: "Nexaio — Operational automation built to scale",
+    description:
+      "Automation systems designed and owned for reliability as you scale.",
+    url: "https://nexaio.co",
+    siteName: "Nexaio",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -21,7 +36,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={sora.className}>{children}</body>
+      <body className={sora.className}>
+        <Header />
+        <main>{children}</main>
+        <Footer />
+        <Motion />
+      </body>
     </html>
   );
 }

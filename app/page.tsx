@@ -1,419 +1,242 @@
-import Image from "next/image";
 import Link from "next/link";
+import GeodeHero from "../components/GeodeHero";
+
+const BOOK = "https://calendar.app.google/kNiFGpgUmyJUtZat5";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-nexaio-navy text-nexaio-offwhite">
-      {/* White top bar */}
-      <header className="border-b border-black/10 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/nexaio logo clean.png"
-              alt="Nexaio"
-              width={32}
-              height={32}
-              priority
-            />
-            <span className="text-sm font-semibold tracking-wide text-nexaio-navy">
-              Nexaio
-            </span>
-          </Link>
-
-          <nav className="hidden gap-8 text-sm text-nexaio-navy/70 md:flex">
-            <Link href="/" className="hover:text-nexaio-navy">
-              Home
-            </Link>
-            <Link href="/services" className="hover:text-nexaio-navy">
-              Services
-            </Link>
-            <Link href="/process" className="hover:text-nexaio-navy">
-              Process
-            </Link>
-            <Link href="/story" className="hover:text-nexaio-navy">
-              Our Story
-            </Link>
-            <Link href="/contact" className="hover:text-nexaio-navy">
-              Contact
-            </Link>
-          </nav>
-        </div>
-      </header>
-
+    <>
       {/* HERO */}
-      <section
-        className="relative"
-        style={{
-          backgroundImage: "url(/hero-bg.svg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="bg-nexaio-navy/65">
-          <div className="mx-auto max-w-7xl px-6 pt-24 pb-44">
-            <h1 className="max-w-3xl text-5xl font-semibold leading-tight text-white">
-              Operational automation built to scale, not break.
-            </h1>
-
-            <p className="mt-6 max-w-2xl text-lg text-white/75">
-              Nexaio designs and owns automation systems that keep operations
-              clean, reliable, and scalable as businesses grow.
-            </p>
-
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="https://calendar.app.google/kNiFGpgUmyJUtZat5"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-lg bg-white px-6 py-3 text-sm font-medium text-nexaio-navy"
-              >
-                Book a Systems Review
-              </a>
-
-              <Link
-                href="/services"
-                className="inline-flex items-center justify-center rounded-lg border border-white/25 px-6 py-3 text-sm font-medium text-white/85 hover:text-white"
-              >
-                See System Examples
-              </Link>
-            </div>
-          </div>
+      <section className="hero">
+        <div className="hero-bg" id="heroBg">
+          <div className="glow glow-1" />
+          <div className="glow glow-2" />
+          <div className="grid-lines" />
         </div>
-
-        {/* Hero bubble overlaps BOTH sections */}
-        <div className="pointer-events-none absolute inset-x-0 -bottom-10 z-30">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="pointer-events-auto rounded-2xl border border-white/10 bg-white/10 backdrop-blur-md">
-              <div className="grid gap-6 px-6 py-4 text-sm sm:grid-cols-3">
-                <div>
-                  <div className="text-sm font-semibold text-white">
-                    Cleaner intake
-                  </div>
-                  <div className="mt-1 text-white/70">
-                    Less manual routing, fewer dropped handoffs.
-                  </div>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-white">
-                    Faster response
-                  </div>
-                  <div className="mt-1 text-white/70">
-                    Consistent first-touch without founder rewrites.
-                  </div>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-white">
-                    Ongoing ownership
-                  </div>
-                  <div className="mt-1 text-white/70">
-                    Monitoring + maintenance so systems don’t rot.
-                  </div>
-                </div>
-              </div>
+        <GeodeHero />
+        <div className="wrap hero-inner">
+          <p className="eyebrow">Automation infrastructure</p>
+          <h1 className="hero-title">
+            Operational automation built to{" "}
+            <span className="grad">scale, not break.</span>
+          </h1>
+          <p className="hero-sub">
+            Nexaio designs and owns automation systems that keep operations
+            clean, reliable, and scalable as businesses grow.
+          </p>
+          <div className="hero-cta">
+            <a className="btn btn-primary" href={BOOK} target="_blank" rel="noopener noreferrer">
+              <span>
+                Book a Systems Review <i className="arr">→</i>
+              </span>
+            </a>
+            <Link className="btn btn-ghost" href="/services">
+              <span>See how it works</span>
+            </Link>
+          </div>
+          <div className="trust">
+            <div className="trust-item">
+              <span className="ic">⬡</span>
+              <h4>Cleaner intake</h4>
+              <p>Less manual routing, fewer dropped handoffs.</p>
+            </div>
+            <div className="trust-item">
+              <span className="ic">⟳</span>
+              <h4>Faster response</h4>
+              <p>Consistent first-touch without founder rewrites.</p>
+            </div>
+            <div className="trust-item">
+              <span className="ic">◈</span>
+              <h4>Ongoing ownership</h4>
+              <p>Monitoring and maintenance so systems don&apos;t rot.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* WHAT WE BUILD */}
-      <section
-        style={{
-          backgroundImage: "url(/hero-bg-light.svg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="bg-nexaio-navy/85">
-          <div className="mx-auto max-w-7xl px-6 pt-28 pb-20">
-            <h2 className="text-2xl font-semibold">
-              End-to-end automation systems, not disconnected workflows.
-            </h2>
+      {/* MARQUEE */}
+      <div className="marquee">
+        <div className="marquee-track">
+          <span>n8n&nbsp;workflows</span><span>API integrations</span><span>CRM automation</span><span>Lead routing</span><span>AI-assisted ops</span><span>Webhooks</span><span>Data enrichment</span><span>Monitoring</span>
+          <span>n8n&nbsp;workflows</span><span>API integrations</span><span>CRM automation</span><span>Lead routing</span><span>AI-assisted ops</span><span>Webhooks</span><span>Data enrichment</span><span>Monitoring</span>
+        </div>
+      </div>
 
-            <p className="mt-4 max-w-2xl text-nexaio-offwhite/70">
+      {/* WHAT WE BUILD */}
+      <section className="block" id="build">
+        <div className="wrap">
+          <div className="sec-head reveal">
+            <p className="eyebrow">What we build</p>
+            <h2>End-to-end automation systems, not disconnected workflows.</h2>
+            <p>
               We build systems that move information cleanly from first contact
               to final outcome, with guardrails that prevent breakdowns as
               volume increases.
             </p>
+          </div>
+          <div className="pipe reveal">
+            {[
+              ["01", "Lead Intake"],
+              ["02", "Data Enrichment"],
+              ["03", "Business Logic"],
+              ["04", "Execution"],
+              ["05", "System of Record"],
+              ["06", "Monitoring"],
+              ["07", "Reporting"],
+            ].map(([n, t]) => (
+              <div className="pipe-step" key={n}>
+                <div className="n">{n}</div>
+                <div className="t">{t}</div>
+                <div className="dot" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <div className="mt-10 grid gap-3 text-sm md:grid-cols-7">
-              {[
-                "Lead Intake",
-                "Data Enrichment",
-                "Business Logic",
-                "Execution",
-                "System of Record",
-                "Monitoring",
-                "Reporting",
-              ].map((step) => (
-                <div
-                  key={step}
-                  className="rounded-lg border border-white/10 bg-white/0 px-3 py-2 text-center text-nexaio-offwhite/75"
-                >
-                  {step}
+      {/* RELIABILITY */}
+      <section className="block">
+        <div className="wrap two">
+          <div className="reveal">
+            <p className="eyebrow">Why Nexaio</p>
+            <h2
+              style={{
+                fontSize: "clamp(26px,3.4vw,40px)",
+                fontWeight: 600,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.12,
+                margin: "14px 0 22px",
+              }}
+            >
+              Built for reliability.
+            </h2>
+            <p className="lead">
+              We design automation as operational infrastructure. Clear logic,
+              guardrails, and monitoring come standard — so systems keep working
+              as complexity increases.
+            </p>
+            <p className="sub">
+              This is not &ldquo;set it and forget it.&rdquo; It&apos;s
+              ownership, testing, and ongoing refinement so your team isn&apos;t
+              stuck babysitting workflows.
+            </p>
+          </div>
+          <div className="featlist reveal">
+            {[
+              ["⤢", "Designed for scale", "Systems don't break when volume grows."],
+              ["◇", "Operational ownership", "We stay accountable after launch."],
+              ["⊞", "Clear system logic", "Defined rules, fallbacks, and failure handling."],
+              ["◎", "Business-first", "Built around operations, not tools or trends."],
+            ].map(([ic, h, p]) => (
+              <div className="feat glow-card" key={h}>
+                <div className="ic">{ic}</div>
+                <div>
+                  <h4>{h}</h4>
+                  <p>{p}</p>
                 </div>
-              ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* STANDARDS */}
+      <section className="block">
+        <div className="wrap">
+          <div className="sec-head reveal">
+            <p className="eyebrow">Standard on every build</p>
+            <h2>Guardrails, monitoring, and a source of truth.</h2>
+          </div>
+          <div className="cards">
+            <div className="card glow-card reveal">
+              <div className="ic">▣</div>
+              <h4>Guardrails</h4>
+              <p>Clear rules and fallbacks for when edge cases hit, so nothing silently fails.</p>
+            </div>
+            <div className="card glow-card reveal">
+              <div className="ic">◴</div>
+              <h4>Monitoring</h4>
+              <p>Failures surface early, not weeks later when the damage is already done.</p>
+            </div>
+            <div className="card glow-card reveal">
+              <div className="ic">⛁</div>
+              <h4>Source of truth</h4>
+              <p>Clean records that your reporting can actually trust.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* MAIN CONTENT (texture) */}
-      <section
-        className="relative"
-        style={{
-          backgroundImage: "url(/hero-bg.svg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        {/* Single bubble overlaps both sections */}
-        <div className="pointer-events-none absolute inset-x-0 -top-10 z-30">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="pointer-events-auto rounded-2xl border border-white/10 bg-white/10 backdrop-blur-md">
-              <div className="grid gap-6 px-6 py-4 text-sm md:grid-cols-3">
-                <div>
-                  <div className="text-sm font-semibold text-white">
-                    Guardrails
-                  </div>
-                  <div className="mt-1 text-white/70">
-                    Clear rules + fallbacks when edge cases hit.
-                  </div>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-white">
-                    Monitoring
-                  </div>
-                  <div className="mt-1 text-white/70">
-                    Failures surface early, not weeks later.
-                  </div>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-white">
-                    Source of truth
-                  </div>
-                  <div className="mt-1 text-white/70">
-                    Clean records that reporting can trust.
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* PROCESS */}
+      <section className="block">
+        <div className="wrap">
+          <div className="sec-head reveal">
+            <p className="eyebrow">How we work</p>
+            <h2>A structured approach, from audit to ownership.</h2>
           </div>
-        </div>
-
-        <div className="bg-nexaio-navy/92">
-          {/* EXTRA SPACER HERE: this is what you marked with the red X */}
-          <div className="mx-auto max-w-7xl px-6 pt-40 pb-16">
-            {/* WHY NEXAIO */}
-            <div className="border-b border-white/10 pb-14">
-              <h2 className="text-2xl font-semibold">Built for reliability.</h2>
-
-              <div className="mt-8 grid gap-10 md:grid-cols-12">
-                <div className="md:col-span-6">
-                  <p className="text-lg text-nexaio-offwhite/85">
-                    We design automation as operational infrastructure. Clear
-                    logic, guardrails, and monitoring come standard—so systems
-                    keep working as complexity increases.
-                  </p>
-
-                  <p className="mt-4 text-sm text-nexaio-offwhite/70">
-                    This is not “set it and forget it.” It’s ownership, testing,
-                    and ongoing refinement so your team isn’t stuck babysitting
-                    workflows.
-                  </p>
-                </div>
-
-                <div className="hidden md:col-span-1 md:block">
-                  <div className="h-full w-px bg-white/10" />
-                </div>
-
-                <div className="md:col-span-5">
-                  <ul className="space-y-4 text-sm text-nexaio-offwhite/75">
-                    <li>
-                      <span className="font-medium text-nexaio-offwhite/90">
-                        Designed for scale:
-                      </span>{" "}
-                      systems don’t break when volume grows.
-                    </li>
-                    <li>
-                      <span className="font-medium text-nexaio-offwhite/90">
-                        Operational ownership:
-                      </span>{" "}
-                      we stay accountable after launch.
-                    </li>
-                    <li>
-                      <span className="font-medium text-nexaio-offwhite/90">
-                        Clear system logic:
-                      </span>{" "}
-                      defined rules, fallbacks, and failure handling.
-                    </li>
-                    <li>
-                      <span className="font-medium text-nexaio-offwhite/90">
-                        Business-first:
-                      </span>{" "}
-                      built around operations, not tools or trends.
-                    </li>
-                  </ul>
-                </div>
+          <div className="steps reveal">
+            {[
+              ["01", "Audit", "Map current processes, data flow, and failure points."],
+              ["02", "System Design", "Define rules, ownership, and edge-case handling."],
+              ["03", "Build & Validation", "Implement and test against real scenarios."],
+              ["04", "Ownership", "Maintain and evolve systems as the business changes."],
+            ].map(([n, h, p]) => (
+              <div className="step" key={n}>
+                <div className="n">{n}</div>
+                <h4>{h}</h4>
+                <p>{p}</p>
               </div>
-            </div>
-
-            {/* PROOF */}
-            <div className="border-b border-white/10 py-14">
-              <h2 className="text-2xl font-semibold">
-                Trusted across teams with real operational complexity.
-              </h2>
-
-              <div className="mt-4 text-xs text-nexaio-offwhite/55">.</div>
-
-              <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-8">
-                <p className="text-base text-nexaio-offwhite/85">
-                  “We had leads coming from three places and everyone handled
-                  them differently. Nexaio helped us standardize intake, remove
-                  the manual back-and-forth, and make follow-up consistent. The
-                  biggest win is that nothing gets lost when the week gets
-                  busy.”
-                </p>
-                <p className="mt-4 text-sm font-medium text-nexaio-offwhite">
-                  Operations Manager, Tie Company ModernTie
-                </p>
-              </div>
-
-              <div className="mt-6 grid gap-6 md:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                  <p className="text-sm text-nexaio-offwhite/80">
-                    “Before, we were copy-pasting the same info into multiple
-                    tools and it always drifted out of sync. Now the system is
-                    predictable—if something needs attention, it’s visible, and
-                    the team knows exactly what to do next.”
-                  </p>
-                  <p className="mt-4 text-sm font-medium text-nexaio-offwhite">
-                    Ops Lead, Travel Agency Getaway Today
-                  </p>
-                </div>
-
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                  <p className="text-sm text-nexaio-offwhite/80">
-                    “We didn’t need ‘more tools’—we needed a cleaner workflow.
-                    Nexaio helped us tighten up handoffs and automate the parts
-                    that were wasting time. The result is smoother delivery and
-                    fewer internal pings every day.”
-                  </p>
-                  <p className="mt-4 text-sm font-medium text-nexaio-offwhite">
-                    Owner, SEO Company SilverfoxSEO
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* HOW WE WORK */}
-            <div className="border-b border-white/10 py-14">
-              <h2 className="text-2xl font-semibold">
-                A structured approach, from audit to ownership.
-              </h2>
-
-              <div className="mt-10 divide-y divide-white/10 rounded-2xl border border-white/10 bg-white/5">
-                {[
-                  {
-                    n: "01",
-                    title: "Audit",
-                    body: "Map current processes, data flow, and failure points.",
-                  },
-                  {
-                    n: "02",
-                    title: "System Design",
-                    body: "Define rules, ownership, and edge-case handling.",
-                  },
-                  {
-                    n: "03",
-                    title: "Build & Validation",
-                    body: "Implement and test against real scenarios.",
-                  },
-                  {
-                    n: "04",
-                    title: "Ownership",
-                    body: "Maintain and evolve systems as the business changes.",
-                  },
-                ].map((s) => (
-                  <div
-                    key={s.n}
-                    className="grid gap-2 px-6 py-6 md:grid-cols-12"
-                  >
-                    <div className="md:col-span-2">
-                      <div className="text-sm font-semibold text-nexaio-offwhite/70">
-                        {s.n}
-                      </div>
-                    </div>
-                    <div className="md:col-span-10">
-                      <div className="font-medium">{s.title}</div>
-                      <div className="mt-1 text-sm text-nexaio-offwhite/70">
-                        {s.body}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* RETAINER + CTA */}
-            <div className="pt-14">
-              <h2 className="text-2xl font-semibold">
-                Automation only works if it’s maintained.
-              </h2>
-
-              <p className="mt-4 max-w-2xl text-nexaio-offwhite/70">
-                Business rules change, teams evolve, and edge cases appear over
-                time. Ongoing ownership keeps systems accurate and reliable.
-              </p>
-
-              <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-8">
-                <h3 className="max-w-3xl text-3xl font-semibold">
-                  Build systems you don’t have to babysit.
-                </h3>
-
-                <p className="mt-4 max-w-2xl text-nexaio-offwhite/70">
-                  If automation is critical to your operations, it deserves the
-                  same level of care as any core infrastructure.
-                </p>
-
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <a
-                    href="https://calendar.app.google/kNiFGpgUmyJUtZat5"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center rounded-lg bg-nexaio-offwhite px-6 py-3 text-sm font-medium text-nexaio-navy"
-                  >
-                    Book a Systems Review
-                  </a>
-
-                  <Link
-                    href="/services"
-                    className="inline-flex items-center justify-center rounded-lg border border-white/20 px-6 py-3 text-sm font-medium text-nexaio-offwhite/80 hover:text-nexaio-offwhite"
-                  >
-                    See System Examples
-                  </Link>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-8 text-sm text-nexaio-offwhite/60 sm:flex-row">
-          <span>© {new Date().getFullYear()} Nexaio</span>
-          <div className="flex items-center gap-6">
-            <a href="tel:+13853265746" className="hover:text-nexaio-offwhite">
-              +1 (385) 326-5746
-            </a>
-            <Link href="/privacy" className="hover:text-nexaio-offwhite">
-              Privacy
-            </Link>
-            <Link href="/contact" className="hover:text-nexaio-offwhite">
-              Contact
-            </Link>
+      {/* OPERATE */}
+      <section className="block">
+        <div className="wrap reveal" style={{ textAlign: "center", maxWidth: 760, margin: "0 auto" }}>
+          <p className="eyebrow">How we operate</p>
+          <h2
+            style={{
+              fontSize: "clamp(24px,3vw,34px)",
+              fontWeight: 600,
+              letterSpacing: "-0.02em",
+              lineHeight: 1.2,
+              marginTop: 16,
+            }}
+          >
+            Clear process. Clean handoffs. Honest work.
+          </h2>
+          <p style={{ marginTop: 18, color: "var(--lgray)", fontWeight: 300, fontSize: 16.5 }}>
+            If we don&apos;t know something, we don&apos;t guess — we find the
+            answer. And if a system matters to your business, we treat it like
+            it matters.
+          </p>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="block">
+        <div className="wrap">
+          <div className="cta-wrap reveal">
+            <div className="glow-c" />
+            <h2>Build systems you don&apos;t have to babysit.</h2>
+            <p>
+              If automation is critical to your operations, it deserves the same
+              level of care as any core infrastructure.
+            </p>
+            <div className="hero-cta">
+              <a className="btn btn-primary" href={BOOK} target="_blank" rel="noopener noreferrer">
+                <span>
+                  Book a Systems Review <i className="arr">→</i>
+                </span>
+              </a>
+              <Link className="btn btn-ghost" href="/services">
+                <span>See how it works</span>
+              </Link>
+            </div>
           </div>
         </div>
-      </footer>
-    </main>
+      </section>
+    </>
   );
 }

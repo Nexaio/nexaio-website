@@ -1,170 +1,99 @@
-import Image from "next/image";
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Book a Systems Review with Nexaio. A discovery and walkthrough to see what systems would create real leverage in your business.",
+};
+
+const BOOK = "https://calendar.app.google/kNiFGpgUmyJUtZat5";
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-nexaio-navy text-nexaio-offwhite">
-      {/* Header */}
-      <header className="border-b border-black/10 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/nexaio logo clean.png"
-              alt="Nexaio"
-              width={32}
-              height={32}
-              priority
-            />
-            <span className="text-sm font-semibold tracking-wide text-nexaio-navy">
-              Nexaio
-            </span>
-          </Link>
-
-          <nav className="hidden gap-8 text-sm text-nexaio-navy/70 md:flex">
-            <Link href="/" className="hover:text-nexaio-navy">
-              Home
-            </Link>
-            <Link href="/services" className="hover:text-nexaio-navy">
-              Services
-            </Link>
-            <Link href="/process" className="hover:text-nexaio-navy">
-              Process
-            </Link>
-            <Link href="/story" className="hover:text-nexaio-navy">
-              Our Story
-            </Link>
-            <Link href="/contact" className="hover:text-nexaio-navy">
-              Contact
-            </Link>
-          </nav>
+    <>
+      <section className="phero" style={{ paddingBottom: 40 }}>
+        <div className="phero-bg">
+          <div className="glow glow-1" />
+          <div className="glow glow-2" />
+          <div className="grid-lines" />
         </div>
-      </header>
-
-      {/* HERO */}
-      <section
-        className="relative"
-        style={{
-          backgroundImage: "url(/hero-bg.svg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="absolute inset-0 bg-nexaio-navy/60" />
-
-        <div className="relative mx-auto max-w-7xl px-6 py-20">
-          <div className="max-w-3xl">
-            <p className="text-xs font-semibold tracking-[0.18em] text-nexaio-offwhite/55">
-              CONTACT
-            </p>
-
-            <h1 className="mt-4 text-4xl font-semibold leading-tight sm:text-5xl">
-              Let’s figure out if this is worth building.
-            </h1>
-
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-nexaio-offwhite/75">
-              This isn’t a sales call. It’s a discovery and walkthrough to see
-              what systems would actually create leverage in your business.
-            </p>
-          </div>
+        <div className="wrap">
+          <p className="eyebrow">Contact</p>
+          <h1>Let&apos;s figure out if this is worth building.</h1>
+          <p className="lede">
+            This isn&apos;t a sales call. It&apos;s a discovery and walkthrough to
+            see what systems would actually create leverage in your business.
+          </p>
         </div>
       </section>
 
-      {/* CONTENT */}
-      <section
-        className="relative"
-        style={{
-          backgroundImage: "url(/hero-bg-light.svg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="absolute inset-0 bg-[#AAB0B4]/30" />
-
-        <div className="relative mx-auto max-w-7xl px-6 py-20 text-nexaio-navy">
-          <div className="grid gap-14 lg:grid-cols-2 lg:items-start">
-            <div>
-              <p className="text-xs font-semibold tracking-[0.18em] text-nexaio-navy/60">
-                SYSTEMS REVIEW
+      <section className="block" style={{ borderTop: "none", paddingTop: 20 }}>
+        <div className="wrap two" style={{ gridTemplateColumns: "1.05fr 0.95fr" }}>
+          <div className="reveal">
+            <p className="eyebrow">Systems review</p>
+            <h2
+              style={{
+                fontSize: "clamp(24px,3vw,32px)",
+                fontWeight: 600,
+                lineHeight: 1.15,
+                margin: "14px 0 22px",
+              }}
+            >
+              What this call is (and isn&apos;t)
+            </h2>
+            <div className="prose" style={{ fontSize: 16 }}>
+              <p>
+                This is a discovery and walkthrough call. You&apos;ll show us how
+                work currently moves through your business — tools, handoffs, and
+                any systems you already have in place.
               </p>
-
-              <h2 className="mt-4 text-3xl font-semibold leading-tight">
-                What this call is (and isn’t)
-              </h2>
-
-              <div className="mt-8 space-y-6 text-base leading-relaxed text-nexaio-navy/70">
-                <p>
-                  This is a discovery and walkthrough call. You’ll show us how
-                  work currently moves through your business — tools, handoffs,
-                  and any systems you already have in place.
-                </p>
-
-                <p>
-                  If you don’t have formal systems or automations yet, that’s
-                  completely fine. We regularly work with teams starting from
-                  scratch and can design the right foundation from the ground
-                  up.
-                </p>
-
-                <p>
-                  After the call, our team reviews what we’ve seen and outlines
-                  where automation or system changes would have the biggest
-                  impact. If it makes sense, we’ll schedule a follow-up to walk
-                  through recommendations.
-                </p>
-              </div>
-
-              <div className="mt-10 space-y-4 text-sm">
-                <div className="flex gap-3">
-                  <span className="font-semibold">✓</span>
-                  <span>Clear understanding of your current workflow</span>
-                </div>
-                <div className="flex gap-3">
-                  <span className="font-semibold">✓</span>
-                  <span>
-                    Where things break, stall, or rely on manual effort
-                  </span>
-                </div>
-                <div className="flex gap-3">
-                  <span className="font-semibold">✓</span>
-                  <span>A concrete next-step plan</span>
-                </div>
-              </div>
+              <p>
+                If you don&apos;t have formal systems or automations yet,
+                that&apos;s completely fine. We regularly work with teams starting
+                from scratch and can design the right foundation from the ground
+                up.
+              </p>
+              <p>
+                After the call, our team reviews what we&apos;ve seen and outlines
+                where automation or system changes would have the biggest impact.
+              </p>
             </div>
+            <ul className="clist" style={{ marginTop: 22 }}>
+              <li>Clear understanding of your current workflow</li>
+              <li>Where things break, stall, or rely on manual effort</li>
+              <li>A concrete next-step plan</li>
+            </ul>
+          </div>
 
-            <div className="rounded-3xl border border-black/10 bg-white/70 p-8 backdrop-blur-sm sm:p-10">
-              <p className="text-sm font-semibold">Book a Systems Review</p>
-
-              <p className="mt-3 text-sm leading-relaxed text-nexaio-navy/70">
-                Best fit for teams who want clarity before committing to build.
-              </p>
-
-              <div className="mt-8 space-y-3">
-                <a
-                  href="https://calendar.app.google/kNiFGpgUmyJUtZat5"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex w-full items-center justify-center rounded-lg bg-nexaio-navy px-6 py-3 text-sm font-medium text-nexaio-offwhite"
-                >
-                  Book a Systems Review
-                </a>
-
-                <Link
-                  href="/process"
-                  className="inline-flex w-full items-center justify-center rounded-lg border border-black/15 px-6 py-3 text-sm font-medium"
-                >
-                  See how we work
-                </Link>
-              </div>
-
-              <p className="mt-6 text-xs text-nexaio-navy/60">
-                Typical response time: within 24 hours on weekdays.
-              </p>
-
-              <p className="mt-6 border-t border-black/10 pt-6 text-sm font-medium text-nexaio-navy">
+          <div className="panel reveal">
+            <h3>Book a Systems Review</h3>
+            <p style={{ marginBottom: 22 }}>
+              Best fit for teams who want clarity before committing to build.
+            </p>
+            <a
+              className="btn btn-primary"
+              href={BOOK}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ width: "100%", justifyContent: "center" }}
+            >
+              <span>Book a Systems Review <i className="arr">→</i></span>
+            </a>
+            <Link
+              className="btn btn-ghost"
+              href="/process"
+              style={{ width: "100%", justifyContent: "center", marginTop: 12 }}
+            >
+              <span>See how we work</span>
+            </Link>
+            <p style={{ marginTop: 22, fontSize: 13, color: "var(--mgray)" }}>
+              Typical response time: within 24 hours on weekdays.
+            </p>
+            <div style={{ marginTop: 22, paddingTop: 22, borderTop: "1px solid var(--line)" }}>
+              <p style={{ fontSize: 14, color: "var(--lgray)" }}>
                 Prefer to talk? Call us at{" "}
-                <a href="tel:+13853265746" className="underline">
+                <a href="tel:+13853265746" style={{ color: "var(--accent-2)", textDecoration: "underline" }}>
                   +1 (385) 326-5746
                 </a>
               </p>
@@ -172,24 +101,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-8 text-sm text-nexaio-offwhite/60 sm:flex-row">
-          <span>© {new Date().getFullYear()} Nexaio</span>
-          <div className="flex items-center gap-6">
-            <a href="tel:+13853265746" className="hover:text-nexaio-offwhite">
-              +1 (385) 326-5746
-            </a>
-            <Link href="/privacy" className="hover:text-nexaio-offwhite">
-              Privacy
-            </Link>
-            <Link href="/contact" className="hover:text-nexaio-offwhite">
-              Contact
-            </Link>
-          </div>
-        </div>
-      </footer>
-    </main>
+    </>
   );
 }
