@@ -27,6 +27,12 @@ export const metadata: Metadata = {
     siteName: "Nexaio",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nexaio — Operational automation built to scale",
+    description:
+      "Automation systems designed and owned for reliability as you scale.",
+  },
 };
 
 export default function RootLayout({
