@@ -221,8 +221,8 @@ export default function PrivacyPage() {
                 Nexaio
                 <br />
                 Email:{" "}
-                <a href="mailto:jonas@nexaio.co" className="underline">
-                  jonas@nexaio.co
+                <a href="mailto:admin@nexaio.co" className="underline">
+                  admin@nexaio.co
                 </a>
                 <br />
                 Phone:{" "}
