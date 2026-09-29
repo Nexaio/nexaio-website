@@ -1,107 +1,126 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Icon from "../../components/Icon";
+import { agenda, bookingCard, contactHero, prepare } from "../../content/contact";
+import { contact } from "../../content/site";
+import { bookingPage, demoCta } from "../../lib/cta";
+import { pageMetadata } from "../../lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact",
+export const metadata: Metadata = pageMetadata({
+  title: "Book a walkthrough",
   description:
-    "Book a Systems Review with Nexaio. A discovery and walkthrough to see what systems would create real leverage in your business.",
-};
-
-const BOOK = "https://calendar.app.google/kNiFGpgUmyJUtZat5";
+    "Book a live Nexaio walkthrough. See the product on sample data and find out whether it fits how your roofing company handles leads and estimates.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (
     <>
-      <section className="phero" style={{ paddingBottom: 40 }}>
-        <div className="phero-bg" data-parallax="0.18">
+      <section className="phero phero--left" aria-labelledby="contact-title">
+        <div className="phero-bg" aria-hidden="true">
           <div className="glow glow-1" />
-          <div className="glow glow-2" />
           <div className="grid-lines" />
-          <div className="phero-decor"><div className="phero-ring2" /></div>
         </div>
-        <div className="wrap">
-          <p className="eyebrow">Contact</p>
-          <h1>
-            Let&apos;s figure out if this is{" "}
-            <span className="grad">worth building.</span>
-          </h1>
-          <p className="lede">
-            This isn&apos;t a sales call. It&apos;s a discovery and walkthrough to
-            see what systems would actually create leverage in your business.
-          </p>
+        <div className="wrap contact-grid">
+          <div className="contact-intro">
+            <p className="eyebrow">{contactHero.eyebrow}</p>
+            <h1 className="h1" id="contact-title">
+              {contactHero.title}
+            </h1>
+            <p className="lede">{contactHero.lede}</p>
+          </div>
+
+          <div className="book-card" id="book">
+            <span className="book-card-icon" aria-hidden="true">
+              <Icon name="calendar" size={24} />
+            </span>
+            <h2 className="h3">{bookingCard.title}</h2>
+            <p>{bookingCard.body}</p>
+            <a
+              className="btn btn-primary btn-block"
+              href={bookingPage.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {bookingCard.button}
+              <Icon name="external" size={18} className="btn-arrow" />
+              <span className="sr-only"> (opens {bookingPage.provider} in a new tab)</span>
+            </a>
+            {bookingPage.pageTitle ? (
+              <p className="book-card-note">
+                The booking page lists it as a “{bookingPage.pageTitle}”. It’s
+                the same walkthrough.
+              </p>
+            ) : null}
+            {contact.responseExpectation ? (
+              <p className="book-card-note">{contact.responseExpectation}</p>
+            ) : null}
+          </div>
         </div>
       </section>
 
-      <section className="block" style={{ borderTop: "none", paddingTop: 20 }}>
-        <div className="wrap two" style={{ gridTemplateColumns: "1.05fr 0.95fr" }}>
+      <section className="section section--white" aria-labelledby="agenda-title">
+        <div className="wrap contact-details">
           <div className="reveal">
-            <p className="eyebrow">Systems review</p>
-            <h2
-              style={{
-                fontSize: "clamp(24px,3vw,32px)",
-                fontWeight: 600,
-                lineHeight: 1.15,
-                margin: "14px 0 22px",
-              }}
-            >
-              What this call is (and isn&apos;t)
+            <h2 className="h2" id="agenda-title">
+              {agenda.title}
             </h2>
-            <div className="prose" style={{ fontSize: 16 }}>
-              <p>
-                This is a discovery and walkthrough call. You&apos;ll show us how
-                work currently moves through your business — tools, handoffs, and
-                any systems you already have in place.
-              </p>
-              <p>
-                If you don&apos;t have formal systems or automations yet,
-                that&apos;s completely fine. We regularly work with teams starting
-                from scratch and can design the right foundation from the ground
-                up.
-              </p>
-              <p>
-                After the call, our team reviews what we&apos;ve seen and outlines
-                where automation or system changes would have the biggest impact.
-              </p>
-            </div>
-            <ul className="clist" style={{ marginTop: 22 }}>
-              <li>Clear understanding of your current workflow</li>
-              <li>Where things break, stall, or rely on manual effort</li>
-              <li>A concrete next-step plan</li>
-            </ul>
+            <ol className="agenda">
+              {agenda.items.map((item, i) => (
+                <li key={item.title}>
+                  <span className="step-num">{i + 1}</span>
+                  <div>
+                    <h3 className="h3">{item.title}</h3>
+                    <p>{item.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
 
-          <div className="panel reveal">
-            <h3>Book a Systems Review</h3>
-            <p style={{ marginBottom: 22 }}>
-              Best fit for teams who want clarity before committing to build.
-            </p>
-            <a
-              className="btn btn-primary"
-              href={BOOK}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ width: "100%", justifyContent: "center" }}
-            >
-              <span>Book a Systems Review <i className="arr">→</i></span>
-            </a>
-            <Link
-              className="btn btn-ghost"
-              href="/process"
-              style={{ width: "100%", justifyContent: "center", marginTop: 12 }}
-            >
-              <span>See how we work</span>
-            </Link>
-            <p style={{ marginTop: 22, fontSize: 13, color: "var(--mgray)" }}>
-              Typical response time: within 24 hours on weekdays.
-            </p>
-            <div style={{ marginTop: 22, paddingTop: 22, borderTop: "1px solid var(--line)" }}>
-              <p style={{ fontSize: 14, color: "var(--lgray)" }}>
-                Prefer to talk? Call us at{" "}
-                <a href="tel:+13853265746" style={{ color: "var(--accent-2)", textDecoration: "underline" }}>
-                  +1 (385) 326-5746
-                </a>
-              </p>
+          <div className="contact-side reveal">
+            <div className="side-card">
+              <h2 className="h3">{prepare.title}</h2>
+              <ul className="checklist">
+                {prepare.items.map((i) => (
+                  <li key={i}>{i}</li>
+                ))}
+              </ul>
             </div>
+
+            <div className="side-card">
+              <h2 className="h3">Prefer to look first?</h2>
+              <p>
+                The demo walks through a new inquiry, an estimate that goes quiet
+                and a customer who needs a person, on sample data.
+              </p>
+              <Link className="btn btn-secondary btn-sm" href={demoCta.href}>
+                {demoCta.label}
+              </Link>
+            </div>
+
+            <div className="side-card">
+              <h2 className="h3">Other ways to reach us</h2>
+              <ul className="contact-lines">
+                <li>
+                  <Icon name="mail" size={18} />
+                  <a href={`mailto:${contact.email}`}>{contact.email}</a>
+                </li>
+                <li>
+                  <Icon name="phone" size={18} />
+                  <a href={`tel:${contact.phone.e164}`}>{contact.phone.display}</a>
+                </li>
+              </ul>
+            </div>
+
+            <p className="fine">
+              We use the details you share to schedule and prepare for the call.
+              See our{" "}
+              <Link href="/privacy" className="text-link">
+                Privacy Policy
+              </Link>
+              .
+            </p>
           </div>
         </div>
       </section>

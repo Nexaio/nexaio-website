@@ -1,4 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
+import { contact, footerNav, site } from "../content/site";
+import { bookCta } from "../lib/cta";
 
 export default function Footer() {
   return (
@@ -6,35 +9,42 @@ export default function Footer() {
       <div className="wrap">
         <div className="foot-grid">
           <div className="foot-brand">
-            <Link href="/" className="logo">
-              <img src="/nexaio-logo-light.png" alt="Nexaio logo" /> Nexaio
+            <Link href="/" className="brand" aria-label="Nexaio home">
+              <Image src="/nexaio-logo-light.png" alt="" width={28} height={28} />
+              <span className="brand-name">Nexaio</span>
             </Link>
             <p>
-              Operational automation systems, designed and owned for reliability
-              as you scale.
+              {site.category}. Nexaio works on top of the systems you already
+              use so every lead and estimate has an owner and a next step.
             </p>
+            <Link className="btn btn-primary btn-sm" href={bookCta.href}>
+              {bookCta.label}
+            </Link>
           </div>
 
-          <div className="foot-col">
-            <h5>Pages</h5>
-            <Link href="/services">Services</Link>
-            <Link href="/process">Process</Link>
-            <Link href="/story">Our Story</Link>
-            <Link href="/contact">Contact</Link>
-            <Link href="/privacy">Privacy Policy</Link>
-          </div>
+          {footerNav.map((group) => (
+            <nav className="foot-col" key={group.title} aria-label={group.title}>
+              <p className="foot-title">{group.title}</p>
+              {group.links.map((l) => (
+                <Link key={l.href} href={l.href}>
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
+          ))}
 
           <div className="foot-col">
-            <h5>Get in touch</h5>
-            <a href="tel:+13853265746">+1 (385) 326-5746</a>
-            <a href="mailto:admin@nexaio.co">admin@nexaio.co</a>
-            <Link href="/contact">Book a Systems Review</Link>
+            <p className="foot-title">Get in touch</p>
+            <a href={`mailto:${contact.email}`}>{contact.email}</a>
+            <a href={`tel:${contact.phone.e164}`}>{contact.phone.display}</a>
           </div>
         </div>
 
         <div className="foot-bottom">
-          <span>© {new Date().getFullYear()} Nexaio. All rights reserved.</span>
-          <span>Built to scale, not break.</span>
+          <span>
+            © {new Date().getFullYear()} {site.name}. All rights reserved.
+          </span>
+          <span>{site.domain}</span>
         </div>
       </div>
     </footer>

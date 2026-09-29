@@ -34,6 +34,12 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  async redirects() {
+    return [
+      // The old Services page was replaced by the homepage's "What Nexaio does" section.
+      { source: "/services", destination: "/#product", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Privacy Policy",
   description:
     "How Nexaio collects, uses, and protects your information, including mobile and SMS data.",
-};
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (

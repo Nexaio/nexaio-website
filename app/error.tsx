@@ -4,29 +4,23 @@ import Link from "next/link";
 
 export default function Error({ reset }: { error: Error; reset: () => void }) {
   return (
-    <section
-      className="phero"
-      style={{ minHeight: "72vh", display: "flex", alignItems: "center" }}
-    >
-      <div className="phero-bg">
+    <section className="phero phero--full">
+      <div className="phero-bg" aria-hidden="true">
         <div className="glow glow-1" />
         <div className="grid-lines" />
       </div>
       <div className="wrap">
         <p className="eyebrow">Something went wrong</p>
-        <h1>
-          Let&apos;s try that <span className="grad">again.</span>
-        </h1>
+        <h1 className="h1">Let’s try that again.</h1>
         <p className="lede">
-          Something unexpected happened on our end — it&apos;s not you. Try
-          again, or head back home.
+          Something unexpected happened on our end. Try again, or head back home.
         </p>
-        <div className="hero-cta" style={{ justifyContent: "center" }}>
-          <button className="btn btn-primary" onClick={() => reset()}>
-            <span>Try again</span>
+        <div className="cta-row cta-row--center">
+          <button type="button" className="btn btn-primary" onClick={() => reset()}>
+            Try again
           </button>
-          <Link className="btn btn-ghost" href="/">
-            <span>Back to home</span>
+          <Link className="btn btn-secondary" href="/">
+            Back to home
           </Link>
         </div>
       </div>

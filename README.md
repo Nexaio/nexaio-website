@@ -1,30 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# nexaio.co
 
-## Getting Started
+The public Nexaio website: Next.js (App Router) with a small typed content
+layer, deployed on Vercel.
 
-First, run the development server:
+## Commands
 
 ```bash
-pnpm dev
+pnpm install
+pnpm dev             # local development
+pnpm build           # production build
+pnpm lint
+pnpm check:content   # claims, demo-video gate, phone gate, canonicals, sitemap (no dependencies)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Where things live
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `content/` — all public copy, contact destinations, navigation and the demo
+  video slot. Start with `content/README.md`; it lists the rules published copy
+  must follow and the facts that are deliberately held back.
+- `lib/cta.ts` — the two primary calls to action (see/watch the demo, book a
+  walkthrough).
+- `lib/seo.ts` — per-page metadata (canonical, Open Graph, Twitter), whether a
+  build is indexable, and structured data.
+- `app/robots.ts`, `app/sitemap.ts`, `app/opengraph-image.tsx` — crawl rules,
+  sitemap and the generated share image.
+- `components/ProductViews.tsx` — the labelled sample-data product
+  illustrations.
+- `app/globals.css` — the visual system (tokens, layout, components).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Indexing
 
-## Learn More
+Only the Vercel Production deployment is indexable. Preview deployments
+(`VERCEL_ENV=preview`) render `noindex` and a disallow-all `robots.txt`.
 
-To learn more about Next.js, take a look at the following resources:
+## Releases
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Pushing to `main` deploys to Production on Vercel. Changes go through review
+first; publishing is a separate, explicitly authorised step.

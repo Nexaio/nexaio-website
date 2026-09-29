@@ -1,33 +1,25 @@
 import Link from "next/link";
+import { DemoButton } from "../components/Cta";
 
 export default function NotFound() {
   return (
-    <section
-      className="phero"
-      style={{ minHeight: "72vh", display: "flex", alignItems: "center" }}
-    >
-      <div className="phero-bg">
+    <section className="phero phero--full">
+      <div className="phero-bg" aria-hidden="true">
         <div className="glow glow-1" />
         <div className="grid-lines" />
       </div>
       <div className="wrap">
         <p className="eyebrow">404</p>
-        <h1>
-          This page took a <span className="grad">wrong turn.</span>
-        </h1>
+        <h1 className="h1">This page took a wrong turn.</h1>
         <p className="lede">
-          The page you&apos;re looking for doesn&apos;t exist or has moved.
-          Let&apos;s get you back on track.
+          The page you’re looking for doesn’t exist or has moved. Let’s get you
+          back on track.
         </p>
-        <div className="hero-cta" style={{ justifyContent: "center" }}>
+        <div className="cta-row cta-row--center">
           <Link className="btn btn-primary" href="/">
-            <span>
-              Back to home <i className="arr">→</i>
-            </span>
+            Back to home
           </Link>
-          <Link className="btn btn-ghost" href="/contact">
-            <span>Contact us</span>
-          </Link>
+          <DemoButton variant="secondary" />
         </div>
       </div>
     </section>

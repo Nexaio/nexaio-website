@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import { CtaPair } from "../../components/Cta";
 import StoryTimeline from "../../components/StoryTimeline";
+import { pageMetadata } from "../../lib/seo";
 
-export const metadata: Metadata = {
-  title: "Our Story",
+export const metadata: Metadata = pageMetadata({
+  title: "Our story",
   description:
-    "From a landscaping grind to systems that scale. Nexaio exists because we wanted a better way to build — systems that hold up when life gets busy.",
-};
-
-const BOOK = "https://calendar.app.google/kNiFGpgUmyJUtZat5";
+    "From a landscaping grind to systems that hold up. The story behind Nexaio, the operating layer for roofing companies, and the principles it's built on.",
+  path: "/story",
+});
 
 export default function StoryPage() {
   return (
@@ -68,14 +68,7 @@ export default function StoryPage() {
               because we wanted a better way to build — with systems that hold up
               when life gets busy.
             </p>
-            <div className="hero-cta" style={{ justifyContent: "center" }}>
-              <a className="btn btn-primary" href={BOOK} target="_blank" rel="noopener noreferrer">
-                <span>Book a Systems Review <i className="arr">→</i></span>
-              </a>
-              <Link className="btn btn-ghost" href="/process">
-                <span>See our process</span>
-              </Link>
-            </div>
+            <CtaPair centered />
           </div>
         </div>
       </section>
@@ -193,14 +186,7 @@ export default function StoryPage() {
               If a system is critical to your operations, it deserves the same
               care as any core infrastructure.
             </p>
-            <div className="hero-cta">
-              <a className="btn btn-primary" href={BOOK} target="_blank" rel="noopener noreferrer">
-                <span>Book a Systems Review <i className="arr">→</i></span>
-              </a>
-              <Link className="btn btn-ghost" href="/services">
-                <span>See what we build</span>
-              </Link>
-            </div>
+            <CtaPair centered />
           </div>
         </div>
       </section>
