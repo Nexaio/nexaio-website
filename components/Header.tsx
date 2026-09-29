@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { nav } from "../content/site";
+import { industries, nav } from "../content/site";
 import { bookCta, demoCta } from "../lib/cta";
 import Icon from "./Icon";
 
@@ -12,46 +12,93 @@ export default function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const menuBtnRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close the mobile menu on navigation and on Escape.
-  useEffect(() => setOpen(false), [pathname]);
+  // Close both menus on navigation.
   useEffect(() => {
-    if (!open) return;
+    setOpen(false);
+    setMenu(false);
+  }, [pathname]);
+
+  // Escape closes whichever menu is open and returns focus to its button;
+  // a click outside closes the Industries menu.
+  useEffect(() => {
+    if (!open && !menu) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key !== "Escape") return;
+      if (menu) {
+        setMenu(false);
+        menuBtnRef.current?.focus();
+      }
+      setOpen(false);
+    };
+    const onClick = (e: MouseEvent) => {
+      if (menu && menuRef.current && !menuRef.current.contains(e.target as Node)) setMenu(false);
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+    window.addEventListener("click", onClick);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("click", onClick);
+    };
+  }, [open, menu]);
 
-  const isActive = (href: string) => !href.includes("#") && pathname === href;
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <header className={`site-header${scrolled || open ? " is-solid" : ""}`}>
       <div className="wrap nav">
         <Link href="/" className="brand" aria-label="Nexaio home">
-          <Image src="/nexaio-logo-light.png" alt="" width={28} height={28} priority />
+          <Image src="/nexaio-logo-light.png" alt="" width={24} height={24} priority />
           <span className="brand-name">Nexaio</span>
         </Link>
 
         <nav className="nav-links" aria-label="Main">
-          {nav.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={isActive(l.href) ? "is-active" : undefined}
-              aria-current={isActive(l.href) ? "page" : undefined}
-            >
-              {l.label}
-            </Link>
-          ))}
+          {nav.map((item) =>
+            item.href === "/industries" ? (
+              <div className="nav-menu" key={item.href} ref={menuRef}>
+                <button
+                  ref={menuBtnRef}
+                  type="button"
+                  className={`nav-link${isActive("/industries") ? " is-current" : ""}`}
+                  aria-expanded={menu}
+                  aria-controls="industries-menu"
+                  onClick={() => setMenu((v) => !v)}
+                >
+                  {item.label}
+                  <Icon name="chevron" size={15} />
+                </button>
+                {menu ? (
+                  <div className="nav-panel" id="industries-menu">
+                    {industries.map((ind) => (
+                      <Link key={ind.href} href={ind.href} onClick={() => setMenu(false)}>
+                        <b>{ind.label}</b>
+                        <span>{ind.summary}</span>
+                      </Link>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="nav-link"
+                aria-current={isActive(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </Link>
+            )
+          )}
         </nav>
 
         <div className="nav-actions">
@@ -72,27 +119,28 @@ export default function Header() {
         </button>
       </div>
 
-      <div id="mobile-menu" className={`mobile-menu${open ? " is-open" : ""}`} hidden={!open}>
+      <div id="mobile-menu" className="mobile-menu" hidden={!open}>
         <nav className="wrap mobile-menu-inner" aria-label="Mobile">
-          {nav.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              onClick={() => setOpen(false)}
-              aria-current={isActive(l.href) ? "page" : undefined}
-            >
-              {l.label}
+          {nav
+            .filter((item) => item.href !== "/industries")
+            .map((item) => (
+              <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
+                {item.label}
+              </Link>
+            ))}
+          <p className="eyebrow mobile-menu-label">Industries</p>
+          {industries.map((ind) => (
+            <Link key={ind.href} href={ind.href}>
+              {ind.label}
             </Link>
           ))}
-          <Link href="/contact" onClick={() => setOpen(false)}>
-            Contact
-          </Link>
+          <Link href="/contact">Contact</Link>
           <div className="mobile-menu-ctas">
-            <Link className="btn btn-primary" href={demoCta.href} onClick={() => setOpen(false)}>
-              {demoCta.label}
-            </Link>
-            <Link className="btn btn-secondary" href={bookCta.href} onClick={() => setOpen(false)}>
+            <Link className="btn btn-primary" href={bookCta.href}>
               {bookCta.label}
+            </Link>
+            <Link className="btn btn-secondary" href={demoCta.href}>
+              {demoCta.label}
             </Link>
           </div>
         </nav>

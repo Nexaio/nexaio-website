@@ -7,8 +7,9 @@
 
 export const contactHero = {
   eyebrow: "Book a walkthrough",
-  title: "See Nexaio on a live walkthrough",
-  lede: "Pick a time on our booking page. We’ll show you the product and look at where your leads and estimates slip today. If Nexaio isn’t a fit, we’ll tell you.",
+  title: "Let's look at how work moves",
+  titleDim: "through your business.",
+  lede: "Pick a time on our booking page. We'll show you the product and look at where enquiries, follow-up and handoffs slip today. If Nexaio isn't a fit, we'll tell you.",
 };
 
 export const bookingCard = {
@@ -22,7 +23,7 @@ export const agenda = {
   items: [
     {
       title: "How things work today",
-      body: "Your lead sources, your CRM and who handles first response and estimate follow-up.",
+      body: "Your systems, where enquiries come from, and who handles first response and follow-up.",
     },
     {
       title: "The product, on sample data",
@@ -30,7 +31,7 @@ export const agenda = {
     },
     {
       title: "An honest fit check",
-      body: "If it fits, we outline next steps and pricing. If it doesn’t, we say so.",
+      body: "If it fits, we outline next steps and pricing. If it doesn't, we say so.",
     },
   ],
 };
@@ -39,7 +40,12 @@ export const prepare = {
   title: "Helpful to have in mind",
   items: [
     "Which CRM you use, if any",
-    "Where your leads come from",
-    "Who handles first response and estimate follow-up",
+    "Where your enquiries come from",
+    "Who handles first response and follow-up",
   ],
+};
+
+export const lookFirst = {
+  title: "Prefer to look first?",
+  body: "The demo follows one enquiry from arrival to the monthly report, recreated from the product with sample data.",
 };

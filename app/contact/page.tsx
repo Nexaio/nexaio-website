@@ -1,76 +1,70 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Icon from "../../components/Icon";
-import { agenda, bookingCard, contactHero, prepare } from "../../content/contact";
+import JsonLd from "../../components/JsonLd";
+import { agenda, bookingCard, contactHero, lookFirst, prepare } from "../../content/contact";
 import { contact } from "../../content/site";
 import { bookingPage, demoCta } from "../../lib/cta";
-import { pageMetadata } from "../../lib/seo";
+import { breadcrumbJsonLd, pageMetadata } from "../../lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Book a walkthrough",
   description:
-    "Book a live Nexaio walkthrough. See the product on sample data and find out whether it fits how your roofing company handles leads and estimates.",
+    "Book a Nexaio walkthrough. See the product on sample data and find out whether it fits how your business handles enquiries, follow-up and handoffs.",
   path: "/contact",
 });
 
 export default function ContactPage() {
   return (
     <>
-      <section className="phero phero--left" aria-labelledby="contact-title">
-        <div className="phero-bg" aria-hidden="true">
-          <div className="glow glow-1" />
-          <div className="grid-lines" />
-        </div>
-        <div className="wrap contact-grid">
-          <div className="contact-intro">
-            <p className="eyebrow">{contactHero.eyebrow}</p>
-            <h1 className="h1" id="contact-title">
-              {contactHero.title}
+      <JsonLd data={breadcrumbJsonLd([{ name: "Book a walkthrough", path: "/contact" }])} />
+
+      <section className="page-hero" aria-labelledby="contact-title">
+        <div className="hero-field" aria-hidden="true" />
+        <div className="wrap page-hero-grid">
+          <div className="hero-copy">
+            <p className="eyebrow enter d1">{contactHero.eyebrow}</p>
+            <h1 className="h1 enter d1" id="contact-title">
+              <span className="display-line">{contactHero.title}</span>{" "}
+              <span className="display-line dim">{contactHero.titleDim}</span>
             </h1>
-            <p className="lede">{contactHero.lede}</p>
+            <p className="lede enter d2">{contactHero.lede}</p>
           </div>
 
-          <div className="book-card" id="book">
-            <span className="book-card-icon" aria-hidden="true">
-              <Icon name="calendar" size={24} />
+          <div className="book enter d3" id="book">
+            <span className="book-icon" aria-hidden="true">
+              <Icon name="calendar" size={22} />
             </span>
             <h2 className="h3">{bookingCard.title}</h2>
             <p>{bookingCard.body}</p>
-            <a
-              className="btn btn-primary btn-block"
-              href={bookingPage.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a className="btn btn-primary" href={bookingPage.href} target="_blank" rel="noopener noreferrer">
               {bookingCard.button}
-              <Icon name="external" size={18} className="btn-arrow" />
+              <Icon name="external" size={17} className="btn-arrow" />
               <span className="sr-only"> (opens {bookingPage.provider} in a new tab)</span>
             </a>
             {bookingPage.pageTitle ? (
-              <p className="book-card-note">
-                The booking page lists it as a “{bookingPage.pageTitle}”. It’s
-                the same walkthrough.
+              <p className="note">
+                The booking page lists it as a &ldquo;{bookingPage.pageTitle}&rdquo;. It&rsquo;s the same
+                walkthrough.
               </p>
             ) : null}
-            {contact.responseExpectation ? (
-              <p className="book-card-note">{contact.responseExpectation}</p>
-            ) : null}
+            {contact.responseExpectation ? <p className="note">{contact.responseExpectation}</p> : null}
           </div>
         </div>
       </section>
 
-      <section className="section section--white" aria-labelledby="agenda-title">
-        <div className="wrap contact-details">
-          <div className="reveal">
+      <section className="section" aria-labelledby="agenda-title">
+        <div className="wrap split">
+          <div data-reveal>
             <h2 className="h2" id="agenda-title">
               {agenda.title}
             </h2>
-            <ol className="agenda">
+            <ol className="steps" style={{ marginTop: 28 }}>
               {agenda.items.map((item, i) => (
                 <li key={item.title}>
-                  <span className="step-num">{i + 1}</span>
+                  <span className="n">{String(i + 1).padStart(2, "0")}</span>
                   <div>
-                    <h3 className="h3">{item.title}</h3>
+                    <b>{item.title}</b>
                     <p>{item.body}</p>
                   </div>
                 </li>
@@ -78,30 +72,32 @@ export default function ContactPage() {
             </ol>
           </div>
 
-          <div className="contact-side reveal">
-            <div className="side-card">
+          <div className="side" data-reveal>
+            <div className="panel">
               <h2 className="h3">{prepare.title}</h2>
-              <ul className="checklist">
-                {prepare.items.map((i) => (
-                  <li key={i}>{i}</li>
+              <ul className="points">
+                {prepare.items.map((item) => (
+                  <li key={item}>
+                    <Icon name="check" size={16} />
+                    {item}
+                  </li>
                 ))}
               </ul>
             </div>
 
-            <div className="side-card">
-              <h2 className="h3">Prefer to look first?</h2>
-              <p>
-                The demo walks through a new inquiry, an estimate that goes quiet
-                and a customer who needs a person, on sample data.
-              </p>
-              <Link className="btn btn-secondary btn-sm" href={demoCta.href}>
-                {demoCta.label}
-              </Link>
+            <div className="panel">
+              <h2 className="h3">{lookFirst.title}</h2>
+              <p>{lookFirst.body}</p>
+              <div>
+                <Link className="btn btn-secondary btn-sm" href={demoCta.href}>
+                  {demoCta.label}
+                </Link>
+              </div>
             </div>
 
-            <div className="side-card">
+            <div className="panel">
               <h2 className="h3">Other ways to reach us</h2>
-              <ul className="contact-lines">
+              <ul className="lines">
                 <li>
                   <Icon name="mail" size={18} />
                   <a href={`mailto:${contact.email}`}>{contact.email}</a>
@@ -114,8 +110,7 @@ export default function ContactPage() {
             </div>
 
             <p className="fine">
-              We use the details you share to schedule and prepare for the call.
-              See our{" "}
+              We use the details you share to schedule and prepare for the call. See our{" "}
               <Link href="/privacy" className="text-link">
                 Privacy Policy
               </Link>

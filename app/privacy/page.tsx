@@ -11,23 +11,23 @@ export const metadata: Metadata = pageMetadata({
 export default function PrivacyPage() {
   return (
     <>
-      <section className="phero" style={{ textAlign: "left", paddingBottom: 40 }}>
-        <div className="phero-bg" data-parallax="0.15">
-          <div className="glow glow-1" />
-          <div className="grid-lines" />
-        </div>
+      <section className="page-hero" aria-labelledby="privacy-title">
         <div className="wrap">
-          <p className="eyebrow">Legal</p>
-          <h1 style={{ marginLeft: 0, marginRight: 0 }}>Privacy Policy</h1>
-          <p style={{ marginTop: 18, color: "var(--mgray)", fontSize: 14 }}>
-            Effective date: June 29, 2026
-          </p>
+          <div className="hero-copy">
+            <p className="eyebrow">Legal</p>
+            <h1 className="h1" id="privacy-title">
+              Privacy Policy
+            </h1>
+            <p className="meta" style={{ margin: 0 }}>
+              Effective date: June 29, 2026
+            </p>
+          </div>
         </div>
       </section>
 
-      <section className="block" style={{ borderTop: "none", paddingTop: 10 }}>
+      <section className="section" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="prose" style={{ maxWidth: 760, margin: "0 auto" }}>
+          <div className="prose">
             <p>
               Nexaio (&ldquo;Nexaio,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or
               &ldquo;our&rdquo;) respects your privacy and is committed to
@@ -37,7 +37,7 @@ export default function PrivacyPage() {
               services, forms, or messaging programs we operate.
             </p>
 
-            <h2 style={ph}>Information We Collect</h2>
+            <h2>Information We Collect</h2>
             <p>
               We collect information you provide directly to us, such as your
               name, email address, phone number, company details, and any
@@ -47,7 +47,7 @@ export default function PrivacyPage() {
               when you visit our website.
             </p>
 
-            <h2 style={ph}>How We Use Your Information</h2>
+            <h2>How We Use Your Information</h2>
             <p>
               We use the information we collect to respond to your inquiries,
               schedule and conduct calls, provide and improve our services, send
@@ -57,7 +57,7 @@ export default function PrivacyPage() {
               this policy without your consent.
             </p>
 
-            <h2 style={ph}>SMS / Text Messaging</h2>
+            <h2>SMS / Text Messaging</h2>
             <p>
               If you opt in to receive text messages from Nexaio, you consent to
               receive SMS/MMS messages at the phone number you provide. Message
@@ -66,11 +66,8 @@ export default function PrivacyPage() {
               <strong>HELP</strong> for assistance. Carriers are not liable for
               delayed or undelivered messages.
             </p>
-            <div
-              className="panel"
-              style={{ background: "var(--card-2)", margin: "22px 0", padding: "22px 24px" }}
-            >
-              <p style={{ margin: 0 }}>
+            <div className="callout">
+              <p>
                 Mobile information, SMS opt-in data, phone numbers, and SMS
                 consent status will not be sold, rented, shared, or transferred
                 to third parties or affiliates for marketing or promotional
@@ -79,7 +76,7 @@ export default function PrivacyPage() {
               </p>
             </div>
 
-            <h2 style={ph}>How We Share Your Information</h2>
+            <h2>How We Share Your Information</h2>
             <p>
               We do not sell, rent, or trade your personal information. We may
               share information with trusted service providers who perform
@@ -90,14 +87,14 @@ export default function PrivacyPage() {
               rights, safety, or property.
             </p>
 
-            <h2 style={ph}>Data Retention</h2>
+            <h2>Data Retention</h2>
             <p>
               We retain personal information only for as long as necessary to
               fulfill the purposes described in this policy, to comply with our
               legal obligations, resolve disputes, and enforce our agreements.
             </p>
 
-            <h2 style={ph}>Data Security</h2>
+            <h2>Data Security</h2>
             <p>
               We use reasonable administrative, technical, and physical
               safeguards designed to protect your information. However, no method
@@ -105,7 +102,7 @@ export default function PrivacyPage() {
               guarantee absolute security.
             </p>
 
-            <h2 style={ph}>Your Rights and Choices</h2>
+            <h2>Your Rights and Choices</h2>
             <p>
               You may request access to, correction of, or deletion of your
               personal information, and you may opt out of marketing or messaging
@@ -114,13 +111,13 @@ export default function PrivacyPage() {
               any time by replying STOP.
             </p>
 
-            <h2 style={ph}>Children&apos;s Privacy</h2>
+            <h2>Children&apos;s Privacy</h2>
             <p>
               Our website and services are not directed to children under 13, and
               we do not knowingly collect personal information from children.
             </p>
 
-            <h2 style={ph}>Changes to This Policy</h2>
+            <h2>Changes to This Policy</h2>
             <p>
               We may update this Privacy Policy from time to time. When we do, we
               will revise the &ldquo;Effective date&rdquo; above. Your continued
@@ -128,7 +125,7 @@ export default function PrivacyPage() {
               acceptance of the updated policy.
             </p>
 
-            <h2 style={ph}>Contact Us</h2>
+            <h2>Contact Us</h2>
             <p>
               If you have questions about this Privacy Policy or how we handle
               your information, contact us at:
@@ -136,12 +133,12 @@ export default function PrivacyPage() {
               Nexaio
               <br />
               Email:{" "}
-              <a href="mailto:admin@nexaio.co" style={{ color: "var(--accent-2)", textDecoration: "underline" }}>
+              <a href="mailto:admin@nexaio.co">
                 admin@nexaio.co
               </a>
               <br />
               Phone:{" "}
-              <a href="tel:+13853265746" style={{ color: "var(--accent-2)", textDecoration: "underline" }}>
+              <a href="tel:+13853265746">
                 +1 (385) 326-5746
               </a>
             </p>
@@ -152,9 +149,3 @@ export default function PrivacyPage() {
   );
 }
 
-const ph = {
-  fontSize: "22px",
-  fontWeight: 600,
-  color: "var(--offwhite)",
-  margin: "34px 0 0",
-} as const;

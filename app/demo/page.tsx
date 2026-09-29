@@ -1,103 +1,209 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import CtaBand from "../../components/CtaBand";
-import { BookButton } from "../../components/Cta";
-import DemoMedia from "../../components/DemoMedia";
+import type { ReactNode } from "react";
+import { Closing, CtaPair } from "../../components/Cta";
+import { ViewTag } from "../../components/Compositions";
 import Faq from "../../components/Faq";
+import Icon from "../../components/Icon";
 import JsonLd from "../../components/JsonLd";
-import { ProductView } from "../../components/ProductViews";
-import { demoChapters, demoFaq, demoVideo } from "../../content/demo";
-import { demoVideoJsonLd, pageMetadata } from "../../lib/seo";
+import {
+  DashboardView,
+  HandoffView,
+  IntakeView,
+  MessagesView,
+  ProductWindow,
+  ReportView,
+} from "../../components/ProductViews";
+import {
+  demoChapters,
+  demoClosing,
+  demoFaq,
+  demoHero,
+  demoVideo,
+  videoSlot,
+  type DemoChapterView,
+} from "../../content/demo";
+import { breadcrumbJsonLd, demoVideoJsonLd, pageMetadata } from "../../lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Nexaio demo: how it works for roofing companies",
-  absoluteTitle: true,
+  title: "Demo",
   description:
-    "See how Nexaio handles a new roofing inquiry, an estimate that goes quiet and a customer who needs a person, step by step on sample data.",
+    "Follow one enquiry through Nexaio, from arrival to the monthly report. Five chapters, recreated from the product with sample data. No sign-up needed.",
   path: "/demo",
 });
 
+const chapterViews: Record<DemoChapterView, ReactNode> = {
+  intake: (
+    <ProductWindow
+      section="intake"
+      context="roofing"
+      description="the Intake page, listing each enquiry, where it came from and what happened to it"
+    >
+      <IntakeView />
+    </ProductWindow>
+  ),
+  dashboard: (
+    <ProductWindow
+      section="dashboard"
+      context="roofing"
+      description="the dashboard with the panels Nexaio is working, Needs your team, Today and Recently changed"
+    >
+      <DashboardView context="roofing" />
+    </ProductWindow>
+  ),
+  messages: (
+    <ProductWindow
+      section="messages"
+      context="roofing"
+      description="an estimate follow-up that stopped when the homeowner replied"
+    >
+      <MessagesView context="roofing" />
+    </ProductWindow>
+  ),
+  handoff: (
+    <ProductWindow
+      section="dashboard"
+      context="roofing"
+      description="an insurance question handed to a named person with the history attached"
+    >
+      <HandoffView context="roofing" />
+    </ProductWindow>
+  ),
+  report: (
+    <ProductWindow
+      section="reports"
+      context="roofing"
+      description="the monthly report: what Nexaio did, what it confirmed and what it does not measure"
+    >
+      <ReportView />
+    </ProductWindow>
+  ),
+};
+
 export default function DemoPage() {
   const videoLd = demoVideoJsonLd(demoVideo);
-
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Demo", path: "/demo" }])} />
       {videoLd ? <JsonLd data={videoLd} /> : null}
 
-      <section className="phero" aria-labelledby="demo-page-title">
-        <div className="phero-bg" aria-hidden="true">
-          <div className="glow glow-1" />
-          <div className="grid-lines" />
-        </div>
+      <section className="page-hero" aria-labelledby="demo-title">
+        <div className="hero-field" aria-hidden="true" />
+        <div className="hero-grid" aria-hidden="true" />
         <div className="wrap">
-          <p className="eyebrow">Product demo</p>
-          <h1 className="h1" id="demo-page-title">
-            See how Nexaio keeps every roofing lead and estimate moving
-          </h1>
-          <p className="lede">
-            Follow a sample roofing company through a new inquiry, an estimate
-            that goes quiet and a customer who needs a person. Every screen uses
-            sample data.
-          </p>
-          <div className="cta-row cta-row--center">
-            <BookButton variant="primary" withArrow />
-            <Link className="btn btn-secondary" href="#chapters-title">
-              Go to the steps
-            </Link>
+          <div className="hero-copy">
+            <p className="eyebrow enter d1">{demoHero.eyebrow}</p>
+            <h1 className="h1 enter d1" id="demo-title">
+              <span className="display-line">{demoHero.title}</span>{" "}
+              <span className="display-line dim">{demoHero.titleDim}</span>
+            </h1>
+            <p className="lede enter d2">{demoHero.lede}</p>
+            <div className="enter d2">
+              <CtaPair hero showDemo={false} />
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="section section--dark section--tight">
-        <div className="wrap wrap--narrow">
-          <DemoMedia headingId="demo-media-title" />
+      {/* The future video's place. No player and no play button until a real video is published. */}
+      <section className="section" aria-labelledby="video-title" style={{ paddingTop: 0 }}>
+        <div className="wrap split" style={{ alignItems: "center" }}>
+          {demoVideo ? (
+            <video
+              className="video-player"
+              controls
+              preload="metadata"
+              poster={demoVideo.poster}
+              aria-labelledby="video-title"
+            >
+              <source src={demoVideo.src} type={demoVideo.mimeType} />
+              <track kind="captions" src={demoVideo.captionsSrc} srcLang="en" label="English" default />
+            </video>
+          ) : (
+            <div className="video-slot" data-reveal>
+              <div className="ghost" aria-hidden="true">
+                <ProductWindow section="dashboard" context="roofing" description="">
+                  <DashboardView context="roofing" />
+                </ProductWindow>
+              </div>
+              <div className="video-slot-copy">
+                <span className="video-slot-tag">{videoSlot.tag}</span>
+                <p className="meta" style={{ margin: 0 }}>
+                  Not published yet
+                </p>
+              </div>
+            </div>
+          )}
+          <div className="stack" style={{ gap: 18 }} data-reveal>
+            <h2 className="h3" id="video-title">
+              {demoVideo ? demoVideo.title : videoSlot.title}
+            </h2>
+            <p className="body">{demoVideo ? demoVideo.description : videoSlot.body}</p>
+            {demoVideo ? (
+              <details className="faq-item">
+                <summary className="faq-q">
+                  <span>Transcript</span>
+                  <Icon name="plus" size={18} className="faq-icon" />
+                </summary>
+                {demoVideo.transcript.map((para) => (
+                  <p className="faq-a" key={para}>
+                    {para}
+                  </p>
+                ))}
+              </details>
+            ) : null}
+            <nav aria-label="Demo chapters">
+              <ol className="chapters" style={{ marginTop: 0 }}>
+                {demoChapters.map((c, i) => (
+                  <li key={c.id}>
+                    <a href={`#${c.id}`}>
+                      <span className="n">{String(i + 1).padStart(2, "0")}</span>
+                      <span>{c.title}</span>
+                      <Icon name="arrow" size={16} />
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </div>
         </div>
       </section>
 
-      <section className="section section--white" aria-labelledby="chapters-title">
+      <section className="section" aria-labelledby="chapters-title">
         <div className="wrap">
-          <div className="sec-head reveal">
-            <p className="eyebrow">Step by step</p>
-            <h2 className="h2" id="chapters-title">
-              What the walkthrough covers
-            </h2>
-            <p className="lede">
-              Five moments from a normal week, shown on a demonstration workspace.
-              Timing, wording and who gets what are all set by you during setup.
+          <div className="sec-head sec-head--split" data-reveal>
+            <div className="stack" style={{ gap: 18 }}>
+              <p className="eyebrow">The walkthrough</p>
+              <h2 className="h2" id="chapters-title">
+                One enquiry, five chapters.
+              </h2>
+            </div>
+            <p className="body">
+              The example follows a sample roofing company, Nexaio&rsquo;s first industry. Every screen is a
+              recreation of the product with sample data, not a live account.
             </p>
           </div>
-
-          <nav className="chapter-nav reveal" aria-label="Demo steps">
+          <div>
             {demoChapters.map((c, i) => (
-              <Link key={c.id} href={`#${c.id}`}>
-                <span className="chapter-nav-num">{String(i + 1).padStart(2, "0")}</span>
-                {c.title}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="workflows">
-            {demoChapters.map((c, i) => (
-              <article
-                className={`workflow reveal${i % 2 === 1 ? " workflow--flip" : ""}`}
-                id={c.id}
-                key={c.id}
-                aria-labelledby={`${c.id}-title`}
-              >
-                <div className="workflow-copy">
-                  <p className="workflow-step">Step {String(i + 1).padStart(2, "0")}</p>
-                  <h3 className="h3 workflow-title" id={`${c.id}-title`}>
+              <article className="chapter" id={c.id} key={c.id} aria-labelledby={`${c.id}-title`}>
+                <div className="chapter-copy" data-reveal>
+                  <span className="chapter-n">Chapter {String(i + 1).padStart(2, "0")}</span>
+                  <h3 className="h2 chapter-title" id={`${c.id}-title`}>
                     {c.title}
                   </h3>
-                  <p>{c.summary}</p>
-                  <ul className="checklist">
-                    {c.points.map((p) => (
-                      <li key={p}>{p}</li>
+                  <p className="body">{c.summary}</p>
+                  <ul className="points">
+                    {c.points.map((pt) => (
+                      <li key={pt}>
+                        <Icon name="check" size={16} />
+                        {pt}
+                      </li>
                     ))}
                   </ul>
                 </div>
-                <div className="workflow-visual">
-                  <ProductView visual={c.visual} />
+                <div className="chapter-visual" data-reveal>
+                  {chapterViews[c.view]}
+                  <ViewTag />
                 </div>
               </article>
             ))}
@@ -105,45 +211,28 @@ export default function DemoPage() {
         </div>
       </section>
 
-      {demoVideo ? (
-        <section className="section section--light" aria-labelledby="transcript-title">
-          <div className="wrap wrap--narrow">
-            <h2 className="h2" id="transcript-title">
-              Video transcript
-            </h2>
-            <div className="transcript">
-              {demoVideo.transcript.map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      <section className="section section--light" aria-labelledby="demo-faq-title">
-        <div className="wrap faq-wrap">
-          <div className="sec-head reveal">
-            <p className="eyebrow">About this demo</p>
+      <section className="section" aria-labelledby="demo-faq-title">
+        <div className="wrap split">
+          <div className="sec-head" data-reveal style={{ marginBottom: 0 }}>
+            <p className="eyebrow">Questions</p>
             <h2 className="h2" id="demo-faq-title">
-              Good to know
+              About this demo.
             </h2>
-            <p className="lede">
-              Want the details on setup? Read{" "}
-              <Link href="/process" className="text-link">
-                how it works
+            <p className="body">
+              Want the product itself?{" "}
+              <Link className="text-link" href="/contact">
+                Book a walkthrough
               </Link>
               .
             </p>
           </div>
-          <Faq items={demoFaq} />
+          <div data-reveal>
+            <Faq items={demoFaq} />
+          </div>
         </div>
       </section>
 
-      <CtaBand
-        bookOnly
-        title="See it on your own workflow"
-        body="On a walkthrough we show you the product live and look at where your leads and estimates slip today."
-      />
+      <Closing title={demoClosing.title} body={demoClosing.body} showDemo={false} />
     </>
   );
 }

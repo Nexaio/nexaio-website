@@ -36,8 +36,13 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // The old Services page was replaced by the homepage's "What Nexaio does" section.
-      { source: "/services", destination: "/#product", permanent: true },
+      // Retired pages from the earlier site; their content now lives on /product and /company.
+      { source: "/services", destination: "/product", permanent: true },
+      { source: "/process", destination: "/product#how-it-works", permanent: true },
+      { source: "/story", destination: "/company", permanent: true },
+      // No industries index yet: the Industries menu lists each industry page.
+      // Temporary, so an index page can take this path later.
+      { source: "/industries", destination: "/industries/roofing", permanent: false },
     ];
   },
 };

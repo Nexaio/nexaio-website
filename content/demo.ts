@@ -1,11 +1,15 @@
 /**
- * The /demo page: walkthrough video slot, chapters and questions.
+ * The /demo page: the future video slot, the chapters and questions.
  *
  * The narrated walkthrough video does not exist yet. While `demoVideo` is
  * null the site:
- *   - shows a labelled placeholder on /demo, never a player or play button;
+ *   - shows a labelled slot on /demo, never a player or play button;
  *   - labels the demo call to action "See the demo" rather than "Watch the demo";
  *   - emits no VideoObject structured data.
+ *
+ * Until then the chapters carry the demo: each one is a recreated product view
+ * with sample data and a plain explanation. Never describe these screens as a
+ * live account, a demo account or real footage.
  *
  * To publish the real video, follow content/README.md ("Publishing the demo
  * video"): put the files in public/media/, fill in every field below, and
@@ -42,93 +46,110 @@ export type DemoVideo = {
 
 export const demoVideo: DemoVideo | null = null;
 
-export type DemoChapterVisual =
-  | "capture"
-  | "escalation"
-  | "estimate"
-  | "handoff"
-  | "summary";
+export const demoHero = {
+  eyebrow: "Demo",
+  title: "See how Nexaio works,",
+  titleDim: "one enquiry at a time.",
+  lede: "Follow a single enquiry from the moment it arrives to the monthly report. Every screen is recreated from the Nexaio product and filled with sample data.",
+};
+
+export const videoSlot = {
+  tag: "Video walkthrough",
+  title: "A narrated walkthrough is being prepared.",
+  body: "When it's published, it will play here. Until then, the five chapters below walk through the same product.",
+};
+
+export type DemoChapterView = "intake" | "dashboard" | "messages" | "handoff" | "report";
 
 export const demoChapters: {
   id: string;
   title: string;
   summary: string;
   points: string[];
-  visual: DemoChapterVisual;
+  view: DemoChapterView;
 }[] = [
   {
-    id: "new-inquiry",
-    title: "A new inquiry comes in",
+    id: "new-enquiry",
+    title: "A new enquiry arrives",
     summary:
-      "A homeowner fills in the website form about hail damage. Nexaio records it once, with its source and time, sends the acknowledgement you approved and assigns it by your routing rules.",
+      "A homeowner fills in the website form about hail damage. Nexaio records it once, checks it against existing leads, sends the acknowledgement you approved and assigns an owner by your rules.",
     points: [
       "One record, whichever source it came from",
-      "Acknowledgement uses wording you approved",
-      "Assigned to the right person automatically",
+      "An unclear match waits for a person",
+      "The acknowledgement uses your approved wording",
     ],
-    visual: "capture",
+    view: "intake",
   },
   {
-    id: "nobody-picks-it-up",
-    title: "Nobody picks it up",
+    id: "who-owns-what",
+    title: "Everyone can see who owns what",
     summary:
-      "The crew lead is on a roof and the office is on another call. When nobody claims the inquiry within the time you set, Nexaio escalates it to the backup you chose instead of letting it sit.",
+      "The dashboard shows what Nexaio is doing on its own, what needs your team, what is due today and what changed, with every action marked verified or unconfirmed.",
     points: [
-      "You set the escalation timing",
-      "You choose who the backup is",
-      "Every handoff is recorded",
+      "Work only a person can do is called out",
+      "Late work is easy to spot",
+      "Nothing is marked done unless it was confirmed",
     ],
-    visual: "escalation",
+    view: "dashboard",
   },
   {
     id: "estimate-goes-quiet",
     title: "An estimate goes quiet",
     summary:
-      "An estimate went out nine days ago and the homeowner hasn’t replied. Nexaio follows up on the schedule you set and puts it back in front of the salesperson who owns it, so it never sits without a next step.",
+      "An estimate went out last week and the homeowner hasn't replied. Nexaio follows up on your schedule and wording, and stops when they reply.",
     points: [
-      "Follow-up timing and wording are yours",
-      "Replies stop the sequence and go to your team",
-      "Stalled estimates go back to their owner",
+      "Timing and wording are yours",
+      "A reply stops the sequence",
+      "The owner sees where things stand",
     ],
-    visual: "estimate",
+    view: "messages",
   },
   {
     id: "needs-a-person",
-    title: "The customer needs a person",
+    title: "The homeowner needs a person",
     summary:
-      "The homeowner replies asking about financing. That’s a conversation for your team, so Nexaio hands it to the sales manager with the whole history attached.",
+      "The homeowner asks how the insurance side would work. That's a conversation for your team, so Nexaio hands it to the right person with the history attached.",
     points: [
-      "Sensitive topics route to people, not automation",
+      "Sensitive topics go to people, not automation",
       "Context travels with the handoff",
       "Your team decides what happens next",
     ],
-    visual: "handoff",
+    view: "handoff",
   },
   {
-    id: "owner-view",
-    title: "What the owner sees",
+    id: "monthly-report",
+    title: "What the owner sees each month",
     summary:
-      "Reporting gives the owner a plain view of the week: what came in, what was handled, what’s waiting on customers and what needs a decision.",
+      "The report shows what Nexaio did, what it could confirm, and what it deliberately does not measure, so every number in it can be checked.",
     points: [
-      "No digging through three systems",
-      "Waiting and overdue work is easy to spot",
-      "Decisions that need you are called out",
+      "Counts of work done, not estimates",
+      "Unconfirmed work is labelled",
+      "No revenue claims",
     ],
-    visual: "summary",
+    view: "report",
   },
 ];
 
 export const demoFaq = [
   {
-    q: "Is this a real customer’s account?",
-    a: "No. Every screen on this page, and in the walkthrough, uses a demonstration workspace with sample data. We never show customer or prospect information.",
+    q: "Is this a live account?",
+    a: "No. Every screen on this page is a recreation of the Nexaio product interface, filled with sample data. It isn't a live account, and no customer or prospect information is shown.",
+  },
+  {
+    q: "Why does the example follow a roofing company?",
+    a: "Roofing is Nexaio's first industry, so the walkthrough follows a sample roofing company. The operating layer itself isn't specific to roofing.",
   },
   {
     q: "Can I try Nexaio myself?",
-    a: "There’s no self-serve trial. Book a walkthrough and we’ll show you the product live and talk through how it would fit your setup.",
+    a: "There's no self-serve trial. Book a walkthrough and we'll show you the product and talk through how it would fit your setup.",
   },
   {
     q: "Will my setup look exactly like this?",
-    a: "Not exactly. Which systems connect, which rules run and what you see are agreed during scoping, based on your tools and how your team works.",
+    a: "Not exactly. Which systems connect, which rules run and what your team sees are agreed during scoping, based on your tools and how your team works.",
   },
 ];
+
+export const demoClosing = {
+  title: "See it on your own workflow.",
+  body: "A walkthrough is the fastest way to see how Nexaio would fit your systems and your team.",
+};

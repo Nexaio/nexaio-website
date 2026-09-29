@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Sora } from "next/font/google";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import Header from "../components/Header";
@@ -9,11 +9,11 @@ import Motion from "../components/Motion";
 import { site } from "../content/site";
 import { isIndexable } from "../lib/seo";
 
-const sora = Sora({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
+// Geist for the site, Geist Mono for labels, Inter inside the recreated
+// product views (the product itself is set in Inter).
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
 const defaultTitle = `${site.name} — ${site.category}`;
 
@@ -47,8 +47,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0B1F32",
+  themeColor: "#05080F",
+  colorScheme: "dark",
 };
+
+// Marks the document as scripted before first paint, so entrance animations
+// only ever apply when they can also finish (see "Motion" in globals.css).
+const jsFlag = "document.documentElement.classList.add('js')";
 
 export default function RootLayout({
   children,
@@ -56,8 +61,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={sora.className}>
+    // The inline script adds a class to <html> before hydration.
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: jsFlag }} />
+      </head>
+      <body className={`${geist.variable} ${geistMono.variable} ${inter.variable}`}>
         <a className="skip-link" href="#main">
           Skip to content
         </a>

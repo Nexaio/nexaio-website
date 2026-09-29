@@ -98,6 +98,25 @@ export function homeJsonLd() {
 }
 
 /**
+ * BreadcrumbList for a nested page, starting at the homepage. Every item must
+ * be a real, indexable page; `/industries` has no page of its own, so the
+ * roofing trail is Home → Roofing.
+ */
+export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
+  const trail = [{ name: site.name, path: "/" }, ...items];
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: trail.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: item.path === "/" ? site.url : absoluteUrl(item.path),
+    })),
+  };
+}
+
+/**
  * VideoObject for the demo page, or null while no approved video exists.
  * Never emit this for a placeholder.
  */

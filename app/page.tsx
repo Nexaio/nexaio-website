@@ -1,232 +1,204 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CtaPair, DemoButton } from "../components/Cta";
-import CtaBand from "../components/CtaBand";
-import Faq from "../components/Faq";
-import FitSection from "../components/FitSection";
-import Icon, { type IconName } from "../components/Icon";
+import { Closing, CtaPair } from "../components/Cta";
+import { HeroComposition, LayerDiagram, ViewTag } from "../components/Compositions";
+import Icon from "../components/Icon";
 import JsonLd from "../components/JsonLd";
-import { OpportunityBoard, ProductView } from "../components/ProductViews";
-import { demoChapters, demoVideo } from "../content/demo";
-import {
-  closing,
-  control,
-  demoTeaser,
-  faq,
-  hero,
-  onboarding,
-  product,
-  slip,
-} from "../content/home";
-import { site } from "../content/site";
-import { bookCta } from "../lib/cta";
+import MediaSlot from "../components/MediaSlot";
+import MotionBeats from "../components/MotionBeats";
+import { HandoffView, IntakeView, MessagesView, ProductWindow } from "../components/ProductViews";
+import { demoChapters } from "../content/demo";
+import { beats, closing, hero, industriesTeaser, layer, shift, start } from "../content/home";
 import { homeJsonLd, pageMetadata } from "../lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: `${site.name} — ${site.category}`,
-  absoluteTitle: true,
-  description: site.description,
+  title: "Nexaio — The AI operating layer for service businesses",
+  description:
+    "Keep your CRM. Nexaio adds the AI operating layer that follows up, coordinates handoffs and shows your team what needs them.",
   path: "/",
+  absoluteTitle: true,
 });
 
-const slipIcons: IconName[] = ["clock", "owner", "estimate", "handoff", "layers", "eye"];
-const controlIcons: IconName[] = ["sliders", "people", "record", "lock"];
+const beatViews = {
+  intake: (
+    <ProductWindow section="intake" description="the Intake page, listing each enquiry, where it came from and what happened to it">
+      <IntakeView />
+    </ProductWindow>
+  ),
+  messages: (
+    <ProductWindow section="messages" description="a follow-up conversation that stopped when the customer replied">
+      <MessagesView />
+    </ProductWindow>
+  ),
+  handoff: (
+    <ProductWindow section="dashboard" description="work handed to a named person, and the monthly report">
+      <HandoffView withReport />
+    </ProductWindow>
+  ),
+};
 
 export default function Home() {
   return (
     <>
       <JsonLd data={homeJsonLd()} />
 
-      {/* HERO */}
+      {/* 1. Hero: the claim, then the product. */}
       <section className="hero" aria-labelledby="hero-title">
-        <div className="hero-bg" aria-hidden="true">
-          <div className="glow glow-1" />
-          <div className="glow glow-2" />
-          <div className="grid-lines" />
-        </div>
-        <div className="wrap hero-grid">
+        <div className="hero-field" aria-hidden="true" />
+        <div className="hero-grid" aria-hidden="true" />
+        <div className="wrap">
           <div className="hero-copy">
-            <p className="eyebrow">{hero.eyebrow}</p>
-            <h1 className="display" id="hero-title">
-              {hero.title}
+            <p className="eyebrow enter d1">{hero.eyebrow}</p>
+            <h1 className="display enter d1" id="hero-title">
+              <span className="display-line">{hero.title}</span>{" "}
+              <span className="display-line dim">{hero.titleDim}</span>
             </h1>
-            <p className="lede hero-lede">{hero.lede}</p>
-            <CtaPair />
-            <ul className="assurances">
-              {hero.assurances.map((a) => (
-                <li key={a}>
-                  <Icon name="check" size={16} />
-                  {a}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="hero-visual">
-            <OpportunityBoard />
-          </div>
-        </div>
-      </section>
-
-      {/* WHERE OPPORTUNITIES SLIP */}
-      <section className="section section--light" aria-labelledby="slip-title">
-        <div className="wrap">
-          <div className="sec-head reveal">
-            <p className="eyebrow">{slip.eyebrow}</p>
-            <h2 className="h2" id="slip-title">
-              {slip.title}
-            </h2>
-            <p className="lede">{slip.lede}</p>
-          </div>
-          <ul className="grid-3">
-            {slip.points.map((p, i) => (
-              <li className="tile reveal" key={p.title}>
-                <span className="tile-icon">
-                  <Icon name={slipIcons[i % slipIcons.length]} size={22} />
-                </span>
-                <h3 className="h3">{p.title}</h3>
-                <p>{p.body}</p>
-              </li>
-            ))}
-          </ul>
-          <p className="honesty reveal">{slip.honesty}</p>
-        </div>
-      </section>
-
-      {/* WHAT NEXAIO DOES */}
-      <section className="section section--white" id="product" aria-labelledby="product-title">
-        <div className="wrap">
-          <div className="sec-head reveal">
-            <p className="eyebrow">{product.eyebrow}</p>
-            <h2 className="h2" id="product-title">
-              {product.title}
-            </h2>
-            <p className="lede">{product.lede}</p>
-          </div>
-          <div className="workflows">
-            {product.workflows.map((w, i) => (
-              <article
-                className={`workflow reveal${i % 2 === 1 ? " workflow--flip" : ""}`}
-                key={w.id}
-                id={w.id}
-              >
-                <div className="workflow-copy">
-                  <p className="workflow-step">{String(i + 1).padStart(2, "0")}</p>
-                  <h3 className="h3 workflow-title">{w.title}</h3>
-                  <p>{w.body}</p>
-                </div>
-                <div className="workflow-visual">
-                  <ProductView visual={w.visual} />
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* WORKS WITH WHAT YOU HAVE */}
-      <FitSection id="fit" />
-
-      {/* CONTROL */}
-      <section className="section section--light" aria-labelledby="control-title">
-        <div className="wrap">
-          <div className="sec-head reveal">
-            <p className="eyebrow">{control.eyebrow}</p>
-            <h2 className="h2" id="control-title">
-              {control.title}
-            </h2>
-          </div>
-          <ul className="grid-4">
-            {control.points.map((p, i) => (
-              <li className="tile reveal" key={p.title}>
-                <span className="tile-icon">
-                  <Icon name={controlIcons[i % controlIcons.length]} size={22} />
-                </span>
-                <h3 className="h3">{p.title}</h3>
-                <p>{p.body}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* DEMO TEASER */}
-      <section className="section section--dark" aria-labelledby="demo-title">
-        <div className="wrap teaser">
-          <div className="teaser-copy reveal">
-            <p className="eyebrow">{demoTeaser.eyebrow}</p>
-            <h2 className="h2" id="demo-title">
-              {demoTeaser.title}
-            </h2>
-            <p className="lede">{demoTeaser.body}</p>
-            {!demoVideo ? (
-              <p className="teaser-note">
-                The narrated video is being recorded. Until it’s published, the
-                demo page walks through each step with sample screens.
-              </p>
-            ) : null}
-            <div className="cta-row">
-              <DemoButton variant="primary" />
+            <p className="lede enter d2">{hero.lede}</p>
+            <div className="enter d2">
+              <CtaPair hero />
             </div>
           </div>
-          <ol className="teaser-steps reveal">
-            {demoChapters.map((c, i) => (
-              <li key={c.id}>
-                <Link href={`/demo#${c.id}`}>
-                  <span className="teaser-num">{String(i + 1).padStart(2, "0")}</span>
-                  <span>{c.title}</span>
-                  <Icon name="arrow" size={16} className="teaser-arrow" />
-                </Link>
-              </li>
-            ))}
-          </ol>
+          <div className="hero-stage">
+            <HeroComposition />
+          </div>
         </div>
       </section>
 
-      {/* WHAT HAPPENS NEXT */}
-      <section className="section section--white" id="how-it-works" aria-labelledby="next-title">
+      {/* 2. Your systems → Nexaio → your team. */}
+      <section className="section" aria-labelledby="layer-title">
         <div className="wrap">
-          <div className="sec-head reveal">
-            <p className="eyebrow">{onboarding.eyebrow}</p>
-            <h2 className="h2" id="next-title">
-              {onboarding.title}
+          <div className="sec-head sec-head--split" data-reveal>
+            <div className="stack" style={{ gap: 18 }}>
+              <p className="eyebrow">{layer.eyebrow}</p>
+              <h2 className="h2" id="layer-title">
+                {layer.title}
+              </h2>
+            </div>
+            <p className="body">{layer.body}</p>
+          </div>
+          <div data-reveal>
+            <LayerDiagram systems={layer.systems} team={layer.team} />
+          </div>
+        </div>
+      </section>
+
+      {/* 3. The product in three beats. */}
+      <section className="section" id="product" aria-labelledby="beats-title">
+        <div className="wrap">
+          <div className="sec-head" data-reveal>
+            <p className="eyebrow">{beats.eyebrow}</p>
+            <h2 className="h2" id="beats-title">
+              {beats.title}
             </h2>
           </div>
-          <ol className="steps">
-            {onboarding.steps.map((s, i) => (
-              <li className="step reveal" key={s.title}>
-                <span className="step-num">{i + 1}</span>
-                <h3 className="h3">{s.title}</h3>
-                <p>{s.body}</p>
+          <MotionBeats beats={beats.items.map((b) => ({ ...b, view: beatViews[b.view] }))} />
+          <div className="beats-foot" data-reveal>
+            <ViewTag />
+            <Link className="text-link" href="/product">
+              Everything Nexaio does
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. What changes. */}
+      <section className="section" aria-labelledby="shift-title">
+        <div className="wrap">
+          <div className="sec-head" data-reveal>
+            <p className="eyebrow">{shift.eyebrow}</p>
+            <h2 className="h2" id="shift-title">
+              {shift.title}
+            </h2>
+          </div>
+          <ul className="shift" data-reveal>
+            {shift.rows.map((r) => (
+              <li key={r.q}>
+                <span className="q">{r.q}</span>
+                <Icon name="arrow" size={20} className="arrow" />
+                <span className="a">{r.a}</span>
               </li>
             ))}
-          </ol>
-          <p className="fine reveal">
-            {onboarding.timing}{" "}
-            <Link href="/process" className="text-link">
-              How setup works
-            </Link>
-          </p>
+          </ul>
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="section section--light" id="faq" aria-labelledby="faq-title">
-        <div className="wrap faq-wrap">
-          <div className="sec-head reveal">
-            <p className="eyebrow">Questions</p>
-            <h2 className="h2" id="faq-title">
-              Straight answers
-            </h2>
-            <p className="lede">
-              Still unsure? <Link href={bookCta.href} className="text-link">Book a walkthrough</Link>{" "}
-              and ask us directly.
-            </p>
+      {/* 5. Industries: roofing first. */}
+      <section className="section" aria-labelledby="industries-title">
+        <div className="wrap">
+          <div className="sec-head sec-head--split" data-reveal>
+            <div className="stack" style={{ gap: 18 }}>
+              <p className="eyebrow">{industriesTeaser.eyebrow}</p>
+              <h2 className="h2" id="industries-title">
+                {industriesTeaser.title}
+              </h2>
+            </div>
+            <p className="body">{industriesTeaser.note}</p>
           </div>
-          <Faq items={faq} />
+          <Link href="/industries/roofing" className="industry-card" data-reveal>
+            <MediaSlot slot="roofingHero" shape="wide">
+              <div className="industry-copy">
+                <p className="eyebrow">{industriesTeaser.roofing.label}</p>
+                <p className="h3">{industriesTeaser.roofing.line}</p>
+              </div>
+              <span className="btn btn-secondary">
+                {industriesTeaser.roofing.link}
+                <Icon name="arrow" size={17} className="btn-arrow" />
+              </span>
+            </MediaSlot>
+          </Link>
         </div>
       </section>
 
-      <CtaBand title={closing.title} body={closing.body} />
+      {/* 6. See the demo, and how getting started works. */}
+      <section className="section" aria-labelledby="start-title">
+        <div className="wrap">
+          <div className="sec-head" data-reveal>
+            <p className="eyebrow">{start.eyebrow}</p>
+            <h2 className="h2" id="start-title">
+              {start.title}
+            </h2>
+          </div>
+          <div className="split">
+            <div className="panel" data-reveal>
+              <h3 className="h3">{start.demoTitle}</h3>
+              <p className="body" style={{ marginTop: 8 }}>
+                {start.demoBody}
+              </p>
+              <ol className="chapters">
+                {demoChapters.map((c, i) => (
+                  <li key={c.id}>
+                    <Link href={`/demo#${c.id}`}>
+                      <span className="n">{String(i + 1).padStart(2, "0")}</span>
+                      <span>{c.title}</span>
+                      <Icon name="arrow" size={16} />
+                    </Link>
+                  </li>
+                ))}
+              </ol>
+              <Link className="btn btn-secondary" href="/demo" style={{ marginTop: 22 }}>
+                {start.demoLink}
+              </Link>
+            </div>
+            <div data-reveal>
+              <h3 className="h3">{start.stepsTitle}</h3>
+              <ol className="steps" style={{ marginTop: 18 }}>
+                {start.steps.map((s, i) => (
+                  <li key={s.title}>
+                    <span className="n">{String(i + 1).padStart(2, "0")}</span>
+                    <div>
+                      <b>{s.title}</b>
+                      <p>{s.body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Close. */}
+      <Closing title={closing.title} body={closing.body} />
     </>
   );
 }

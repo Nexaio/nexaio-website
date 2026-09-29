@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { contact, footerNav, site } from "../content/site";
-import { bookCta } from "../lib/cta";
 
 export default function Footer() {
   return (
@@ -10,16 +9,14 @@ export default function Footer() {
         <div className="foot-grid">
           <div className="foot-brand">
             <Link href="/" className="brand" aria-label="Nexaio home">
-              <Image src="/nexaio-logo-light.png" alt="" width={28} height={28} />
+              <Image src="/nexaio-logo-light.png" alt="" width={24} height={24} />
               <span className="brand-name">Nexaio</span>
             </Link>
-            <p>
-              {site.category}. Nexaio works on top of the systems you already
-              use so every lead and estimate has an owner and a next step.
-            </p>
-            <Link className="btn btn-primary btn-sm" href={bookCta.href}>
-              {bookCta.label}
-            </Link>
+            <p>{site.footerLine}</p>
+            <div className="foot-contact">
+              <a href={`mailto:${contact.email}`}>{contact.email}</a>
+              <a href={`tel:${contact.phone.e164}`}>{contact.phone.display}</a>
+            </div>
           </div>
 
           {footerNav.map((group) => (
@@ -32,17 +29,11 @@ export default function Footer() {
               ))}
             </nav>
           ))}
-
-          <div className="foot-col">
-            <p className="foot-title">Get in touch</p>
-            <a href={`mailto:${contact.email}`}>{contact.email}</a>
-            <a href={`tel:${contact.phone.e164}`}>{contact.phone.display}</a>
-          </div>
         </div>
 
         <div className="foot-bottom">
           <span>
-            © {new Date().getFullYear()} {site.name}. All rights reserved.
+            © {new Date().getFullYear()} {site.name}
           </span>
           <span>{site.domain}</span>
         </div>
