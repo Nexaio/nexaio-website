@@ -1,19 +1,18 @@
 /**
- * The /demo page: the future video slot, the chapters and questions.
+ * The /demo page (V2.2 packet §3): one coherent story in five chapters.
+ * Each chapter is a short title, one sentence, the "what the AI did" chips
+ * and at most one cropped, labelled product fragment. Copy budget: at most
+ * 520 words in <main>.
  *
- * The narrated walkthrough video does not exist yet. While `demoVideo` is
- * null the site:
- *   - shows a labelled slot on /demo, never a player or play button;
- *   - labels the demo call to action "See the demo" rather than "Watch the demo";
- *   - emits no VideoObject structured data.
+ * Video: the only video on the site is the explainer in content/media.ts
+ * (`explainerVideo`). It renders at the top of /demo only once a real,
+ * approved asset exists; until then nothing stands in for it: no slot, no
+ * "coming soon", no empty box. `demoVideo` below is the older demo-video
+ * record that lib/cta.ts reads for the demo button label; it stays null.
  *
- * Until then the chapters carry the demo: each one is a recreated product view
- * with sample data and a plain explanation. Never describe these screens as a
- * live account, a demo account or real footage.
- *
- * To publish the real video, follow content/README.md ("Publishing the demo
- * video"): put the files in public/media/, fill in every field below, and
- * record who approved it. Keep this file free of imports.
+ * Every screen is recreated from the product with sample data. Never describe
+ * these screens as a live account, a demo account or real footage.
+ * Keep this file free of imports.
  */
 
 export type DemoVideo = {
@@ -48,85 +47,61 @@ export const demoVideo: DemoVideo | null = null;
 
 export const demoHero = {
   eyebrow: "Demo",
-  title: "See how Nexaio works,",
-  titleDim: "one enquiry at a time.",
-  lede: "Follow a single enquiry from the moment it arrives to the monthly report. Every screen is recreated from the Nexaio product and filled with sample data.",
+  title: "One enquiry,",
+  titleDim: "start to finish.",
+  lede: "Follow one sample enquiry from the website form to the monthly report. Every screen is recreated from the product with sample data.",
 };
 
-export const videoSlot = {
-  tag: "Video walkthrough",
-  title: "A narrated walkthrough is being prepared.",
-  body: "When it's published, it will play here. Until then, the five chapters below walk through the same product.",
-};
-
-export type DemoChapterView = "intake" | "dashboard" | "messages" | "handoff" | "report";
+export type DemoChapterView = "intake" | "messages" | "report" | null;
+type CoreState = "idle" | "listening" | "working" | "handoff";
 
 export const demoChapters: {
   id: string;
   title: string;
-  summary: string;
-  points: string[];
+  line: string;
+  aiDid: string[];
   view: DemoChapterView;
+  core: CoreState;
 }[] = [
   {
     id: "new-enquiry",
     title: "A new enquiry arrives",
-    summary:
-      "A homeowner fills in the website form about hail damage. Nexaio records it once, checks it against existing leads, sends the acknowledgement you approved and assigns an owner by your rules.",
-    points: [
-      "One record, whichever source it came from",
-      "An unclear match waits for a person",
-      "The acknowledgement uses your approved wording",
-    ],
+    line: "A homeowner reports hail damage on the website form at 07:12.",
+    aiDid: ["Recorded it once", "Acknowledged it in your wording", "Made Dana the owner"],
     view: "intake",
+    core: "listening",
   },
   {
     id: "who-owns-what",
-    title: "Everyone can see who owns what",
-    summary:
-      "The dashboard shows what Nexaio is doing on its own, what needs your team, what is due today and what changed, with every action marked verified or unconfirmed.",
-    points: [
-      "Work only a person can do is called out",
-      "Late work is easy to spot",
-      "Nothing is marked done unless it was confirmed",
-    ],
-    view: "dashboard",
+    title: "Everyone sees who owns what",
+    line: "Your team sees what the agents are handling and what needs a person.",
+    aiDid: ["Showed the owner", "Flagged what needs a person", "Marked each action verified or not"],
+    view: null,
+    core: "working",
   },
   {
     id: "estimate-goes-quiet",
     title: "An estimate goes quiet",
-    summary:
-      "An estimate went out last week and the homeowner hasn't replied. Nexaio follows up on your schedule and wording, and stops when they reply.",
-    points: [
-      "Timing and wording are yours",
-      "A reply stops the sequence",
-      "The owner sees where things stand",
-    ],
+    line: "The estimate went out last week and the homeowner hasn't replied.",
+    aiDid: ["Followed up in your wording", "Stopped when they replied"],
     view: "messages",
+    core: "working",
   },
   {
     id: "needs-a-person",
     title: "The homeowner needs a person",
-    summary:
-      "The homeowner asks how the insurance side would work. That's a conversation for your team, so Nexaio hands it to the right person with the history attached.",
-    points: [
-      "Sensitive topics go to people, not automation",
-      "Context travels with the handoff",
-      "Your team decides what happens next",
-    ],
-    view: "handoff",
+    line: "They ask how the insurance side would work. That's a conversation for your team.",
+    aiDid: ["Handed it to Dana", "Attached the whole history", "Held the follow-up"],
+    view: null,
+    core: "handoff",
   },
   {
     id: "monthly-report",
     title: "What the owner sees each month",
-    summary:
-      "The report shows what Nexaio did, what it could confirm, and what it deliberately does not measure, so every number in it can be checked.",
-    points: [
-      "Counts of work done, not estimates",
-      "Unconfirmed work is labelled",
-      "No revenue claims",
-    ],
+    line: "The report shows what got done, what was verified and what it doesn't measure.",
+    aiDid: ["Counted the work done", "Labelled unconfirmed work", "Made no revenue claims"],
     view: "report",
+    core: "idle",
   },
 ];
 
@@ -137,7 +112,7 @@ export const demoFaq = [
   },
   {
     q: "Why does the example follow a roofing company?",
-    a: "Roofing is Nexaio's first industry, so the walkthrough follows a sample roofing company. The operating layer itself isn't specific to roofing.",
+    a: "Roofing is Nexaio's first industry, so the walkthrough follows a sample roofing company. The AI agents themselves aren't specific to roofing.",
   },
   {
     q: "Can I try Nexaio myself?",
@@ -151,5 +126,5 @@ export const demoFaq = [
 
 export const demoClosing = {
   title: "See it on your own workflow.",
-  body: "A walkthrough is the fastest way to see how Nexaio would fit your systems and your team.",
+  body: "A walkthrough is the fastest way to see how the agents would fit your systems and your team.",
 };

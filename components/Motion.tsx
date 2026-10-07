@@ -14,6 +14,10 @@ import { usePathname } from "next/navigation";
  *   element comes into view (one-shot sequences such as the activity rail);
  *   `is-playing` is present only while it is on screen, so loops (the layer
  *   tokens, the live dot) pause off-screen to save the CPU.
+ * - [data-signal]: the homepage signal path. Where CSS scroll-driven
+ *   animations exist, CSS draws it with scroll. Otherwise each section that
+ *   crosses the middle of the viewport sets `--progress` on the flow (no
+ *   scroll handlers). Without script it is simply drawn in full.
  * - Reduced motion: does nothing; the CSS shows every final state statically.
  */
 export default function Motion() {
@@ -61,9 +65,30 @@ export default function Motion() {
     );
     document.querySelectorAll<HTMLElement>("[data-loop]").forEach((el) => player.observe(el));
 
+    const flow = document.querySelector<HTMLElement>("[data-signal]");
+    let stepper: IntersectionObserver | null = null;
+    if (flow && !CSS.supports("animation-timeline: view()")) {
+      const steps = Array.from(flow.querySelectorAll<HTMLElement>(":scope > section"));
+      const n = Math.max(steps.length, 1);
+      flow.style.setProperty("--progress", String(0.5 / n));
+      stepper = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            const i = steps.indexOf(e.target as HTMLElement);
+            if (i >= 0) flow.style.setProperty("--progress", String((i + 1) / n));
+          }
+        },
+        { rootMargin: "-50% 0px -50% 0px", threshold: 0 }
+      );
+      steps.forEach((el) => stepper?.observe(el));
+    }
+
     return () => {
       revealer.disconnect();
       player.disconnect();
+      stepper?.disconnect();
+      flow?.style.removeProperty("--progress");
     };
   }, [pathname]);
 

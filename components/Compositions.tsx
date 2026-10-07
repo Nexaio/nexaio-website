@@ -1,11 +1,7 @@
-import Image from "next/image";
+import type { CSSProperties, ReactNode } from "react";
 import { crmStages } from "../content/samples";
-import {
-  ActivityRail,
-  DashboardView,
-  ProductWindow,
-  type Context,
-} from "./ProductViews";
+import AiCore from "./AiCore";
+import Icon, { type IconName } from "./Icon";
 
 /** The visible label every product presentation carries. */
 export function ViewTag({ children = "Product view · sample data" }: { children?: string }) {
@@ -13,122 +9,180 @@ export function ViewTag({ children = "Product view · sample data" }: { children
 }
 
 /**
- * Hero composition: the Nexaio dashboard as the centerpiece, lit and layered,
- * sitting ON TOP of a slim slab that stands for the customer's CRM (the system
- * of record), with the activity rail tucked against the window's lower-left
- * corner. The CRM slab lists the product's own lead-state names. `data-loop`
- * lets the rail, the live dot and the link traces play while on screen.
+ * A small, cropped product fragment behind glass (V2.2: never a hero, at
+ * most two on /product, at most one per /demo chapter), labelled
+ * "Product detail · sample data".
  */
-export function HeroComposition({
-  context = "general",
-  slabLabel,
+export function ProductDetail({ children }: { children: ReactNode }) {
+  return (
+    <figure className="frag">
+      <div className="frag-crop">{children}</div>
+      <figcaption>
+        <ViewTag>Product detail · sample data</ViewTag>
+      </figcaption>
+    </figure>
+  );
+}
+
+/** Generic system icons. No third-party logos, ever. */
+const SYSTEM_ICONS: Record<string, IconName> = {
+  CRM: "dashboard",
+  Inbox: "inbox",
+  "Website form": "tasks",
+  Calendar: "calendar",
+  "Phone log": "phone",
+};
+
+/** Stage geometry (viewBox 0 0 1000 540): tile centres, the Core at the centre. */
+const SYS_Y = [62, 166, 270, 374, 478];
+const TEAM_Y = [150, 270, 390];
+
+/**
+ * Systems → Nexaio AI → Your team (V2.2 packet §2): glass system tiles on the
+ * left, the Core in the centre, people on the right. While the stage is on
+ * screen, signal pulses travel tile → Core → person along hairline paths
+ * (stroke-dashoffset only), and the label under the Core cycles through the
+ * five jobs. The jobs are a plain list in the HTML, so they read without
+ * motion, without script and to assistive technology. On small screens the
+ * stage stacks vertically.
+ */
+export function SystemsStage({
+  systems,
+  team,
+  jobs,
+  systemsLabel,
+  coreLabel,
+  teamLabel,
 }: {
-  context?: Context;
-  slabLabel: string;
+  systems: string[];
+  team: string[];
+  jobs: string[];
+  systemsLabel: string;
+  coreLabel: string;
+  teamLabel: string;
 }) {
   return (
-    <div className="comp" data-loop>
-      <div className="comp-stage">
-        <div className="comp-glow" aria-hidden="true" />
-        <div className="comp-window">
-          <ProductWindow
-            section="dashboard"
-            context={context}
-            description="the Nexaio dashboard with the panels Nexaio is working, Needs your team, Today and Recently changed"
-          >
-            <DashboardView context={context} />
-          </ProductWindow>
-        </div>
-        <div className="comp-rail enter d4" role="group" aria-label="Example activity, sample data">
-          <header>
-            <span>Activity</span>
-            <span>Today</span>
-          </header>
-          <ActivityRail context={context} />
-        </div>
+    <div className="stage" data-loop="">
+      <svg className="stage-links" viewBox="0 0 1000 540" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        {SYS_Y.slice(0, systems.length).map((y, i) => (
+          <g key={`s${y}`} style={{ "--k": i } as CSSProperties}>
+            <path className="link" d={`M222 ${y}C320 ${y} 330 270 402 270`} pathLength={100} />
+            <path className="pulse" d={`M222 ${y}C320 ${y} 330 270 402 270`} pathLength={100} />
+          </g>
+        ))}
+        {TEAM_Y.slice(0, team.length).map((y, i) => (
+          <g key={`t${y}`} style={{ "--k": i } as CSSProperties}>
+            <path className="link" d={`M598 270C670 270 680 ${y} 778 ${y}`} pathLength={100} />
+            <path className="pulse pulse--out" d={`M598 270C670 270 680 ${y} 778 ${y}`} pathLength={100} />
+          </g>
+        ))}
+      </svg>
+
+      <div className="stage-col stage-col--systems">
+        <p className="stage-label">{systemsLabel}</p>
+        <ul>
+          {systems.map((s, i) => (
+            <li key={s} className="tile" style={{ "--ty": `${(SYS_Y[i] / 540) * 100}%` } as CSSProperties}>
+              <Icon name={SYSTEM_ICONS[s] ?? "dashboard"} size={16} />
+              {s}
+            </li>
+          ))}
+        </ul>
       </div>
-      <div className="comp-links" aria-hidden="true">
-        <span />
-        <span />
-        <span />
+
+      <div className="stage-v" aria-hidden="true">
+        <i />
       </div>
-      <div className="comp-slab" role="group" aria-label={slabLabel}>
-        <span className="slab-label">
-          <i aria-hidden="true" />
-          {slabLabel}
-        </span>
-        <ol className="slab-stages" aria-label="Pipeline stages, as Nexaio reads them">
-          {crmStages[context].map((s) => (
-            <li key={s.nexaio}>{s.nexaio}</li>
+
+      <div className="stage-core">
+        <AiCore size="md" state="working" />
+        <p className="stage-label stage-label--core">{coreLabel}</p>
+        <ol className="stage-jobs">
+          {jobs.map((j, i) => (
+            <li key={j} style={{ "--k": i } as CSSProperties}>
+              {j}
+            </li>
           ))}
         </ol>
       </div>
-      <div className="comp-foot">
-        <ViewTag />
-        <span className="meta">Recreated from the Nexaio product interface</span>
+
+      <div className="stage-v" aria-hidden="true">
+        <i />
+      </div>
+
+      <div className="stage-col stage-col--team">
+        <p className="stage-label">{teamLabel}</p>
+        <ul>
+          {team.map((t, i) => (
+            <li key={t} className="tile tile--person" style={{ "--ty": `${(TEAM_Y[i] / 540) * 100}%` } as CSSProperties}>
+              <Icon name="users" size={16} />
+              {t}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
 }
 
 /**
- * The operating layer as three stacked layers: your systems on top, Nexaio in
- * the middle, your team below. Two data dots travel down each link while the
- * stack is on screen (paused off-screen, static under reduced motion).
+ * The customer's CRM as a slim slab: the system of record, listing the
+ * product's own lead-state names (sample stages). Static.
  */
-export function LayerDiagram({
-  systems,
-  team,
-  ops,
+export function CrmSlab({ label }: { label: string }) {
+  return (
+    <div className="slab" role="group" aria-label={label}>
+      <span className="slab-label">
+        <i aria-hidden="true" />
+        {label}
+      </span>
+      <ol className="slab-stages" aria-label="Pipeline stages, as Nexaio reads them (sample)">
+        {crmStages.general.map((s) => (
+          <li key={s.nexaio}>{s.nexaio}</li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+/**
+ * "Your CRM — the record" beside "Nexaio AI — the work" (/product): the
+ * not-another-CRM idea as one visual.
+ */
+export function CrmSplit({
+  crm,
+  ai,
 }: {
-  systems: string[];
-  team: string[];
-  ops: string[];
+  crm: { label: string; sub: string; items: string[] };
+  ai: { label: string; sub: string; items: string[] };
 }) {
   return (
-    <div className="opstack" data-loop>
-      <div className="opstack-layer is-systems">
-        <p className="opstack-label">
-          Your systems <small>stay the system of record</small>
+    <div className="crm-split">
+      <div className="crm-split-side">
+        <p className="crm-split-h">
+          {crm.label} <span>— {crm.sub}</span>
         </p>
-        <ul className="opstack-chips">
-          {systems.map((s) => (
-            <li key={s}>{s}</li>
+        <CrmSlab label={`${crm.label} · ${crm.sub}`} />
+        <ul className="crm-split-list">
+          {crm.items.map((x) => (
+            <li key={x}>
+              <Icon name="check" size={15} />
+              {x}
+            </li>
           ))}
         </ul>
       </div>
-      <div className="opstack-link" aria-hidden="true">
-        <i className="d1" />
-        <i className="d2" />
-        <span className="opstack-token">
-          <b className="dot-cobalt" /> new enquiry
-        </span>
-      </div>
-      <div className="opstack-layer is-core">
-        <p className="opstack-label">
-          <Image src="/nexaio-logo-light.png" alt="" width={20} height={20} />
-          Nexaio <small>AI operating layer</small>
+      <div className="crm-split-side crm-split-side--ai">
+        <p className="crm-split-h">
+          {ai.label} <span>— {ai.sub}</span>
         </p>
-        <ul className="opstack-chips is-ops">
-          {ops.map((o) => (
-            <li key={o}>{o}</li>
-          ))}
-        </ul>
-      </div>
-      <div className="opstack-link" aria-hidden="true">
-        <i className="d1" />
-        <i className="d2" />
-        <span className="opstack-token">
-          <b className="dot-gold" /> owner: Dana
-        </span>
-      </div>
-      <div className="opstack-layer is-team">
-        <p className="opstack-label">
-          Your team <small>makes the judgment calls</small>
-        </p>
-        <ul className="opstack-chips">
-          {team.map((t) => (
-            <li key={t}>{t}</li>
+        <AiCore size="sm" state="working" />
+        <ul className="crm-split-list">
+          {ai.items.map((x) => (
+            <li key={x}>
+              <Icon name="plus" size={15} />
+              {x}
+            </li>
           ))}
         </ul>
       </div>

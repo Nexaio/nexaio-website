@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { DemoVideo } from "../content/demo";
+import type { ExplainerVideo } from "../content/media";
 import { contact, site } from "../content/site";
 
 /**
@@ -122,6 +123,30 @@ export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
  */
 export function demoVideoJsonLd(video: DemoVideo | null) {
   if (!video) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: video.title,
+    description: video.description,
+    thumbnailUrl: [absoluteUrl(video.poster)],
+    uploadDate: video.uploadDate,
+    duration: video.duration,
+    contentUrl: absoluteUrl(video.src),
+    inLanguage: site.language,
+    publisher: {
+      "@type": "Organization",
+      name: site.name,
+      url: site.url,
+      logo: { "@type": "ImageObject", url: absoluteUrl(site.logoPath) },
+    },
+  };
+}
+
+/**
+ * VideoObject for the explainer film. Called only by components/ExplainerVideo
+ * after `explainerReady` has passed, so it never describes a placeholder.
+ */
+export function explainerVideoJsonLd(video: ExplainerVideo) {
   return {
     "@context": "https://schema.org",
     "@type": "VideoObject",

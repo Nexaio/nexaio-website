@@ -1,220 +1,172 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Closing, CtaPair } from "../components/Cta";
-import { HeroComposition, LayerDiagram, ViewTag } from "../components/Compositions";
+import AiCore from "../components/AiCore";
+import { SystemsStage } from "../components/Compositions";
+import { CtaPair } from "../components/Cta";
+import ExplainerVideo from "../components/ExplainerVideo";
 import Icon from "../components/Icon";
 import JsonLd from "../components/JsonLd";
 import MediaSlot from "../components/MediaSlot";
-import MotionBeats from "../components/MotionBeats";
-import { HandoffView, IntakeView, LeadsView, MessagesView, ProductWindow } from "../components/ProductViews";
-import { demoChapters } from "../content/demo";
-import { beats, closing, hero, industriesTeaser, layer, shift, start } from "../content/home";
+import SignalJourney from "../components/SignalJourney";
+import { closing, hero, homeServices, stage } from "../content/home";
+import { journey } from "../content/journey";
+import { industries } from "../content/site";
+import { bookCta } from "../lib/cta";
 import { homeJsonLd, pageMetadata } from "../lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Nexaio — The AI operating layer for service businesses",
+  title: "Nexaio — AI agents for home-service businesses",
   description:
-    "Keep your CRM. Nexaio adds the AI operating layer that follows up, coordinates handoffs and shows your team what needs them.",
+    "Your CRM keeps the record. Nexaio's AI agents do the work around it: they respond, follow up, coordinate your team and report what got done.",
   path: "/",
   absoluteTitle: true,
 });
 
-const beatViews = {
-  intake: (
-    <ProductWindow section="intake" description="the Intake page, listing each enquiry, where it came from and what happened to it">
-      <IntakeView trace />
-    </ProductWindow>
-  ),
-  messages: (
-    <ProductWindow section="messages" description="a follow-up conversation that stopped when the customer replied">
-      <MessagesView trace />
-    </ProductWindow>
-  ),
-  handoff: (
-    <ProductWindow section="dashboard" description="work handed to a named person, and the monthly report">
-      <HandoffView withReport trace />
-    </ProductWindow>
-  ),
-};
-
 export default function Home() {
+  const roofing = industries.find((i) => i.slug === "roofing");
   return (
     <>
       <JsonLd data={homeJsonLd()} />
 
-      {/* 1. Hero: the claim, then the product. */}
-      <section className="hero" aria-labelledby="hero-title">
+      {/* 1. Hero: the category, the claim, the Core. No product window on Home. */}
+      <section className="hero hero--signal" aria-labelledby="hero-title">
         <div className="hero-field" aria-hidden="true" />
-        <div className="hero-grid" aria-hidden="true" />
         <div className="wrap">
           <div className="hero-copy">
             <p className="eyebrow-pill enter d1">{hero.eyebrow}</p>
-            <h1 className="display enter d1" id="hero-title">
-              <span className="display-line">{hero.title}</span>{" "}
-              <span className="display-line dim">{hero.titleDim}</span>
+            <h1 className="display display--signal enter d1" id="hero-title">
+              <span className="display-line dim">{hero.title}</span>{" "}
+              <span className="display-line">{hero.titleStrong}</span>
             </h1>
+          </div>
+          <div className="hero-body">
             <div className="hero-sub enter d2">
               <p className="lede">{hero.lede}</p>
-              <CtaPair hero />
-            </div>
-          </div>
-          <div className="hero-stage">
-            <HeroComposition slabLabel={hero.slab} />
-          </div>
-        </div>
-      </section>
-
-      {/* 2. Your systems → Nexaio → your team. */}
-      <section className="section" aria-labelledby="layer-title">
-        <div className="wrap">
-          <div className="sec-head sec-head--split" data-reveal>
-            <div className="stack" style={{ gap: 18 }}>
-              <p className="eyebrow">{layer.eyebrow}</p>
-              <h2 className="h2" id="layer-title">
-                {layer.title}
-              </h2>
-            </div>
-            <p className="body">{layer.body}</p>
-          </div>
-          <div data-reveal>
-            <LayerDiagram systems={layer.systems} ops={layer.ops} team={layer.team} />
-          </div>
-        </div>
-      </section>
-
-      {/* 3. The product in three beats. */}
-      <section className="section" id="product" aria-labelledby="beats-title">
-        <div className="wrap">
-          <div className="sec-head" data-reveal>
-            <p className="eyebrow">{beats.eyebrow}</p>
-            <h2 className="h2" id="beats-title">
-              {beats.title}
-            </h2>
-          </div>
-          <MotionBeats beats={beats.items.map((b) => ({ ...b, view: beatViews[b.view] }))} />
-          <div className="beats-foot" data-reveal>
-            <ViewTag />
-            <Link className="text-link" href="/product">
-              Everything Nexaio does
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. What changes. */}
-      <section className="section" aria-labelledby="shift-title">
-        <div className="wrap">
-          <div className="sec-head" data-reveal>
-            <p className="eyebrow">{shift.eyebrow}</p>
-            <h2 className="h2" id="shift-title">
-              {shift.title}
-            </h2>
-          </div>
-          <ul className="shift" data-reveal>
-            {shift.rows.map((r) => (
-              <li key={r.q}>
-                <span className="q">{r.q}</span>
-                <Icon name="arrow" size={20} className="arrow" />
-                <span className="a">{r.a}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* 5. Industries: roofing first. */}
-      <section className="section" aria-labelledby="industries-title">
-        <div className="wrap">
-          <div className="sec-head sec-head--split" data-reveal>
-            <div className="stack" style={{ gap: 18 }}>
-              <p className="eyebrow">{industriesTeaser.eyebrow}</p>
-              <h2 className="h2" id="industries-title">
-                {industriesTeaser.title}
-              </h2>
-            </div>
-            <p className="body">{industriesTeaser.note}</p>
-          </div>
-          <Link href="/industries/roofing" className="industry-card" data-reveal>
-            <MediaSlot
-              slot="roofingHero"
-              shape="wide"
-              float={
-                <div aria-hidden="true">
-                  <ProductWindow
-                    section="leads"
-                    context="roofing"
-                    rail={false}
-                    description="the Leads list for a sample roofing company, with who owns each lead"
-                  >
-                    <LeadsView />
-                  </ProductWindow>
-                  <ViewTag />
-                </div>
-              }
-            >
-              <div className="industry-copy">
-                <p className="eyebrow">{industriesTeaser.roofing.label}</p>
-                <p className="h3">{industriesTeaser.roofing.line}</p>
+              <div className="cta-row" data-hero-ctas="">
+                <Link className="btn btn-primary" href={bookCta.href}>
+                  {bookCta.label}
+                  <Icon name="arrow" size={17} className="btn-arrow" />
+                </Link>
+                <a className="btn btn-secondary" href={hero.secondaryCta.href}>
+                  {hero.secondaryCta.label}
+                </a>
               </div>
-              <span className="btn btn-secondary">
-                {industriesTeaser.roofing.link}
-                <Icon name="arrow" size={17} className="btn-arrow" />
-              </span>
-            </MediaSlot>
-          </Link>
+              <p className="hero-micro">{hero.micro}</p>
+            </div>
+            <div className="hero-core enter d3">
+              <AiCore size="hero" state="idle" glint />
+            </div>
+          </div>
+          {/* The signal path leaves the Core and runs down the page. */}
+          <svg className="hero-signal" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <path d="M1000 0C1000 64 0 36 0 100" pathLength={100} />
+          </svg>
         </div>
       </section>
 
-      {/* 6. See the demo, and how getting started works. */}
-      <section className="section" aria-labelledby="start-title">
-        <div className="wrap">
-          <div className="sec-head" data-reveal>
-            <p className="eyebrow">{start.eyebrow}</p>
-            <h2 className="h2" id="start-title">
-              {start.title}
-            </h2>
-          </div>
-          <div className="split">
-            <div className="panel" data-reveal>
-              <h3 className="h3">{start.demoTitle}</h3>
-              <p className="body" style={{ marginTop: 8 }}>
-                {start.demoBody}
-              </p>
-              <ol className="chapters">
-                {demoChapters.map((c, i) => (
-                  <li key={c.id}>
-                    <Link href={`/demo#${c.id}`}>
-                      <span className="n">{String(i + 1).padStart(2, "0")}</span>
-                      <span>{c.title}</span>
-                      <Icon name="arrow" size={16} />
-                    </Link>
-                  </li>
-                ))}
-              </ol>
-              <Link className="btn btn-secondary" href="/demo" style={{ marginTop: 22 }}>
-                {start.demoLink}
-              </Link>
+      <div className="signal-flow" data-signal="">
+        <div className="signal-rail" aria-hidden="true">
+          <span className="signal-fill" />
+        </div>
+
+        {/* 2. The explainer: renders only with a real, approved film. */}
+        <ExplainerVideo placement="home" />
+
+        {/* 3. Your systems → Nexaio AI → your team. */}
+        <section className="section" aria-labelledby="stage-title">
+          <div className="wrap">
+            <div className="sec-head sec-head--split" data-reveal>
+              <div className="stack" style={{ gap: 18 }}>
+                <p className="eyebrow">{stage.eyebrow}</p>
+                <h2 className="h2" id="stage-title">
+                  <span className="display-line">{stage.title}</span>{" "}
+                  <span className="display-line dim">{stage.titleDim}</span>
+                </h2>
+              </div>
+              <p className="body">{stage.body}</p>
             </div>
             <div data-reveal>
-              <h3 className="h3">{start.stepsTitle}</h3>
-              <ol className="steps" style={{ marginTop: 18 }}>
-                {start.steps.map((s, i) => (
+              <SystemsStage
+                systems={stage.systems}
+                team={stage.team}
+                jobs={stage.jobs}
+                systemsLabel={stage.systemsLabel}
+                coreLabel={stage.coreLabel}
+                teamLabel={stage.teamLabel}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Watch one enquiry. */}
+        <section className="section journey-section" id={journey.id} aria-labelledby="journey-title">
+          <div className="wrap">
+            <div className="sec-head" data-reveal>
+              <p className="eyebrow">{journey.eyebrow}</p>
+              <h2 className="h2" id="journey-title">
+                {journey.title}
+              </h2>
+            </div>
+            <SignalJourney />
+          </div>
+        </section>
+
+        {/* 5. Built for home services: Roofing is the live industry. */}
+        <section className="section" aria-labelledby="homes-title">
+          <div className="wrap">
+            <div className="sec-head sec-head--split" data-reveal>
+              <div className="stack" style={{ gap: 18 }}>
+                <p className="eyebrow">{homeServices.eyebrow}</p>
+                <h2 className="h2" id="homes-title">
+                  {homeServices.title}
+                </h2>
+              </div>
+              <p className="body">{homeServices.body}</p>
+            </div>
+            {roofing ? (
+              <Link href={roofing.href} className="industry-card" data-reveal>
+                <MediaSlot slot="roofingHero" shape="wide">
+                  <div className="industry-copy">
+                    <span className="live-badge">{homeServices.live.badge}</span>
+                    <p className="eyebrow">{homeServices.live.label}</p>
+                    <p className="h3">{homeServices.live.line}</p>
+                  </div>
+                  <span className="btn btn-secondary">
+                    {homeServices.live.link}
+                    <Icon name="arrow" size={17} className="btn-arrow" />
+                  </span>
+                </MediaSlot>
+              </Link>
+            ) : null}
+          </div>
+        </section>
+
+        {/* 6. Close, with how getting started works. */}
+        <section className="section closing-section" aria-labelledby="closing-title">
+          <div className="wrap">
+            <div className="closing" data-reveal>
+              <h2 className="h2" id="closing-title">
+                <span className="display-line">{closing.title}</span>{" "}
+                <span className="display-line dim">{closing.titleDim}</span>
+              </h2>
+              <p className="lede">{closing.body}</p>
+              <CtaPair />
+            </div>
+            <div className="start-strip" data-reveal>
+              <h3 className="eyebrow">{closing.stepsTitle}</h3>
+              <ol>
+                {closing.steps.map((s, i) => (
                   <li key={s.title}>
                     <span className="n">{String(i + 1).padStart(2, "0")}</span>
-                    <div>
-                      <b>{s.title}</b>
-                      <p>{s.body}</p>
-                    </div>
+                    <b>{s.title}</b>
+                    <p>{s.body}</p>
                   </li>
                 ))}
               </ol>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* 7. Close. */}
-      <Closing title={closing.title} body={closing.body} />
+        </section>
+      </div>
     </>
   );
 }

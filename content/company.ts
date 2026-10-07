@@ -1,5 +1,6 @@
 /**
- * /company copy: why Nexaio exists, how it operates, and the verifiable facts.
+ * /company copy (V2.2 packet §3): a serious, confident AI company, not an
+ * essay. Copy budget: at most 140 words in <main>.
  *
  * No company size, headcount, customer count, funding, office locations, years
  * in market, founder names, ages or biographies. Every fact in `facts` must be
@@ -8,40 +9,17 @@
 
 export const companyHero = {
   eyebrow: "Company",
-  title: "We build the layer",
-  titleDim: "that keeps work moving.",
-  lede: "Most service businesses already have the systems they need. What slips is the work between them. Nexaio exists to run that work, in the open, with people in charge of the judgment calls.",
-};
-
-export const why = {
-  eyebrow: "Why Nexaio exists",
-  title: "Software records the work. Someone still has to do it.",
-  paragraphs: [
-    "CRMs, inboxes, phones and calendars each hold part of the picture. None of them owns the follow-through between them: the reply that never went out, the estimate nobody chased, the handoff that lived in someone's head. So it falls to whoever remembers.",
-    "Nexaio is the operating layer that takes that work on. It runs inside the systems a business already uses, does the follow-up and coordination, and hands anything that needs judgment to a person.",
-  ],
+  title: "We build AI that does the work,",
+  titleDim: "not more software to manage.",
 };
 
 export const principles = {
-  eyebrow: "How we operate",
-  title: "Four rules we build by.",
+  eyebrow: "How we build",
   items: [
-    {
-      title: "Keep what works.",
-      body: "We build around the systems a business already runs. Replacing a CRM is rarely the answer.",
-    },
-    {
-      title: "Show the work.",
-      body: "Every action is recorded and marked verified or unconfirmed. A system you can't check is a system you can't trust.",
-    },
-    {
-      title: "People make the judgment calls.",
-      body: "Automation handles the routine. Pricing, complaints and anything unclear go to a person, with the context attached.",
-    },
-    {
-      title: "Say what we don't do.",
-      body: "We state limits plainly: what connects, what doesn't, and what we don't measure. We don't make claims we can't back.",
-    },
+    { title: "Keep what works.", body: "We build around the systems you already run." },
+    { title: "Show the work.", body: "Every action is recorded, verified or marked unconfirmed." },
+    { title: "People make judgments.", body: "Pricing, complaints and anything unclear go to a person." },
+    { title: "Say what's true.", body: "We state our limits plainly." },
   ],
 };
 
@@ -52,14 +30,12 @@ export const mission = {
 
 export const facts = [
   { term: "Company", detail: "Nexaio" },
-  { term: "What we build", detail: "The AI operating layer for service businesses" },
+  { term: "What we build", detail: "AI agents for home-service businesses" },
   { term: "First industry", detail: "Roofing" },
-  { term: "How we work", detail: "The people who build Nexaio set it up and run it with you" },
-  { term: "Website", detail: "nexaio.co" },
   { term: "Contact", detail: "admin@nexaio.co" },
 ];
 
 export const companyClosing = {
   title: "Talk to us about your operation.",
-  body: "Book a walkthrough and we'll look at how work moves through your business today.",
+  body: "Book a walkthrough and we'll look at how work moves today.",
 };

@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { contact, footerNav, site } from "../content/site";
+import BrandMark from "./BrandMark";
 
 export default function Footer() {
   return (
@@ -9,8 +9,7 @@ export default function Footer() {
         <div className="foot-grid">
           <div className="foot-brand">
             <Link href="/" className="brand" aria-label="Nexaio home">
-              <Image src="/nexaio-logo-light.png" alt="" width={24} height={24} />
-              <span className="brand-name">Nexaio</span>
+              <BrandMark />
             </Link>
             <p>{site.footerLine}</p>
             <div className="foot-contact">

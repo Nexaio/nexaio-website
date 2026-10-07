@@ -1,51 +1,56 @@
 /**
- * /industries/roofing copy. Roofing is Nexaio's first industry.
+ * /industries/roofing copy (V2.2 packet §3). Roofing is Nexaio's first live
+ * industry: proof in the first trade, while the company reads broader.
+ * Copy budget: at most 420 words in <main>.
  *
  * Roofing-specific, but held to the same limits as every page: no customers,
- * results, logos or named CRM integrations; no response-time or phone-answering
- * promises; nothing about insurance beyond routing the conversation to a
- * person. Keep this file free of imports.
+ * results, logos or named CRM integrations; no response-time, appointment or
+ * phone-answering promises; nothing about insurance beyond routing the
+ * conversation to a person. Keep this file free of imports.
  */
+
+type CoreState = "idle" | "listening" | "working" | "handoff";
 
 export const roofingHero = {
   eyebrow: "Nexaio for roofing",
-  title: "Every roofing lead and estimate,",
-  titleDim: "followed through.",
-  lede: "Roofing work arrives in waves and decisions take weeks. Nexaio keeps every enquiry, estimate and handoff moving, alongside the CRM your team already runs.",
+  badge: "Live now",
+  title: "Roofing, first.",
+  lede: "Storms bring enquiries in waves, and estimates go quiet for weeks. Nexaio's AI agents keep every one moving, around the CRM you already run.",
 };
 
-/** Sample events shown over the hero media slot. */
+/** Sample events shown on the hero surface (labelled as a sample). */
 export const roofingHeroEvents = [
   { title: "Hail enquiry · owner assigned", meta: "Website form · 07:12" },
   { title: "Estimate follow-up sent", meta: "Full replacement · day 7" },
 ];
 
-export type RoofingMomentView = "dashboard" | "messages" | "handoff";
-
-export const moments = {
+export const vignettes = {
   eyebrow: "Where roofing work slips",
-  title: "Built for how roofing work actually arrives.",
+  title: "Three moments, handled.",
   items: [
     {
       id: "storm",
-      label: "When a storm comes through",
-      title: "Every enquiry gets an owner, even on the busiest day.",
-      body: "After a storm, enquiries can arrive faster than the office can reply. Nexaio captures each one once, acknowledges it with your approved wording and routes it by your rules, so the team can see who owns what.",
-      view: "dashboard" as RoofingMomentView,
+      label: "Storm spike",
+      title: "Every enquiry gets an owner.",
+      body: "After a storm, enquiries arrive faster than the office can reply. The agents acknowledge each one in your wording and route it by your rules.",
+      chips: ["Acknowledged", "Owner: Dana", "Routed by your rules"],
+      core: "working" as CoreState,
     },
     {
       id: "estimates",
-      label: "When an estimate goes quiet",
+      label: "Estimate goes quiet",
       title: "No estimate sits without a next step.",
-      body: "Homeowners take time to decide. Nexaio follows up on the schedule you set, stops when they reply, and puts a stalled estimate back in front of the person who owns it.",
-      view: "messages" as RoofingMomentView,
+      body: "Homeowners take time. The agents follow up at the times you set, stop when they reply, and put a stalled estimate back with its owner.",
+      chips: ["Follow-up sent · day 7", "Reply → follow-up stopped"],
+      core: "working" as CoreState,
     },
     {
       id: "insurance",
-      label: "When insurance is involved",
+      label: "Insurance needs a person",
       title: "Judgment calls go to your team.",
-      body: "Insurance, pricing and scope need a person. Nexaio doesn't answer them. It hands the question to the right person with the whole conversation attached, and holds follow-up until they've replied.",
-      view: "handoff" as RoofingMomentView,
+      body: "Insurance, pricing and scope need a person. The agents hand the question over with the whole conversation attached.",
+      chips: ["Handed to Dana", "History attached"],
+      core: "handoff" as CoreState,
     },
   ],
 };
@@ -53,9 +58,9 @@ export const moments = {
 export const roofingCrm = {
   eyebrow: "Your CRM stays",
   title: "Works alongside the CRM you already run.",
-  body: "Your pipeline stays where it is. Nexaio reads your stage names and records what each one means, so follow-up and reporting line up with how your team already works.",
+  body: "Your pipeline stays where it is. Nexaio reads your stage names and what each one means, so follow-up and reporting match how your team works.",
   note: "Which CRMs connect, and how, depends on your plan and the access it allows. We confirm it during scoping.",
-  leadsBody: "Each lead shows who owns it, and whether Nexaio is working on it, your team has it, or it needs someone now.",
+  slab: "Your CRM · the record",
 };
 
 export const roofingFaq = [
@@ -65,19 +70,15 @@ export const roofingFaq = [
   },
   {
     q: "Does Nexaio answer our phones?",
-    a: "No. Nexaio doesn't answer calls. It works on the enquiries and follow-ups that reach your systems, such as website forms, email and leads in your CRM.",
+    a: "No. Nexaio doesn't answer calls. Its agents work on the enquiries and follow-ups that reach your systems, such as website forms, email and leads in your CRM.",
   },
   {
     q: "What happens when a storm brings a spike in enquiries?",
-    a: "Enquiries that reach your connected systems are captured once, acknowledged where you've approved it, and routed by your rules, so nothing depends on someone remembering. Nexaio doesn't book inspections or promise response times on your behalf.",
-  },
-  {
-    q: "Will Nexaio talk to homeowners about insurance or pricing?",
-    a: "No. Insurance, pricing and anything that needs judgment go to your team with the conversation attached.",
+    a: "Enquiries that reach your connected systems are captured once, acknowledged where you've approved it, and routed by your rules, so nothing depends on someone remembering. The agents don't promise response times on your behalf.",
   },
   {
     q: "Is roofing the only industry Nexaio serves?",
-    a: "Roofing is the first. The operating layer itself isn't specific to roofing, and new industries are added when Nexaio serves them.",
+    a: "Roofing is the first trade we serve. Nexaio is built for home-service businesses, and we add a trade when we actually serve it.",
   },
 ];
 

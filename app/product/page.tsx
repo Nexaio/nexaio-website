@@ -1,61 +1,42 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import AiCore from "../../components/AiCore";
+import { CrmSplit, ProductDetail } from "../../components/Compositions";
 import { Closing, CtaPair } from "../../components/Cta";
-import { ViewTag } from "../../components/Compositions";
 import Faq from "../../components/Faq";
 import Icon from "../../components/Icon";
 import JsonLd from "../../components/JsonLd";
+import { MessagesView, ProductWindow, ReportView } from "../../components/ProductViews";
 import {
-  CrmMapView,
-  DashboardView,
-  HandoffView,
-  IntakeView,
-  MessagesView,
-  ProductWindow,
-} from "../../components/ProductViews";
-import {
-  capabilities,
   control,
   fit,
+  jobs,
   productClosing,
   productFaq,
   productHero,
   setup,
-  stays,
-  type CapabilityView,
+  split,
+  type JobFragment,
 } from "../../content/product";
 import { breadcrumbJsonLd, pageMetadata } from "../../lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Product",
   description:
-    "Nexaio is an AI operating layer, not another CRM. It captures enquiries, runs follow-up, hands judgment calls to people and shows what needs your team.",
+    "Nexaio's AI agents work around your CRM: they respond to enquiries, follow up, coordinate your team, hand off judgment calls and report what got done.",
   path: "/product",
 });
 
-const views: Record<CapabilityView, ReactNode> = {
-  intake: (
-    <ProductWindow
-      section="intake"
-      rail={false}
-      description="the Intake page, listing each enquiry, where it came from and what happened to it"
-    >
-      <IntakeView />
-    </ProductWindow>
-  ),
+/** The two small product fragments this page allows (V2.2 packet §2). */
+const fragments: Record<Exclude<JobFragment, null>, ReactNode> = {
   messages: (
     <ProductWindow section="messages" rail={false} description="a follow-up conversation that stopped when the customer replied">
       <MessagesView />
     </ProductWindow>
   ),
-  handoff: (
-    <ProductWindow section="dashboard" rail={false} description="work handed to a named person with the conversation attached">
-      <HandoffView />
-    </ProductWindow>
-  ),
-  crm: (
-    <ProductWindow section="settings" rail={false} description="the Pipeline stages settings, mapping your stage names to what they mean to Nexaio">
-      <CrmMapView />
+  report: (
+    <ProductWindow section="reports" rail={false} description="the monthly report: what Nexaio did, what it confirmed and what it does not measure">
+      <ReportView />
     </ProductWindow>
   ),
 };
@@ -67,7 +48,6 @@ export default function ProductPage() {
 
       <section className="page-hero" aria-labelledby="product-title">
         <div className="hero-field" aria-hidden="true" />
-        <div className="hero-grid" aria-hidden="true" />
         <div className="wrap page-hero-grid">
           <div className="hero-copy">
             <p className="eyebrow enter d1">{productHero.eyebrow}</p>
@@ -80,79 +60,47 @@ export default function ProductPage() {
               <CtaPair hero />
             </div>
           </div>
-          <div className="page-hero-visual enter d3" data-loop>
-            <ProductWindow
-              section="dashboard"
-              rail={false}
-              description="the dashboard with the panels Nexaio is working, Needs your team, Today and Recently changed"
-            >
-              <DashboardView />
-            </ProductWindow>
-            <ViewTag />
-            <p className="meta" style={{ margin: 0 }}>
-              {productHero.visualCaption}
-            </p>
+          <div className="page-hero-core enter d3">
+            <AiCore size="lg" state="working" />
           </div>
         </div>
       </section>
 
-      <section className="section" aria-labelledby="stays-title">
+      <section className="section" aria-labelledby="split-title">
         <div className="wrap">
           <div className="sec-head" data-reveal>
-            <p className="eyebrow">{stays.eyebrow}</p>
-            <h2 className="h2" id="stays-title">
-              {stays.title}
+            <p className="eyebrow">{split.eyebrow}</p>
+            <h2 className="h2" id="split-title">
+              {split.title}
             </h2>
           </div>
-          <div className="stays" data-reveal>
-            <div>
-              <p className="eyebrow">Stays yours</p>
-              <ul>
-                {stays.yours.map((item) => (
-                  <li key={item}>
-                    <Icon name="check" size={16} />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="adds">
-              <p className="eyebrow">Nexaio adds</p>
-              <ul>
-                {stays.adds.map((item) => (
-                  <li key={item}>
-                    <Icon name="plus" size={16} />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div data-reveal>
+            <CrmSplit crm={split.crm} ai={split.ai} />
           </div>
         </div>
       </section>
 
-      <section className="section" id="capabilities" aria-labelledby="caps-title">
+      <section className="section" id="jobs" aria-labelledby="jobs-title">
         <div className="wrap">
-          <div className="sec-head sec-head--split" data-reveal>
-            <div className="stack" style={{ gap: 18 }}>
-              <p className="eyebrow">{capabilities.eyebrow}</p>
-              <h2 className="h2" id="caps-title">
-                {capabilities.title}
-              </h2>
-            </div>
-            <ViewTag />
+          <div className="sec-head" data-reveal>
+            <p className="eyebrow">{jobs.eyebrow}</p>
+            <h2 className="h2" id="jobs-title">
+              {jobs.title}
+            </h2>
           </div>
-          <div className="caps">
-            {capabilities.items.map((c) => (
-              <article key={c.id} id={c.id} className="cap" data-reveal>
-                {views[c.view]}
-                <div className="cap-copy">
-                  <h3 className="h3">{c.title}</h3>
-                  <p>{c.body}</p>
+          <ol className="jobs">
+            {jobs.items.map((job, i) => (
+              <li key={job.id} id={job.id} className={`job${job.fragment ? " job--frag" : ""}`} data-reveal>
+                <AiCore size="sm" state={job.core} />
+                <div className="job-copy">
+                  <span className="job-n">{String(i + 1).padStart(2, "0")}</span>
+                  <h3 className="h3">{job.title}</h3>
+                  <p>{job.body}</p>
                 </div>
-              </article>
+                {job.fragment ? <ProductDetail>{fragments[job.fragment]}</ProductDetail> : null}
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 

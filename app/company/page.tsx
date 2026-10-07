@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import AiCore from "../../components/AiCore";
 import { Closing } from "../../components/Cta";
 import JsonLd from "../../components/JsonLd";
 import MediaSlot from "../../components/MediaSlot";
-import { companyClosing, companyHero, facts, mission, principles, why } from "../../content/company";
+import { companyClosing, companyHero, facts, mission, principles } from "../../content/company";
 import { breadcrumbJsonLd, pageMetadata } from "../../lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Company",
   description:
-    "Why Nexaio exists and how we build it: an AI operating layer that runs the work between a business's systems, in the open, with people in charge.",
+    "Nexaio builds AI agents for home-service businesses: AI that does the work around the systems you already run, not more software to manage.",
   path: "/company",
 });
 
@@ -26,26 +27,11 @@ export default function CompanyPage() {
               <span className="display-line">{companyHero.title}</span>{" "}
               <span className="display-line dim">{companyHero.titleDim}</span>
             </h1>
-            <p className="lede enter d2">{companyHero.lede}</p>
           </div>
           <div className="hero-media enter d3">
-            <MediaSlot slot="companyOperations" shape="wide" />
-          </div>
-        </div>
-      </section>
-
-      <section className="section" aria-labelledby="why-title">
-        <div className="wrap split">
-          <div className="sec-head" data-reveal style={{ marginBottom: 0 }}>
-            <p className="eyebrow">{why.eyebrow}</p>
-            <h2 className="h2" id="why-title">
-              {why.title}
-            </h2>
-          </div>
-          <div className="why-copy" data-reveal>
-            {why.paragraphs.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
+            <MediaSlot slot="companyOperations" shape="wide">
+              <AiCore size="sm" state="idle" />
+            </MediaSlot>
           </div>
         </div>
       </section>
@@ -53,9 +39,8 @@ export default function CompanyPage() {
       <section className="section" aria-labelledby="principles-title">
         <div className="wrap">
           <div className="sec-head" data-reveal>
-            <p className="eyebrow">{principles.eyebrow}</p>
-            <h2 className="h2" id="principles-title">
-              {principles.title}
+            <h2 className="eyebrow" id="principles-title">
+              {principles.eyebrow}
             </h2>
           </div>
           <ul className="principles" data-reveal>
@@ -75,18 +60,7 @@ export default function CompanyPage() {
             {mission.eyebrow}
           </h2>
           <p className="statement">{mission.statement}</p>
-        </div>
-      </section>
-
-      <section className="section" aria-labelledby="facts-title">
-        <div className="wrap">
-          <div className="sec-head" data-reveal>
-            <p className="eyebrow">At a glance</p>
-            <h2 className="h2" id="facts-title">
-              The facts.
-            </h2>
-          </div>
-          <dl className="facts" data-reveal>
+          <dl className="facts">
             {facts.map((f) => (
               <div key={f.term}>
                 <dt>{f.term}</dt>

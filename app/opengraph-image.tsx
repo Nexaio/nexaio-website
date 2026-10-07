@@ -8,7 +8,10 @@ export const alt = `${site.name}: ${site.category}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-/** Site-wide share image, generated at build time from the category line and the homepage headline. */
+/**
+ * Site-wide share image, generated at build time from the category line and
+ * the homepage headline. The logo is the canonical app/icon.png, unchanged.
+ */
 export default async function OpenGraphImage() {
   const logo = await readFile(join(process.cwd(), "app/icon.png"));
   const logoSrc = `data:image/png;base64,${logo.toString("base64")}`;
@@ -37,13 +40,13 @@ export default async function OpenGraphImage() {
             {site.category}
           </span>
           <div style={{ display: "flex", flexDirection: "column", fontSize: 66, fontWeight: 700, lineHeight: 1.06, letterSpacing: -2 }}>
-            <span>{hero.title}</span>
-            <span style={{ color: "#7C889B" }}>{hero.titleDim}</span>
+            <span style={{ color: "#7C889B" }}>{hero.title}</span>
+            <span>{hero.titleStrong}</span>
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid rgba(170, 196, 230, 0.18)", paddingTop: 24 }}>
           <span style={{ fontSize: 26, color: "#A9B5C6" }}>{site.domain}</span>
-          <span style={{ fontSize: 26, color: "#A9B5C6" }}>Keep your CRM. Add the operating layer.</span>
+          <span style={{ fontSize: 26, color: "#A9B5C6" }}>{hero.micro}</span>
         </div>
       </div>
     ),

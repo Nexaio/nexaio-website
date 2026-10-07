@@ -1,54 +1,77 @@
 /**
- * /product copy: the layer, capabilities, control, fit and setup.
- * Capabilities are limited to what the approved capability material marks as
- * supported, and each is shown through a recreated product view.
+ * /product copy (V2.2 packet §3): what the AI agents actually do around the
+ * customer's CRM. Five jobs, each limited to what the approved capability
+ * material marks as supported now; at most two small, labelled product
+ * fragments on the page. Copy budget: at most 450 words in <main>.
  * Keep this file free of imports.
  */
 
+/** The Core state shown beside each job (same names as content/journey.ts). */
+type CoreState = "idle" | "listening" | "working" | "handoff";
+
 export const productHero = {
   eyebrow: "Product",
-  title: "An operating layer,",
-  titleDim: "not another CRM.",
-  lede: "Nexaio connects to the systems you already use and runs the follow-through around them. Everything it does shows up in one live view, and anything that needs judgment goes to a person.",
-  visualCaption: "The dashboard: what Nexaio is doing, what needs your team, what is due today and what changed.",
+  title: "AI agents that work",
+  titleDim: "around your CRM.",
+  lede: "They respond, follow up, coordinate, hand off and report. Your team does the work only people can do.",
 };
 
-export const stays = {
-  eyebrow: "The layer",
-  title: "What stays yours, and what Nexaio adds.",
-  yours: ["Your CRM, as the system of record", "Your pipeline and stage names", "Your customer data and accounts", "Your team, and who does what"],
-  adds: ["Capture and routing of every enquiry", "Follow-up on your schedule and wording", "Coordination of handoffs between people", "A live view of what needs attention", "A monthly report you can check"],
+export const split = {
+  eyebrow: "Not another CRM",
+  title: "An operating layer, not another CRM.",
+  crm: {
+    label: "Your CRM",
+    sub: "the record",
+    items: ["Contacts and jobs", "Your pipeline", "Your data and accounts"],
+  },
+  ai: {
+    label: "Nexaio AI",
+    sub: "the work",
+    items: ["Does the routine follow-through", "Shows what needs your team", "Reports what got done"],
+  },
 };
 
-export type CapabilityView = "intake" | "messages" | "handoff" | "crm";
+/** At most two small fragments on the page; one is used. */
+export type JobFragment = "messages" | "report" | null;
 
-export const capabilities = {
-  eyebrow: "Capabilities",
-  title: "Each one visible in the product.",
+export const jobs = {
+  eyebrow: "Five jobs",
+  title: "What the AI agents actually do.",
   items: [
     {
-      id: "intake",
-      title: "Every enquiry, in one place.",
-      body: "Website forms, email and leads created in your CRM arrive as one consistent record, matched to what already exists. When a match is unclear, Nexaio asks instead of guessing.",
-      view: "intake" as CapabilityView,
+      id: "respond",
+      title: "Respond",
+      body: "Each new enquiry is acknowledged in your wording and given an owner.",
+      core: "listening" as CoreState,
+      fragment: null as JobFragment,
     },
     {
       id: "follow-up",
-      title: "Follow-ups that stop when they should.",
-      body: "Sequences run on your schedule and approved wording, and stop when a customer replies, opts out or a person takes over.",
-      view: "messages" as CapabilityView,
+      title: "Follow up",
+      body: "Follow-ups go out at the times you set, and stop when the customer replies.",
+      core: "working" as CoreState,
+      fragment: "messages" as JobFragment,
     },
     {
-      id: "handoffs",
-      title: "Judgment calls go to a person.",
-      body: "Pricing, insurance, complaints and anything unclear land with the right person, with the conversation attached.",
-      view: "handoff" as CapabilityView,
+      id: "coordinate",
+      title: "Coordinate",
+      body: "Your team sees who owns what and what needs a person today.",
+      core: "working" as CoreState,
+      fragment: null as JobFragment,
     },
     {
-      id: "crm",
-      title: "Your pipeline, your names.",
-      body: "Nexaio reads your pipeline stages and records what each one means. Nothing in your CRM is renamed or replaced.",
-      view: "crm" as CapabilityView,
+      id: "hand-off",
+      title: "Hand off",
+      body: "Pricing, insurance and anything unclear go to a person, with the history.",
+      core: "handoff" as CoreState,
+      fragment: null as JobFragment,
+    },
+    {
+      id: "report",
+      title: "Report",
+      body: "A monthly report shows what got done and what was verified.",
+      core: "idle" as CoreState,
+      fragment: null as JobFragment,
     },
   ],
 };
@@ -57,10 +80,10 @@ export const control = {
   eyebrow: "You stay in control",
   title: "Automation where it helps. People where it matters.",
   points: [
-    { title: "Rules you approve", body: "Wording, timing and channels are agreed during setup. Anything outside them waits for a person." },
-    { title: "People make the judgment calls", body: "Sensitive, complex or high-value conversations go to your team with the context attached." },
-    { title: "Every action on the record", body: "Follow-ups, handoffs and changes are recorded with their history, and marked verified or unconfirmed." },
-    { title: "Only the access it needs", body: "We ask for the access each connection requires, nothing more. Your data and accounts stay yours." },
+    { title: "Rules you approve", body: "Wording and timing are agreed in setup." },
+    { title: "People decide", body: "Judgment calls go to your team." },
+    { title: "Every action on record", body: "Verified or marked unconfirmed." },
+    { title: "Only the access it needs", body: "Your data stays yours." },
   ],
 };
 
@@ -71,32 +94,32 @@ export const fit = {
     {
       tone: "yes" as const,
       title: "Usually straightforward",
-      items: ["Website and landing-page forms", "Email on Google Workspace or Microsoft 365", "Leads created in your CRM", "Referrals and manual entries", "Importing an existing lead list"],
+      items: ["Website forms", "Google Workspace or Microsoft 365 email", "Leads in your CRM"],
     },
     {
       tone: "scoped" as const,
       title: "Confirmed during scoping",
-      note: "Depends on your plan, add-ons and the access each system allows.",
-      items: ["Your CRM's two-way sync", "Phone systems and call tracking", "Facebook and Google lead forms", "Text messaging, after carrier registration"],
+      note: "Depends on the access each system allows.",
+      items: ["Two-way CRM sync", "Phone systems and call tracking", "Ad lead forms"],
     },
     {
       tone: "no" as const,
       title: "Not something we do",
-      items: ["Replace your CRM", "Estimating or scheduling crews", "Answer your phone calls", "Promise results we can't measure"],
+      items: ["Replace your CRM", "Estimating or crew dispatch", "Phone answering"],
     },
   ],
 };
 
 export const setup = {
   eyebrow: "How it works",
-  title: "From first call to a running layer.",
+  title: "From first call to working agents.",
   steps: [
-    { title: "Walkthrough", body: "See the product and look at how work moves through your business today." },
-    { title: "Scope", body: "We map your systems, lead sources and rules, check what each system allows, and agree exactly what gets set up." },
-    { title: "Setup and testing", body: "We connect your systems, configure routing, follow-up and escalation, and test with sample data before anything reaches a customer." },
-    { title: "Go live and keep improving", body: "After you sign off it goes live. We keep running and refining it with you. It's an ongoing service, not a one-time build." },
+    { title: "Walkthrough", body: "See the product and how work moves today." },
+    { title: "Scope", body: "We map your systems and rules." },
+    { title: "Setup and testing", body: "Tested on sample data first." },
+    { title: "Go live", body: "After you sign off. We keep refining it." },
   ],
-  timing: "Timing depends on your systems and how quickly access is granted, so you get a plan after scoping rather than a date on the first call.",
+  timing: "You get a plan after scoping, not a date on the first call.",
 };
 
 export const productFaq = [
@@ -110,11 +133,7 @@ export const productFaq = [
   },
   {
     q: "Is Nexaio an answering service?",
-    a: "No. Nexaio doesn't answer phone calls. It works on the enquiries, follow-ups and handoffs that already exist in your systems.",
-  },
-  {
-    q: "Will it text my customers?",
-    a: "Text messaging needs carrier registration first, and that approval can take days to weeks outside our control. Until then, follow-up runs on email.",
+    a: "No. Nexaio doesn't answer phone calls. Its agents work on the enquiries, follow-ups and handoffs that already exist in your systems.",
   },
   {
     q: "What does it cost?",
@@ -123,6 +142,6 @@ export const productFaq = [
 ];
 
 export const productClosing = {
-  title: "See how Nexaio would fit your stack.",
-  body: "Book a walkthrough and we'll look at your systems, your lead sources and where work slips today.",
+  title: "See the agents on your own stack.",
+  body: "We'll map where the agents take work off your team.",
 };

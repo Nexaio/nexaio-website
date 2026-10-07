@@ -11,20 +11,31 @@ export const site = {
   url: "https://nexaio.co",
   domain: "nexaio.co",
   /**
-   * Category line. Approved direction (nexaio-website-and-inbound-growth rev5-7):
-   * keep the customer's CRM and systems; Nexaio adds and runs the AI layer
-   * around them. "Service businesses" is the working category; change it here.
+   * Category line (V2.2 packet §1): say AI and agents plainly; home services
+   * broadly. Roofing is the first industry, not the identity.
    */
-  category: "The AI operating layer for service businesses",
+  category: "AI agents for home-service businesses",
+  /** Supporting phrase used under the category where there is room. */
+  categorySupport: "The AI operating layer around your CRM",
   /** Default meta description. Keep it under 160 characters. */
   description:
-    "Nexaio works alongside the CRM and tools you already use, running the follow-up, coordination and handoffs around them.",
-  footerLine: "The AI operating layer that works alongside the systems you already run.",
+    "Nexaio's AI agents work around the CRM you already use: they respond to enquiries, follow up, coordinate your team and report what got done.",
+  footerLine: "AI agents for home-service businesses. Your CRM keeps the record; our AI does the work.",
   /** Square logo for Organization structured data. Served from app/icon.png (512×512). */
   logoPath: "/icon.png",
   locale: "en_US",
   language: "en-US",
 } as const;
+
+/**
+ * Brand mark (V2.2 packet §4). "refined" draws the vector N with the Core in
+ * its gap (components/BrandMark.tsx); "current" shows the canonical PNG. The
+ * canonical PNGs, favicon, app icons and share image never change, so
+ * reverting is this one value.
+ */
+export const brand = {
+  markVariant: "refined" as "refined" | "current",
+};
 
 export const contact = {
   email: "admin@nexaio.co",
@@ -62,18 +73,37 @@ export const contact = {
 };
 
 /**
- * Industries Nexaio actually sells and serves. Each entry needs a real page at
- * app/industries/<slug>/page.tsx; the guard fails if the two lists differ.
- * Never add an industry to fill the navigation.
+ * Industries, typed `live | planned` (V2.2 packet §3).
+ *
+ * `live` means Nexaio actually sells and serves the trade today: it gets a
+ * real page at app/industries/<slug>/page.tsx, a navigation item, a footer
+ * link and a sitemap URL. `planned` entries never render publicly: no page,
+ * no link, no "supported" wording, no sitemap URL (the guard enforces this).
+ * Going live later is one status flip plus one page, after the go-live
+ * decision. Never add an industry to fill the navigation.
  */
-export const industries = [
+export type IndustryStatus = "live" | "planned";
+
+export type Industry = {
+  slug: string;
+  href: string;
+  label: string;
+  status: IndustryStatus;
+  summary: string;
+};
+
+export const industryCatalog: Industry[] = [
   {
     slug: "roofing",
     href: "/industries/roofing",
     label: "Roofing",
-    summary: "Leads, estimates and follow-through for roofing companies",
+    status: "live",
+    summary: "Storm spikes, estimates and handoffs",
   },
 ];
+
+/** Only live industries. Everything public reads this list, never the catalog. */
+export const industries = industryCatalog.filter((i) => i.status === "live");
 
 /** Header navigation. "Industries" opens a menu built from `industries`. */
 export const nav = [
@@ -110,13 +140,14 @@ export const footerNav = [
 /**
  * Indexable pages, used by app/sitemap.ts. `updated` is the date the page's
  * content last changed materially. Every entry must have an app/<path>/page.tsx.
+ * Industry URLs come from the live list only.
  */
 export const pages = [
-  { path: "/", updated: "2026-09-29" },
-  { path: "/product", updated: "2026-09-29" },
-  { path: "/demo", updated: "2026-09-29" },
-  { path: "/industries/roofing", updated: "2026-09-29" },
-  { path: "/company", updated: "2026-09-29" },
-  { path: "/contact", updated: "2026-09-29" },
+  { path: "/", updated: "2026-10-07" },
+  { path: "/product", updated: "2026-10-07" },
+  { path: "/demo", updated: "2026-10-07" },
+  ...industries.map((i) => ({ path: i.href, updated: "2026-10-07" })),
+  { path: "/company", updated: "2026-10-07" },
+  { path: "/contact", updated: "2026-10-07" },
   { path: "/privacy", updated: "2026-06-29" },
 ];

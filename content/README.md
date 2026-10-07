@@ -7,15 +7,16 @@ updates every place a fact appears. Files here must stay free of imports:
 
 | File | What it holds |
 | --- | --- |
-| `site.ts` | Name, domain, category line, default description, email, phone (and whether its routing is verified), booking link, industries, navigation, footer links, sitemap pages |
-| `home.ts` | Homepage copy: hero, the layer, the three product beats, what changes, industries, getting started, closing |
-| `product.ts` | `/product`: what stays yours and what Nexaio adds, capabilities, control, what connects, how it works, questions |
-| `roofing.ts` | `/industries/roofing`: hero, the three roofing moments, the CRM section, questions |
-| `demo.ts` | `/demo`: the video slot (`demoVideo`), the five chapters and questions |
-| `company.ts` | `/company`: why Nexaio exists, principles, mission, the facts |
-| `contact.ts` | `/contact`: booking copy and the call agenda |
+| `site.ts` | Name, domain, category line, default description, brand mark variant, email, phone (and whether its routing is verified), booking link, industries (live / planned), navigation, footer links, sitemap pages |
+| `home.ts` | Homepage copy: hero, the Systems → AI → Team stage, built for home services, closing and getting started |
+| `journey.ts` | "Watch one enquiry": the sample enquiry and its six stations |
+| `product.ts` | `/product`: the CRM / AI split, the five agent jobs, control, what connects, how it works, questions |
+| `roofing.ts` | `/industries/roofing`: hero, the three roofing vignettes, the CRM section, questions |
+| `demo.ts` | `/demo`: the five chapters ("what the AI did") and questions; `demoVideo` stays null |
+| `company.ts` | `/company`: principles, mission, the facts |
+| `contact.ts` | `/contact`: the three-step journey (no form) |
 | `samples.ts` | Invented sample data shown inside the recreated product views |
-| `media.ts` | The cinematic media slots and their approval records |
+| `media.ts` | The cinematic media slots, the explainer video record and their approval records |
 
 `lib/cta.ts` turns this into the two calls to action; `lib/seo.ts` turns it into
 page metadata and structured data.
@@ -39,12 +40,30 @@ design direction. In practice:
 - Roadmap or unreleased Product work is not described as available.
 - Integrations are "confirmed during scoping" unless the capability FAQ lists
   them as supported without conditions. No named CRM integrations.
-- Industries: list only industries Nexaio actually serves, each with a real
-  page at `app/industries/<slug>/page.tsx`. No placeholder verticals.
+- Capability truth tags (V2.2): until the G3 capability attestation, copy may
+  not say Nexaio schedules or books appointments, answers calls, texts
+  customers, or integrates with a named CRM. A plain denial ("doesn't answer
+  calls") is fine. Supported now: respond and acknowledge, capture and route,
+  follow up (stops on reply), hand off with context, show what needs the team,
+  the monthly report, CRM stage mapping.
+- Industries are typed `live | planned` in `site.ts`. Only `live` entries get
+  a page at `app/industries/<slug>/page.tsx`, a menu item, a footer link, a
+  sitemap URL or "supported" wording; a `planned` trade is never named in
+  public copy. Going live is one status flip plus one page, after the go-live
+  decision. No placeholder verticals.
+- No form, data capture, chat bubble, AI concierge or model integration on the
+  site until their own V2.2-B blocks ship.
+- Copy budgets (words in `<main>`): Home 380, Product 450, Demo 520, Company
+  140, Contact 160, Roofing 420.
 - No agency or growth-marketing jargon (funnels, lead gen, done-for-you) and no
   technical jargon aimed at buyers (APIs, webhooks, model names).
 
 ## Product views and sample data
+
+V2.2 keeps product views off the homepage. On `/product` they appear at most
+twice and on `/demo` at most once per chapter, always small, cropped and
+labelled "Product detail · sample data" (`ProductDetail` in
+`components/Compositions.tsx`).
 
 Product views (`components/ProductViews.tsx`) are recreations of the real
 Nexaio product interface: the rail, the workspace bar with the product's own
@@ -83,32 +102,45 @@ and decorative.
 - `contact.booking.pageTitle` explains that the Google booking page still says
   "Systems Review Call". Set it to `null` once the schedule is renamed.
 
-## Publishing the demo video
+## Publishing the explainer video
 
-`/demo` shows a labelled slot ("Not published yet") until `demoVideo` in
-`demo.ts` is set. Setting it switches the site over in one step: a native
-player with captions and a transcript appears on `/demo`, the demo button
-changes from "See the demo" to "Watch the demo", and VideoObject structured
-data is emitted.
+The explainer (`explainerVideo` in `media.ts`) is the only video on the site.
+While it is `null`, or its record is incomplete, nothing renders in its place:
+no slot, no placeholder, no notice. A complete record shows it under the
+homepage hero and at the top of `/demo` (components/ExplainerVideo.tsx), with
+the browser's own controls, captions on by default, the transcript and
+VideoObject structured data.
 
-1. Record on a Test workspace with sample data only. Say and show "Nexaio" and
-   "nexaio.co" in the video.
-2. Put the files in `public/media/`: the MP4 (or WebM), a 16:9 thumbnail at
-   least 1280×720, and English captions as WebVTT. Self-hosted files work with
-   the current Content-Security-Policy; a YouTube or Vimeo embed would need a
-   reviewed CSP change instead.
-3. Fill in every field of `demoVideo`, including the transcript, the ISO 8601
-   duration and upload date, and the approval block (who approved it, when,
-   the review-by date, and the permissions note).
+1. Produce it to the storyboard in the V2.2 packet (§5): the Core and signal
+   path, sample data only, no stock people, customers, logos or results, and
+   no scheduling or booking claims before G3.
+2. Put the files in `public/media/`: the MP4 and WebM (1920×1080), a 16:9
+   poster, and English captions as WebVTT. Self-hosted files work with the
+   current Content-Security-Policy.
+3. Fill in every field, including the transcript, the ISO 8601 duration, the
+   upload date, `generated`, and the approval block (who approved it, when,
+   the review-by date, the rights and licences, who checked the captions).
 4. Run `pnpm check:content` and a production build before release.
+
+`demoVideo` in `demo.ts` is the older record that drives the demo button
+label; it stays `null`.
+
+## Brand mark
+
+`brand.markVariant` in `site.ts` switches the header and footer lockup
+between `"refined"` (the vector N with the Core in its gap,
+`components/BrandMark.tsx`) and `"current"` (the canonical PNG). The PNGs,
+favicon, app icons and share image never change; the guard pins their bytes.
 
 ## Checks
 
 `pnpm check:content` (or `node --import ./scripts/register-ts.mjs
 scripts/check-content.mjs`) enforces the mechanical parts of these rules:
-banned claims and naming, the demo-video and media gates, the phone gate,
-sample-data labelling, industries and routes, redirects, canonicals, titles,
-breadcrumbs and the sitemap. It needs no dependencies.
+banned claims and naming, the capability truth tags, the explainer and media
+gates, the phone gate, sample-data labelling, live/planned industries and
+routes, the brand mark and canonical logo bytes, no forms or concierge, copy
+budgets, redirects, canonicals, titles, breadcrumbs and the sitemap. It needs
+no dependencies.
 
 ## Changing positioning or claims
 

@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { industries, nav } from "../content/site";
 import { bookCta, demoCta } from "../lib/cta";
+import BrandMark from "./BrandMark";
 import Icon from "./Icon";
 
 export default function Header() {
@@ -58,8 +58,7 @@ export default function Header() {
     <header className={`site-header${scrolled || open ? " is-solid" : ""}`}>
       <div className="wrap nav">
         <Link href="/" className="brand" aria-label="Nexaio home">
-          <Image src="/nexaio-logo-light.png" alt="" width={24} height={24} priority />
-          <span className="brand-name">Nexaio</span>
+          <BrandMark priority />
         </Link>
 
         <nav className="nav-links" aria-label="Main">
@@ -81,7 +80,9 @@ export default function Header() {
                   <div className="nav-panel" id="industries-menu">
                     {industries.map((ind) => (
                       <Link key={ind.href} href={ind.href} onClick={() => setMenu(false)}>
-                        <b>{ind.label}</b>
+                        <b>
+                          {ind.label} <em className="live-badge">Live now</em>
+                        </b>
                         <span>{ind.summary}</span>
                       </Link>
                     ))}
