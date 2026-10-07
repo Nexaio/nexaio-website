@@ -10,7 +10,12 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
  *
  * Each view is rendered twice, but only one copy is ever displayed: the stage
  * is display:none on small screens and the inline copies are display:none on
- * large ones, so assistive technology meets each view once.
+ * large ones, so assistive technology meets each view once; inactive stage
+ * views are also hidden from assistive technology.
+ *
+ * A progress rail fills to the active beat, and each view's one traced row
+ * (`data-trace`, see ProductViews) is highlighted once when its beat becomes
+ * active. No view pretends to be live.
  */
 export default function MotionBeats({
   beats,
@@ -40,6 +45,9 @@ export default function MotionBeats({
   return (
     <div className="beats">
       <div className="beat-list">
+        <div className="beat-progress" aria-hidden="true">
+          <span style={{ transform: `scaleY(${(active + 1) / beats.length})` }} />
+        </div>
         {beats.map((b, i) => (
           <article
             key={b.id}
@@ -59,7 +67,7 @@ export default function MotionBeats({
       </div>
       <div className="beat-stage">
         {beats.map((b, i) => (
-          <div key={b.id} className={`beat-view${i === active ? " is-on" : ""}`}>
+          <div key={b.id} className={`beat-view${i === active ? " is-on" : ""}`} aria-hidden={i === active ? undefined : true}>
             {b.view}
           </div>
         ))}

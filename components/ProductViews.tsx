@@ -212,7 +212,11 @@ export function DashboardView({ context = "general" }: { context?: Context }) {
   );
 }
 
-export function IntakeView() {
+/**
+ * `trace` marks the ONE row a story beat talks about with `data-trace`, so the
+ * page can highlight it once (globals.css). Sample data is unchanged.
+ */
+export function IntakeView({ trace = false }: { trace?: boolean } = {}) {
   return (
     <>
       <div className="pw-head">
@@ -229,8 +233,8 @@ export function IntakeView() {
       </div>
       <section className="pw-panel">
         <ul className="pw-list">
-          {intake.deliveries.map((d) => (
-            <li key={d.time + d.source}>
+          {intake.deliveries.map((d, i) => (
+            <li key={d.time + d.source} data-trace={trace && i === 0 ? "" : undefined}>
               <time>{d.time}</time>
               <span>{d.source}</span>
               <span className={toneChip(d.tone)}>{d.outcome}</span>
@@ -245,7 +249,7 @@ export function IntakeView() {
   );
 }
 
-export function MessagesView({ context = "general" }: { context?: Context }) {
+export function MessagesView({ context = "general", trace = false }: { context?: Context; trace?: boolean }) {
   const c = conversation[context];
   return (
     <>
@@ -264,7 +268,7 @@ export function MessagesView({ context = "general" }: { context?: Context }) {
             {m.text}
           </div>
         ))}
-        <div className="pw-note">
+        <div className="pw-note" data-trace={trace ? "" : undefined}>
           <Accent tone="gold" /> {c.note}
         </div>
       </section>
@@ -275,9 +279,11 @@ export function MessagesView({ context = "general" }: { context?: Context }) {
 export function HandoffView({
   context = "general",
   withReport = false,
+  trace = false,
 }: {
   context?: Context;
   withReport?: boolean;
+  trace?: boolean;
 }) {
   const d = dashboard[context];
   return (
@@ -291,7 +297,7 @@ export function HandoffView({
         <div className="pw-row warn" key={t.subject}>
           <div className="pw-row-top">
             <b>{t.subject}</b>
-            <em>Owner · {t.owner}</em>
+            <em data-trace={trace ? "" : undefined}>Owner · {t.owner}</em>
           </div>
           <p>{t.what}</p>
           <div className="pw-row-top">

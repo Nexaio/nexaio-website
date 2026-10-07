@@ -96,8 +96,8 @@ check(
   players.join(", "),
 );
 check(
-  /demoVideo \? \(\s*<video/.test(sources.get(join(root, "app", "demo", "page.tsx")) ?? ""),
-  "the /demo player renders only when demoVideo is set",
+  /demoVideo \? \(\s*<section[^>]*>\s*<div[^>]*>\s*<video/.test(sources.get(join(root, "app", "demo", "page.tsx")) ?? ""),
+  "the /demo video section and player render only when demoVideo is set",
 );
 check(
   /asset\?\.kind === "video" \? \(\s*<video[\s\S]*?muted[\s\S]*?aria-hidden="true"/.test(
@@ -138,7 +138,7 @@ check(bookCta.label === "Book a walkthrough" && bookCta.href === "/contact", "bo
 // 2b. Cinematic media slots: an asset needs a complete approval record.
 for (const [key, slot] of Object.entries(mediaSlots)) {
   if (slot.asset === null) {
-    check(["dusk", "storm", "daylight"].includes(slot.fallback), `media slot ${key}: coded fallback while no asset is approved`);
+    check(["warm", "cool", "daylight"].includes(slot.fallback), `media slot ${key}: lit-surface fallback while no asset is approved`);
     continue;
   }
   const a = slot.asset;

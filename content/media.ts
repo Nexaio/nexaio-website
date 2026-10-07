@@ -1,7 +1,7 @@
 /**
  * Cinematic media slots (the "Field Daylight" moments).
  *
- * Each slot renders a designed composition until real footage or stills are
+ * Each slot renders a lit surface (CSS only) until real footage or stills are
  * approved. To drop in an asset: put the files in public/media/, set `asset`,
  * and fill in the approval record. Generated footage is allowed only as brand
  * mood: never a product screen, a customer, a testimonial, a real company's
@@ -25,8 +25,8 @@ export type MediaSlot = {
   id: string;
   /** What the slot should eventually show; used as the design brief. */
   brief: string;
-  /** The coded composition drawn until an asset is approved. */
-  fallback: "dusk" | "storm" | "daylight";
+  /** The lit surface drawn until an asset is approved (warm, cool or daylight light source). */
+  fallback: "warm" | "cool" | "daylight";
   asset: MediaAsset | null;
 };
 
@@ -34,13 +34,13 @@ export const mediaSlots: Record<string, MediaSlot> = {
   roofingHero: {
     id: "roofingHero",
     brief: "Wide, film-graded dusk shot: a roofing crew finishing a roof, truck in frame, no readable branding.",
-    fallback: "dusk",
+    fallback: "warm",
     asset: null,
   },
   roofingStorm: {
     id: "roofingStorm",
     brief: "Storm clouds breaking over a residential street; calm, not dramatic; no damage close-ups.",
-    fallback: "storm",
+    fallback: "cool",
     asset: null,
   },
   companyOperations: {

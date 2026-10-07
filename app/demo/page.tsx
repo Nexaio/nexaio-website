@@ -20,7 +20,6 @@ import {
   demoFaq,
   demoHero,
   demoVideo,
-  videoSlot,
   type DemoChapterView,
 } from "../../content/demo";
 import { breadcrumbJsonLd, demoVideoJsonLd, pageMetadata } from "../../lib/seo";
@@ -102,13 +101,26 @@ export default function DemoPage() {
               <CtaPair hero showDemo={false} />
             </div>
           </div>
+          <nav className="chapter-index enter d3" aria-label="Demo chapters">
+            <ol>
+              {demoChapters.map((c, i) => (
+                <li key={c.id}>
+                  <a href={`#${c.id}`}>
+                    <span className="n">{String(i + 1).padStart(2, "0")}</span>
+                    <span>{c.title}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
         </div>
       </section>
 
-      {/* The future video's place. No player and no play button until a real video is published. */}
-      <section className="section" aria-labelledby="video-title" style={{ paddingTop: 0 }}>
-        <div className="wrap split" style={{ alignItems: "center" }}>
-          {demoVideo ? (
+      {/* The video section exists only once a real, approved video is set in
+          content/demo.ts. Until then nothing stands in for it. */}
+      {demoVideo ? (
+        <section className="section" aria-labelledby="video-title" style={{ paddingTop: 0 }}>
+          <div className="wrap split" style={{ alignItems: "center" }}>
             <video
               className="video-player"
               controls
@@ -119,27 +131,11 @@ export default function DemoPage() {
               <source src={demoVideo.src} type={demoVideo.mimeType} />
               <track kind="captions" src={demoVideo.captionsSrc} srcLang="en" label="English" default />
             </video>
-          ) : (
-            <div className="video-slot" data-reveal>
-              <div className="ghost" aria-hidden="true">
-                <ProductWindow section="dashboard" context="roofing" description="">
-                  <DashboardView context="roofing" />
-                </ProductWindow>
-              </div>
-              <div className="video-slot-copy">
-                <span className="video-slot-tag">{videoSlot.tag}</span>
-                <p className="meta" style={{ margin: 0 }}>
-                  Not published yet
-                </p>
-              </div>
-            </div>
-          )}
-          <div className="stack" style={{ gap: 18 }} data-reveal>
-            <h2 className="h3" id="video-title">
-              {demoVideo ? demoVideo.title : videoSlot.title}
-            </h2>
-            <p className="body">{demoVideo ? demoVideo.description : videoSlot.body}</p>
-            {demoVideo ? (
+            <div className="stack" style={{ gap: 18 }}>
+              <h2 className="h3" id="video-title">
+                {demoVideo.title}
+              </h2>
+              <p className="body">{demoVideo.description}</p>
               <details className="faq-item">
                 <summary className="faq-q">
                   <span>Transcript</span>
@@ -151,23 +147,10 @@ export default function DemoPage() {
                   </p>
                 ))}
               </details>
-            ) : null}
-            <nav aria-label="Demo chapters">
-              <ol className="chapters" style={{ marginTop: 0 }}>
-                {demoChapters.map((c, i) => (
-                  <li key={c.id}>
-                    <a href={`#${c.id}`}>
-                      <span className="n">{String(i + 1).padStart(2, "0")}</span>
-                      <span>{c.title}</span>
-                      <Icon name="arrow" size={16} />
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       <section className="section" aria-labelledby="chapters-title">
         <div className="wrap">

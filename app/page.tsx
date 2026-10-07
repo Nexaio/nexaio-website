@@ -6,7 +6,7 @@ import Icon from "../components/Icon";
 import JsonLd from "../components/JsonLd";
 import MediaSlot from "../components/MediaSlot";
 import MotionBeats from "../components/MotionBeats";
-import { HandoffView, IntakeView, MessagesView, ProductWindow } from "../components/ProductViews";
+import { HandoffView, IntakeView, LeadsView, MessagesView, ProductWindow } from "../components/ProductViews";
 import { demoChapters } from "../content/demo";
 import { beats, closing, hero, industriesTeaser, layer, shift, start } from "../content/home";
 import { homeJsonLd, pageMetadata } from "../lib/seo";
@@ -22,17 +22,17 @@ export const metadata: Metadata = pageMetadata({
 const beatViews = {
   intake: (
     <ProductWindow section="intake" description="the Intake page, listing each enquiry, where it came from and what happened to it">
-      <IntakeView />
+      <IntakeView trace />
     </ProductWindow>
   ),
   messages: (
     <ProductWindow section="messages" description="a follow-up conversation that stopped when the customer replied">
-      <MessagesView />
+      <MessagesView trace />
     </ProductWindow>
   ),
   handoff: (
     <ProductWindow section="dashboard" description="work handed to a named person, and the monthly report">
-      <HandoffView withReport />
+      <HandoffView withReport trace />
     </ProductWindow>
   ),
 };
@@ -48,18 +48,18 @@ export default function Home() {
         <div className="hero-grid" aria-hidden="true" />
         <div className="wrap">
           <div className="hero-copy">
-            <p className="eyebrow enter d1">{hero.eyebrow}</p>
+            <p className="eyebrow-pill enter d1">{hero.eyebrow}</p>
             <h1 className="display enter d1" id="hero-title">
               <span className="display-line">{hero.title}</span>{" "}
               <span className="display-line dim">{hero.titleDim}</span>
             </h1>
-            <p className="lede enter d2">{hero.lede}</p>
-            <div className="enter d2">
+            <div className="hero-sub enter d2">
+              <p className="lede">{hero.lede}</p>
               <CtaPair hero />
             </div>
           </div>
           <div className="hero-stage">
-            <HeroComposition />
+            <HeroComposition slabLabel={hero.slab} />
           </div>
         </div>
       </section>
@@ -77,7 +77,7 @@ export default function Home() {
             <p className="body">{layer.body}</p>
           </div>
           <div data-reveal>
-            <LayerDiagram systems={layer.systems} team={layer.team} />
+            <LayerDiagram systems={layer.systems} ops={layer.ops} team={layer.team} />
           </div>
         </div>
       </section>
@@ -135,7 +135,23 @@ export default function Home() {
             <p className="body">{industriesTeaser.note}</p>
           </div>
           <Link href="/industries/roofing" className="industry-card" data-reveal>
-            <MediaSlot slot="roofingHero" shape="wide">
+            <MediaSlot
+              slot="roofingHero"
+              shape="wide"
+              float={
+                <div aria-hidden="true">
+                  <ProductWindow
+                    section="leads"
+                    context="roofing"
+                    rail={false}
+                    description="the Leads list for a sample roofing company, with who owns each lead"
+                  >
+                    <LeadsView />
+                  </ProductWindow>
+                  <ViewTag />
+                </div>
+              }
+            >
               <div className="industry-copy">
                 <p className="eyebrow">{industriesTeaser.roofing.label}</p>
                 <p className="h3">{industriesTeaser.roofing.line}</p>

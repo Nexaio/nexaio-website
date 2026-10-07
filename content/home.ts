@@ -9,10 +9,12 @@
  */
 
 export const hero = {
-  eyebrow: "The AI operating layer",
+  eyebrow: "AI operating layer · for service businesses",
   title: "Your CRM keeps the record.",
   titleDim: "Nexaio keeps the work moving.",
   lede: "Nexaio sets up AI workflows around the tools you already use. They follow up, coordinate the handoffs and show your team what needs them.",
+  /** The slab under the hero product view: the customer's CRM stays underneath. */
+  slab: "Your CRM · stays the system of record",
 };
 
 export const layer = {
@@ -20,6 +22,7 @@ export const layer = {
   title: "Keep your stack. Add the layer that runs on top of it.",
   body: "Your CRM stays your system of record and your pipeline stays yours. Nexaio maps what each stage means and works around it.",
   systems: ["CRM", "Website forms", "Email"],
+  ops: ["Capture and route", "Follow up on schedule", "Coordinate the handoffs", "Surface what needs a person"],
   team: ["Owner", "Office", "Sales"],
 };
 

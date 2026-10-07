@@ -10,6 +10,7 @@ import MotionBeats from "../../../components/MotionBeats";
 import {
   ActivityRail,
   CrmMapView,
+  DashboardView,
   HandoffView,
   LeadsView,
   MessagesView,
@@ -21,7 +22,6 @@ import {
   roofingCrm,
   roofingFaq,
   roofingHero,
-  roofingHeroEvents,
   type RoofingMomentView,
 } from "../../../content/roofing";
 import { breadcrumbJsonLd, pageMetadata } from "../../../lib/seo";
@@ -97,16 +97,21 @@ export default function RoofingPage() {
             </div>
           </div>
           <div className="hero-media enter d3">
-            <MediaSlot slot="roofingHero" shape="wide">
+            <MediaSlot
+              slot="roofingHero"
+              shape="wide"
+              float={
+                <ProductWindow
+                  section="dashboard"
+                  context="roofing"
+                  rail={false}
+                  description="the dashboard of a sample roofing company: storm enquiries routed, an estimate being followed up, an insurance question for the team"
+                >
+                  <DashboardView context="roofing" />
+                </ProductWindow>
+              }
+            >
               <ViewTag />
-              <div className="toasts" role="group" aria-label="Example events, sample data">
-                {roofingHeroEvents.map((e) => (
-                  <div className="toast" key={e.title}>
-                    <b>{e.title}</b>
-                    <span>{e.meta}</span>
-                  </div>
-                ))}
-              </div>
             </MediaSlot>
           </div>
         </div>
