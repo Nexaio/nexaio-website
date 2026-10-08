@@ -1,33 +1,32 @@
 import type { CSSProperties } from "react";
+import QuantumNebula from "./QuantumNebula";
 
 export type CoreState = "idle" | "listening" | "working" | "handoff";
 
 /**
- * The Nexaio Core (V2.2 packet §2): an original AI presence derived from the
- * gap in the N mark. A slim luminous rhombus on the mark's diagonal, two
- * hairline orbit rings and eight micro data particles. Built from inline SVG
- * and CSS only: no canvas, no WebGL, no script.
+ * Nexaio's AI presence (V2.3). Two forms of the same Quantum Nebula:
  *
- * States (globals.css, transform and opacity only):
- * - idle: a slow 8 s breathe;
- * - listening: the rings tighten and particles drift in;
- * - working: particles stream through the Core;
- * - handoff: one amber particle detaches toward a person.
+ * - `size="hero"`: the living field itself, drawn procedurally on a canvas
+ *   behind the whole page (components/QuantumNebula.tsx).
+ * - every other size: a small CSS-only nebula orb — three layered cloud
+ *   gradients that slowly turn and breathe, two hairline strands and a few
+ *   particles. Transform and opacity only; it plays while on screen
+ *   (`data-loop`, components/Motion.tsx) and sits still under reduced motion.
  *
- * Motion runs only while the Core is on screen (`data-loop`, see Motion.tsx)
- * and never under reduced motion, where the idle frame is shown, complete and
- * static. The Core is decorative: the words around it carry the meaning.
+ * No rhombus, no ring, no icon: the orb is a piece of the same atmosphere.
+ * States shade the orb (listening = calmer, working = brighter streams,
+ * handoff = one amber particle leaves toward a person). Decorative only: the
+ * words around it carry the meaning.
  */
 
-/** Particle resting positions (% of the Core box) and a per-particle delay. */
 const PARTICLES: [number, number, number][] = [
-  [22, 38, 0],
-  [78, 30, 1.1],
+  [24, 40, 0],
+  [76, 32, 1.1],
   [70, 70, 2.3],
-  [30, 68, 3.2],
-  [14, 54, 4.4],
-  [86, 50, 0.6],
-  [42, 18, 1.8],
+  [32, 68, 3.2],
+  [16, 54, 4.4],
+  [84, 52, 0.6],
+  [44, 18, 1.8],
   [58, 84, 2.9],
 ];
 
@@ -39,33 +38,30 @@ export default function AiCore({
 }: {
   state?: CoreState;
   size?: "hero" | "lg" | "md" | "sm" | "xs";
-  /** One 600 ms glint on first load (the hero Core only). */
+  /** Kept for callers; the orb has no one-shot glint. */
   glint?: boolean;
   className?: string;
 }) {
+  if (size === "hero") return <QuantumNebula />;
+  void glint;
   return (
     <div
-      className={`core core--${size}${glint ? " core--glint" : ""}${className ? ` ${className}` : ""}`}
+      className={`core core--${size}${className ? ` ${className}` : ""}`}
       data-state={state}
       data-loop=""
       aria-hidden="true"
     >
-      {size === "hero" || size === "lg" ? <span className="core-beam" /> : null}
-      <span className="core-halo" />
-      <svg className="core-ring core-ring--a" viewBox="-100 -100 200 200" focusable="false">
-        <ellipse rx="96" ry="34" />
-      </svg>
-      <svg className="core-ring core-ring--b" viewBox="-100 -100 200 200" focusable="false">
-        <ellipse rx="78" ry="24" />
-      </svg>
-      <svg className="core-gem" viewBox="-100 -100 200 200" focusable="false">
-        <g transform="rotate(-32)">
-          <path className="gem-body" d="M0 -62L21 0L0 62L-21 0Z" />
-          <path className="gem-edge" d="M0 -62L21 0L0 62" />
-          <path className="gem-heart" d="M0 -34L7 0L0 34L-7 0Z" />
-        </g>
-      </svg>
-      {glint ? <span className="core-glint" /> : null}
+      <span className="core-cloud core-cloud--a" />
+      <span className="core-cloud core-cloud--b" />
+      <span className="core-cloud core-cloud--c" />
+      {size === "xs" ? null : (
+        <svg className="core-net" viewBox="-50 -50 100 100" focusable="false">
+          <path d="M-46 -8C-30 -22 -8 -20 4 -6S26 10 44 -2" />
+          <path d="M-40 18C-22 30 -4 18 8 26S30 34 46 16" />
+          <path d="M-12 -44C-4 -24 -10 -4 2 12S10 34 6 46" />
+        </svg>
+      )}
+      <span className="core-heart" />
       {size === "xs"
         ? null
         : PARTICLES.map(([x, y, d], i) => (

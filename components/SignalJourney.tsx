@@ -5,110 +5,95 @@ import { journey } from "../content/journey";
 import AiCore from "./AiCore";
 
 /**
- * "Watch one enquiry" (V2.2 packet §2). One sample enquiry, carried by the
- * Core through six stations.
+ * "Watch one enquiry" (V2.3): one sample enquiry handled by the AI, shown as
+ * a console with the thread on one side and the timeline on the other, so it
+ * is obvious who did what.
  *
- * - Large screens, with script and motion: a sticky frame (never pinned or
- *   scroll-jacked: the page scrolls normally). Invisible step markers below
- *   the frame cross the middle of the viewport as you scroll; each one moves
- *   the track one station and sets the Core's state.
- * - Small screens: a vertical list; each station lights as it enters.
- * - No script or reduced motion: every station is shown, complete and static.
- *
- * The stations are an ordered list of real text. Nothing here is a live
- * account or a product screen.
+ * It plays by time, not by scroll: while the console is on screen the active
+ * station advances every few seconds, the thread fills in, and the run loops
+ * with a pause at the end. Nothing is pinned, nothing dims to illegibility,
+ * and the page scrolls normally. Under reduced motion, or without script or
+ * IntersectionObserver, the whole run is shown complete and still.
  */
+const STEP_MS = 2600;
+const HOLD_MS = 3800;
+
 export default function SignalJourney() {
   const { stations } = journey;
   const n = stations.length;
-  const [active, setActive] = useState(0);
-  const markers = useRef<(HTMLDivElement | null)[]>([]);
-  const items = useRef<(HTMLLIElement | null)[]>([]);
+  const [active, setActive] = useState(n - 1);
+  const [playing, setPlaying] = useState(false);
+  const box = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!("IntersectionObserver" in window)) return;
-    const stepper = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (!e.isIntersecting) continue;
-          const i = Number((e.target as HTMLElement).dataset.step);
-          if (!Number.isNaN(i)) setActive(i);
-        }
-      },
-      { rootMargin: "-50% 0px -50% 0px", threshold: 0 }
-    );
-    markers.current.forEach((el) => el && stepper.observe(el));
-
-    const lighter = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            e.target.classList.add("is-lit");
-            lighter.unobserve(e.target);
-          }
-        }
-      },
-      { rootMargin: "0px 0px -30% 0px", threshold: 0.3 }
-    );
-    items.current.forEach((el) => el && lighter.observe(el));
-
-    return () => {
-      stepper.disconnect();
-      lighter.disconnect();
-    };
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = box.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setPlaying(e.isIntersecting), { threshold: 0.35 });
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
-  // Keep the last stations from leaving empty track behind them.
-  const shift = Math.min(active, n - 3);
+  useEffect(() => {
+    if (!playing) return;
+    setActive(0);
+    let i = 0;
+    let timer = 0;
+    const tick = () => {
+      i = (i + 1) % n;
+      setActive(i);
+      timer = window.setTimeout(tick, i === n - 1 ? HOLD_MS : STEP_MS);
+    };
+    timer = window.setTimeout(tick, STEP_MS);
+    return () => window.clearTimeout(timer);
+  }, [playing, n]);
+
+  const shown = stations.slice(0, active + 1);
+  const current = stations[active];
 
   return (
-    <div className="jr" style={{ "--n": n, "--shift": shift, "--p": (active + 1) / n } as CSSProperties}>
-      <div className="jr-sticky">
-        <div className="jr-frame">
-          <div className="jr-carrier">
-            <AiCore size="md" state={stations[active].core} />
-            <div className="jr-card">
-              <span className="view-tag">{journey.sampleTag}</span>
-              <b>{journey.sample}</b>
-            </div>
-          </div>
-          <div className="jr-window">
-            <ol className="jr-track">
-              {stations.map((s, i) => (
-                <li
-                  key={s.id}
-                  ref={(el) => {
-                    items.current[i] = el;
-                  }}
-                  className={`jr-station${i === active ? " is-on" : ""}${i < active ? " is-done" : ""}`}
-                >
-                  <span className="jr-dot" aria-hidden="true">
-                    <AiCore size="xs" state={s.core} />
-                  </span>
-                  <span className="jr-n">{String(i + 1).padStart(2, "0")}</span>
-                  <b className="jr-step">{s.step}</b>
-                  <span className="jr-chip">{s.chip}</span>
-                  <span className="jr-line">{s.line}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
-          <div className="jr-progress" aria-hidden="true">
-            <span />
+    <div className="jr" ref={box} data-state={playing ? "playing" : "still"} style={{ "--p": (active + 1) / n } as CSSProperties}>
+      <div className="jr-side">
+        <div className="jr-presence">
+          <AiCore size="sm" state={current.core} />
+          <div className="jr-card">
+            <span className="view-tag">{journey.sampleTag}</span>
+            <b>{journey.sample}</b>
           </div>
         </div>
+        <div className="jr-thread" aria-live="off">
+          {shown.map((s) =>
+            s.msg ? (
+              <div key={s.id} className={`jr-msg jr-msg--${s.msg.from}`}>
+                <small>{s.msg.from === "ai" ? journey.byAi : journey.customer}</small>
+                {s.msg.text}
+              </div>
+            ) : null
+          )}
+          {current.id === "handoff" || active >= 4 ? (
+            <div className="jr-msg jr-msg--note">
+              <small>{journey.byPerson}</small>
+              {stations[4].line}
+            </div>
+          ) : null}
+        </div>
       </div>
-      <div className="jr-markers" aria-hidden="true">
+      <ol className="jr-timeline">
         {stations.map((s, i) => (
-          <div
-            key={s.id}
-            data-step={i}
-            ref={(el) => {
-              markers.current[i] = el;
-            }}
-          />
+          <li key={s.id} className={`jr-st${i === active ? " is-on" : ""}${i < active ? " is-done" : ""}${i > active ? " is-next" : ""}`}>
+            <span className="jr-time">{s.time}</span>
+            <span className="jr-mark" aria-hidden="true" />
+            <div className="jr-body">
+              <b className="jr-step">
+                {s.step}
+                <em className={`jr-who jr-who--${s.who}`}>{s.who === "ai" ? journey.aiTag : journey.byPerson}</em>
+              </b>
+              <span className="jr-line">{s.line}</span>
+            </div>
+          </li>
         ))}
-      </div>
+      </ol>
     </div>
   );
 }

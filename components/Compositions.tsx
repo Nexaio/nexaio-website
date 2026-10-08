@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { crmStages } from "../content/samples";
 import AiCore from "./AiCore";
-import Icon, { type IconName } from "./Icon";
+import Icon from "./Icon";
 
 /** The visible label every product presentation carries. */
 export function ViewTag({ children = "Product view · sample data" }: { children?: string }) {
@@ -24,103 +24,94 @@ export function ProductDetail({ children }: { children: ReactNode }) {
   );
 }
 
-/** Generic system icons. No third-party logos, ever. */
-const SYSTEM_ICONS: Record<string, IconName> = {
-  CRM: "dashboard",
-  Inbox: "inbox",
-  "Website form": "tasks",
-  Calendar: "calendar",
-  "Phone log": "phone",
-};
-
-/** Stage geometry (viewBox 0 0 1000 540): tile centres, the Core at the centre. */
-const SYS_Y = [62, 166, 270, 374, 478];
-const TEAM_Y = [150, 270, 390];
-
 /**
- * Systems → Nexaio AI → Your team (V2.2 packet §2): glass system tiles on the
- * left, the Core in the centre, people on the right. While the stage is on
- * screen, signal pulses travel tile → Core → person along hairline paths
- * (stroke-dashoffset only), and the label under the Core cycles through the
- * five jobs. The jobs are a plain list in the HTML, so they read without
- * motion, without script and to assistive technology. On small screens the
- * stage stacks vertically.
+ * The AI does the work (V2.3, replaces the Systems → Core → Team stage).
+ * Three lanes, each a labelled sample: what comes in, the steps the AI
+ * handles on its own, and where it lands — a count of steps done by the AI
+ * against the one that needs a person. The point is relief: routine
+ * follow-through happens without anyone being assigned more work.
+ *
+ * The first two lanes are supported now. The third is the founders' design
+ * direction and is marked "In design · not live" until the Product
+ * capability attestation (G3) verifies it. Step counts are steps in the
+ * sample, never business figures. Plain lists in HTML; the sequential
+ * lighting is CSS while the stage is on screen (`data-loop`), static under
+ * reduced motion. The export keeps its V2.2 name for the page and the guard.
  */
 export function SystemsStage({
-  systems,
-  team,
-  jobs,
-  systemsLabel,
-  coreLabel,
-  teamLabel,
+  flow,
 }: {
-  systems: string[];
-  team: string[];
-  jobs: string[];
-  systemsLabel: string;
-  coreLabel: string;
-  teamLabel: string;
+  flow: {
+    inLabel: string;
+    aiLabel: string;
+    outLabel: string;
+    tallyAi: string;
+    tallyPerson: string;
+    sampleTag: string;
+    designTag: string;
+    lanes: { id: string; label: string; input: string; steps: string[]; person: string; status: "live" | "design" }[];
+  };
 }) {
   return (
-    <div className="stage" data-loop="">
-      <svg className="stage-links" viewBox="0 0 1000 540" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-        {SYS_Y.slice(0, systems.length).map((y, i) => (
-          <g key={`s${y}`} style={{ "--k": i } as CSSProperties}>
-            <path className="link" d={`M222 ${y}C320 ${y} 330 270 402 270`} pathLength={100} />
-            <path className="pulse" d={`M222 ${y}C320 ${y} 330 270 402 270`} pathLength={100} />
-          </g>
-        ))}
-        {TEAM_Y.slice(0, team.length).map((y, i) => (
-          <g key={`t${y}`} style={{ "--k": i } as CSSProperties}>
-            <path className="link" d={`M598 270C670 270 680 ${y} 778 ${y}`} pathLength={100} />
-            <path className="pulse pulse--out" d={`M598 270C670 270 680 ${y} 778 ${y}`} pathLength={100} />
-          </g>
-        ))}
-      </svg>
-
-      <div className="stage-col stage-col--systems">
-        <p className="stage-label">{systemsLabel}</p>
-        <ul>
-          {systems.map((s, i) => (
-            <li key={s} className="tile" style={{ "--ty": `${(SYS_Y[i] / 540) * 100}%` } as CSSProperties}>
-              <Icon name={SYSTEM_ICONS[s] ?? "dashboard"} size={16} />
-              {s}
-            </li>
-          ))}
-        </ul>
+    <div className="flow" data-loop="">
+      <div className="flow-head" aria-hidden="true">
+        <span>{flow.inLabel}</span>
+        <span>{flow.aiLabel}</span>
+        <span>
+          {flow.outLabel}
+          <em className="flow-legend">
+            <i className="is-ai" /> {flow.tallyAi} <i className="is-person" /> {flow.tallyPerson}
+          </em>
+        </span>
       </div>
-
-      <div className="stage-v" aria-hidden="true">
-        <i />
-      </div>
-
-      <div className="stage-core">
-        <AiCore size="md" state="working" />
-        <p className="stage-label stage-label--core">{coreLabel}</p>
-        <ol className="stage-jobs">
-          {jobs.map((j, i) => (
-            <li key={j} style={{ "--k": i } as CSSProperties}>
-              {j}
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      <div className="stage-v" aria-hidden="true">
-        <i />
-      </div>
-
-      <div className="stage-col stage-col--team">
-        <p className="stage-label">{teamLabel}</p>
-        <ul>
-          {team.map((t, i) => (
-            <li key={t} className="tile tile--person" style={{ "--ty": `${(TEAM_Y[i] / 540) * 100}%` } as CSSProperties}>
-              <Icon name="users" size={16} />
-              {t}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {flow.lanes.map((lane, li) => {
+        const design = lane.status === "design";
+        return (
+          <article
+            key={lane.id}
+            id={`lane-${lane.id}`}
+            className={`lane${design ? " lane--design" : ""}`}
+            style={{ "--l": li } as CSSProperties}
+            aria-label={`${lane.label}${design ? `, ${flow.designTag}` : ""}`}
+          >
+            <header className="lane-top">
+              <b>{lane.label}</b>
+              {design ? <span className="lane-tag">{flow.designTag}</span> : <ViewTag>{flow.sampleTag}</ViewTag>}
+            </header>
+            <div className="lane-in">
+              <span className="lane-chip lane-chip--in">{lane.input}</span>
+              <i className="lane-link" aria-hidden="true" />
+            </div>
+            <div className="lane-ai">
+              <AiCore size="xs" state={design ? "idle" : "working"} />
+              <ol className="lane-steps">
+                {lane.steps.map((step, k) => (
+                  <li key={step} style={{ "--k": k } as CSSProperties}>
+                    <Icon name="check" size={13} />
+                    {step}
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <div className="lane-out">
+              <div className="tally" role="img" aria-label={`${lane.steps.length} ${flow.tallyAi.toLowerCase()}, 1 ${flow.tallyPerson.toLowerCase()}`}>
+                <span className="tally-bar" aria-hidden="true">
+                  <i style={{ flex: lane.steps.length }} />
+                  <i style={{ flex: 1 }} />
+                </span>
+                <span className="tally-nums" aria-hidden="true">
+                  <b>{lane.steps.length}</b>
+                  <b className="is-person">1</b>
+                </span>
+              </div>
+              <span className="lane-chip lane-chip--person">
+                <Icon name="users" size={13} />
+                {lane.person}
+              </span>
+            </div>
+          </article>
+        );
+      })}
     </div>
   );
 }

@@ -8,7 +8,7 @@ import Icon from "../components/Icon";
 import JsonLd from "../components/JsonLd";
 import MediaSlot from "../components/MediaSlot";
 import SignalJourney from "../components/SignalJourney";
-import { closing, hero, homeServices, stage } from "../content/home";
+import { closing, flow, hero, homeServices } from "../content/home";
 import { journey } from "../content/journey";
 import { industries } from "../content/site";
 import { bookCta } from "../lib/cta";
@@ -28,9 +28,14 @@ export default function Home() {
     <>
       <JsonLd data={homeJsonLd()} />
 
-      {/* 1. Hero: the category, the claim, the Core. No product window on Home. */}
-      <section className="hero hero--signal" aria-labelledby="hero-title">
+      {/* The living field sits behind the whole page (canvas, fixed). The CSS
+          hero field underneath stands in without script or canvas. */}
+      <AiCore size="hero" state="idle" />
+
+      {/* 1. Hero: the category and the claim over the Quantum Nebula. No product window on Home. */}
+      <section className="hero hero--nebula" aria-labelledby="hero-title">
         <div className="hero-field" aria-hidden="true" />
+        <div className="hero-scrim" aria-hidden="true" />
         <div className="wrap">
           <div className="hero-copy">
             <p className="eyebrow-pill enter d1">{hero.eyebrow}</p>
@@ -38,8 +43,6 @@ export default function Home() {
               <span className="display-line dim">{hero.title}</span>{" "}
               <span className="display-line">{hero.titleStrong}</span>
             </h1>
-          </div>
-          <div className="hero-body">
             <div className="hero-sub enter d2">
               <p className="lede">{hero.lede}</p>
               <div className="cta-row" data-hero-ctas="">
@@ -53,47 +56,29 @@ export default function Home() {
               </div>
               <p className="hero-micro">{hero.micro}</p>
             </div>
-            <div className="hero-core enter d3">
-              <AiCore size="hero" state="idle" glint />
-            </div>
           </div>
-          {/* The signal path leaves the Core and runs down the page. */}
-          <svg className="hero-signal" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <path d="M1000 0C1000 64 0 36 0 100" pathLength={100} />
-          </svg>
         </div>
       </section>
 
       <div className="signal-flow" data-signal="">
-        <div className="signal-rail" aria-hidden="true">
-          <span className="signal-fill" />
-        </div>
-
         {/* 2. The explainer: renders only with a real, approved film. */}
         <ExplainerVideo placement="home" />
 
-        {/* 3. Your systems → Nexaio AI → your team. */}
-        <section className="section" aria-labelledby="stage-title">
+        {/* 3. The AI does the routine work; people only get the judgment calls. */}
+        <section className="section" id="flow" aria-labelledby="flow-title">
           <div className="wrap">
             <div className="sec-head sec-head--split" data-reveal>
               <div className="stack" style={{ gap: 18 }}>
-                <p className="eyebrow">{stage.eyebrow}</p>
-                <h2 className="h2" id="stage-title">
-                  <span className="display-line">{stage.title}</span>{" "}
-                  <span className="display-line dim">{stage.titleDim}</span>
+                <p className="eyebrow">{flow.eyebrow}</p>
+                <h2 className="h2" id="flow-title">
+                  <span className="display-line">{flow.title}</span>{" "}
+                  <span className="display-line dim">{flow.titleDim}</span>
                 </h2>
               </div>
-              <p className="body">{stage.body}</p>
+              <p className="body">{flow.body}</p>
             </div>
             <div data-reveal>
-              <SystemsStage
-                systems={stage.systems}
-                team={stage.team}
-                jobs={stage.jobs}
-                systemsLabel={stage.systemsLabel}
-                coreLabel={stage.coreLabel}
-                teamLabel={stage.teamLabel}
-              />
+              <SystemsStage flow={flow} />
             </div>
           </div>
         </section>
@@ -107,7 +92,9 @@ export default function Home() {
                 {journey.title}
               </h2>
             </div>
-            <SignalJourney />
+            <div data-reveal>
+              <SignalJourney />
+            </div>
           </div>
         </section>
 
