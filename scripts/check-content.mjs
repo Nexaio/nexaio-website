@@ -22,7 +22,7 @@ const { site, contact, pages, nav, industries, industryCatalog, footerNav, brand
 const demoModule = await import("../content/demo.ts");
 const { demoVideo, demoChapters } = demoModule;
 const mediaModule = await import("../content/media.ts");
-const { mediaSlots, explainerVideo, explainerReady } = mediaModule;
+const { mediaSlots, explainerVideo, explainerReady, nebulaPlate } = mediaModule;
 const homeModule = await import("../content/home.ts");
 const journeyModule = await import("../content/journey.ts");
 const pageModules = {
@@ -156,7 +156,7 @@ check(
 );
 const explainerSrc = sources.get(join(root, "components", "ExplainerVideo.tsx")) ?? "";
 check(
-  /const v = explainerVideo;\s*if \(!explainerReady\(v\)\) return null;/.test(explainerSrc),
+  /const v = explainerVideo;/.test(explainerSrc) && /if \(!explainerReady\(v\)\) return null;/.test(explainerSrc) && !/<video[\s\S]*?if \(!explainerReady/.test(explainerSrc),
   "the explainer renders nothing unless explainerReady() passes",
 );
 check(
@@ -175,6 +175,8 @@ const fullExplainer = {
   webmSrc: "/media/explainer.webm",
   poster: "/media/explainer.jpg",
   captionsSrc: "/media/explainer.vtt",
+  openCaptions: false,
+  stage: "preview",
   duration: "PT60S",
   uploadDate: "2026-10-20",
   transcript: ["Every home-service business runs on enquiries."],
@@ -192,10 +194,20 @@ for (const key of ["approvedBy", "approvedOn", "reviewBy", "rights", "captions"]
   );
 }
 check(explainerReady({ ...fullExplainer, transcript: [] }) === false, "explainer gate probe: missing transcript renders nothing");
+check(explainerReady({ ...fullExplainer, captionsSrc: null, openCaptions: true }) === true, "explainer gate probe: open captions with a transcript pass without a VTT file");
+check(explainerReady({ ...fullExplainer, captionsSrc: null, openCaptions: false }) === false, "explainer gate probe: no captions at all renders nothing");
+check(explainerReady({ ...fullExplainer, stage: "" }) === false, "explainer gate probe: missing approval stage renders nothing");
 check(explainerReady({ ...fullExplainer, src: "https://example.com/v.mp4" }) === false, "explainer gate probe: files must be under /media/");
 if (explainerReady(explainerVideo)) {
   for (const key of ["src", "webmSrc", "poster", "captionsSrc"]) {
+    if (key === "captionsSrc" && explainerVideo.captionsSrc === null) continue;
     check(existsSync(join(root, "public", explainerVideo[key])), `explainer: ${key} exists under public/media/`, explainerVideo[key]);
+  }
+  check(explainerVideo.openCaptions === true || explainerVideo.captionsSrc !== null, "explainer: captions are open (on screen) or a VTT file");
+  check(explainerVideo.stage === "preview" ? /not yet approved for public release/.test(stripComments(read("components/ExplainerVideo.tsx"))) : true, "explainer: a preview-stage record is labelled as not yet approved for public release");
+  for (const [key, max] of [["src", 8 * 1024 * 1024], ["webmSrc", 8 * 1024 * 1024], ["poster", 200 * 1024]]) {
+    const size = existsSync(join(root, "public", explainerVideo[key])) ? statSync(join(root, "public", explainerVideo[key])).size : 0;
+    check(size > 0 && size <= max, `explainer: ${key} within its size budget (${size} bytes)`);
   }
 } else {
   check(explainerVideo === null, "explainer: no partial record is published (null until complete)");
@@ -214,7 +226,7 @@ check(bookCta.label === "Book a walkthrough" && bookCta.href === "/contact", "bo
 // 2b. Cinematic media slots: an asset needs a complete approval record.
 for (const [key, slot] of Object.entries(mediaSlots)) {
   if (slot.asset === null) {
-    check(["warm", "cool", "daylight"].includes(slot.fallback), `media slot ${key}: lit-surface fallback while no asset is approved`);
+    check(slot.fallback === "navy", `media slot ${key}: ambient navy field while no asset is approved`);
     continue;
   }
   const a = slot.asset;
@@ -396,6 +408,15 @@ for (const file of pageFiles) {
 }
 const windowsIn = (file) => (read(file).match(/<ProductWindow\b/g) ?? []).length;
 check(windowsIn("app/page.tsx") === 0, "no product window on the homepage (V2.2)");
+const windowPages = pageFiles.filter((f) => /<ProductWindow\b|<ProductDetail\b/.test(readFileSync(f, "utf8"))).map(rel);
+check(windowPages.length === 0, "no product UI (ProductWindow / ProductDetail) on any page: the product's interface is not final (V2.3)", windowPages.join(", "));
+const orbHits = hitsFor(/core-gem|core-ring|core-cloud|nmark-core|class="core /);
+check(orbHits.length === 0, "no orb, rhombus or ring presence anywhere (V2.3)", orbHits.join(", "));
+check(/<AiCore\b[^>]*size="hero"/.test(read("app/page.tsx")) && /QuantumNebula/.test(stripComments(read("components/AiCore.tsx"))), "the hero renders the reference-locked field (QuantumNebula) inside its section");
+check(!/position:\s*fixed/.test(stripComments(read("app/globals.css")).match(/\.field \{[^}]*\}/)?.[0] ?? ""), "the field is anchored in its section, not fixed to the viewport");
+check(nebulaPlate.scope === "preview-only" && nebulaPlate.rightsCleared === false && nebulaPlate.src.startsWith("/media/"), "ambient plate is marked preview-only with rights not cleared (Production release gate)");
+check(existsSync(join(root, "public", nebulaPlate.src)) && existsSync(join(root, "public", nebulaPlate.ambient)), "ambient plate and poster files exist under public/media/");
+check(createHash("sha256").update(readFileSync(join(root, "public", nebulaPlate.src))).digest("hex").startsWith("65a92a68"), "ambient plate is byte-identical to the recorded founder upload (sha256 65a92a68…)");
 check(windowsIn("app/product/page.tsx") <= 2, `at most two product fragments on /product (${windowsIn("app/product/page.tsx")})`);
 check(
   demoChapters.length === 5 && windowsIn("app/demo/page.tsx") <= demoChapters.length,

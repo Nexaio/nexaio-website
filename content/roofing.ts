@@ -13,7 +13,7 @@ type CoreState = "idle" | "listening" | "working" | "handoff";
 
 export const roofingHero = {
   eyebrow: "Nexaio for roofing",
-  badge: "Live now",
+  badge: "First trade",
   title: "Roofing, first.",
   lede: "Storms bring enquiries in waves, and estimates go quiet for weeks. Nexaio's AI agents keep every one moving, around the CRM you already run.",
 };

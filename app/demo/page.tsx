@@ -1,56 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import type { ReactNode } from "react";
 import AiCore from "../../components/AiCore";
-import { ProductDetail } from "../../components/Compositions";
+import { ViewTag } from "../../components/Compositions";
 import { Closing, CtaPair } from "../../components/Cta";
 import ExplainerVideo from "../../components/ExplainerVideo";
 import Faq from "../../components/Faq";
 import JsonLd from "../../components/JsonLd";
-import { IntakeView, MessagesView, ProductWindow, ReportView } from "../../components/ProductViews";
-import { demoChapters, demoClosing, demoFaq, demoHero, type DemoChapterView } from "../../content/demo";
+import { demoChapters, demoClosing, demoFaq, demoHero } from "../../content/demo";
 import { breadcrumbJsonLd, pageMetadata } from "../../lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Demo",
   description:
-    "Follow one sample enquiry through Nexaio's AI agents, from the website form to the monthly report. Five short chapters, recreated with sample data.",
+    "Follow one sample enquiry through Nexaio's AI agents, from the website form to the monthly report. Five short chapters, illustrated with sample data.",
   path: "/demo",
 });
-
-/** At most one cropped, labelled fragment per chapter. */
-const chapterViews: Record<Exclude<DemoChapterView, null>, ReactNode> = {
-  intake: (
-    <ProductWindow
-      section="intake"
-      context="roofing"
-      rail={false}
-      description="the Intake page, listing each enquiry, where it came from and what happened to it"
-    >
-      <IntakeView />
-    </ProductWindow>
-  ),
-  messages: (
-    <ProductWindow
-      section="messages"
-      context="roofing"
-      rail={false}
-      description="an estimate follow-up that stopped when the homeowner replied"
-    >
-      <MessagesView context="roofing" />
-    </ProductWindow>
-  ),
-  report: (
-    <ProductWindow
-      section="reports"
-      context="roofing"
-      rail={false}
-      description="the monthly report: what Nexaio did, what it confirmed and what it does not measure"
-    >
-      <ReportView />
-    </ProductWindow>
-  ),
-};
 
 export default function DemoPage() {
   return (
@@ -91,11 +55,14 @@ export default function DemoPage() {
 
       <section className="section" aria-labelledby="chapters-title">
         <div className="wrap">
-          <div className="sec-head" data-reveal>
-            <p className="eyebrow">The walkthrough</p>
-            <h2 className="h2" id="chapters-title">
-              One enquiry, five chapters.
-            </h2>
+          <div className="sec-head sec-head--split" data-reveal>
+            <div className="stack" style={{ gap: 18 }}>
+              <p className="eyebrow">The walkthrough</p>
+              <h2 className="h2" id="chapters-title">
+                One enquiry, five chapters.
+              </h2>
+            </div>
+            <ViewTag>Illustration · sample enquiry</ViewTag>
           </div>
           <ol className="story">
             {demoChapters.map((c, i) => (
@@ -105,9 +72,7 @@ export default function DemoPage() {
                 </span>
                 <div className="story-copy">
                   <span className="chapter-n">Chapter {String(i + 1).padStart(2, "0")}</span>
-                  <h3 className="h3 story-title" id={`${c.id}-title`}>
-                    {c.title}
-                  </h3>
+                  <h3 className="h3 story-title">{c.title}</h3>
                   <p className="body">{c.line}</p>
                   <div className="ai-did">
                     <span className="ai-did-label">What the AI did</span>
@@ -118,7 +83,6 @@ export default function DemoPage() {
                     </ul>
                   </div>
                 </div>
-                {c.view ? <ProductDetail>{chapterViews[c.view]}</ProductDetail> : null}
               </li>
             ))}
           </ol>

@@ -1,14 +1,14 @@
 /**
- * Homepage copy (V2.3 motion proof). Short on purpose: the Quantum Nebula,
- * the "AI does the work" flow and the one-enquiry journey carry the story.
- * Copy budget: at most 380 words in <main> (guard + HTTP check).
+ * Homepage copy (V2.3 reference-fidelity repair). Short on purpose: the
+ * ambient field, the explainer film, the workflow and the one-enquiry story
+ * carry the message. Copy budget: at most 380 words in <main>.
  *
  * Claims stay inside the approved offer and capability material (see
- * content/README.md) and the packet's truth tags: respond, follow up,
- * coordinate the team, hand off with context, report. Nothing about
- * appointments, phone answering or messaging channels until G3; no revenue,
- * ROI, job or timeline promises; no testimonials, logos, customer counts,
- * headcount or years in market. Keep this file free of imports.
+ * content/README.md) and the truth tags: respond, follow up, coordinate the
+ * team, hand off with context, report. Nothing about appointments, phone
+ * answering or messaging channels until G3; no revenue, ROI, job or timeline
+ * promises; no testimonials, logos, customer counts, headcount or years in
+ * market. Keep this file free of imports.
  */
 
 export const hero = {
@@ -21,52 +21,34 @@ export const hero = {
 };
 
 /**
- * What the AI does itself, in three lanes. The first two are supported now
- * (acknowledge, route, follow up, stop on reply, record). The third is a
- * design direction from the founders and is labelled as such: it stays
- * "in design" until the Product capability attestation (G3) verifies it.
- * Step counts are steps in the labelled sample, never business figures.
+ * What Nexaio does, as one vertical flow: many things come in, the AI
+ * handles the routine, the chase stops when the customer replies, and a
+ * person is brought in only when it is actually needed. Inputs are
+ * illustrative of kinds of work, not a list of connected channels. Items
+ * the Product capability attestation (G3) has not verified are tagged.
  */
-export type LaneStatus = "live" | "design";
-
 export const flow = {
-  eyebrow: "The work",
-  title: "The AI does the routine work.",
-  titleDim: "People only get the judgment calls.",
-  body: "The agents acknowledge, follow up, notice the reply, stop and record it. People step in only for judgment.",
-  inLabel: "In",
-  aiLabel: "Nexaio AI handles",
-  outLabel: "Lands",
-  tallyAi: "Done by the AI",
-  tallyPerson: "Needs a person",
-  sampleTag: "Sample",
-  designTag: "In design · not live",
-  lanes: [
-    {
-      id: "enquiry",
-      label: "New enquiry",
-      input: "Website form · 07:12",
-      steps: ["Acknowledged in your wording", "Owner set", "Follow-up · day 3", "Reply noticed · stopped", "Recorded"],
-      person: "Insurance question → Dana",
-      status: "live" as LaneStatus,
-    },
-    {
-      id: "estimate",
-      label: "Estimate gone quiet",
-      input: "Estimate sent · day 7",
-      steps: ["Follow-up · your timing", "Reply noticed · stopped", "Recorded"],
-      person: "Pricing question → Marcus",
-      status: "live" as LaneStatus,
-    },
-    {
-      id: "reengage",
-      label: "Re-engagement",
-      input: "Prospect quiet for months",
-      steps: ["Check-in in your wording", "Reply noticed · stopped", "Recorded"],
-      person: "Only if they ask",
-      status: "design" as LaneStatus,
-    },
+  eyebrow: "What Nexaio does",
+  title: "Less admin.",
+  titleDim: "The AI does the routine work, so your people don't have to.",
+  inputs: [
+    { label: "New enquiries", status: "live" as const },
+    { label: "Existing opportunities", status: "live" as const },
+    { label: "Estimates waiting on a reply", status: "live" as const },
+    { label: "Quiet prospects", status: "design" as const },
   ],
+  moreInputs: "and the rest of the routine",
+  ai: "Nexaio AI",
+  aiSub: "around your CRM",
+  steps: [
+    { id: "routine", title: "Handles the routine work", line: "Acknowledges, records and routes every one, in your wording." },
+    { id: "follow", title: "Follows up and responds", line: "On your timing, so nothing waits on someone remembering." },
+    { id: "stop", title: "Stops when the customer replies", line: "No chasing. The thread is handed on with its history." },
+    { id: "human", title: "People only when it's needed", line: "A pricing or insurance question reaches one person, with context." },
+  ],
+  designTag: "In design · not live",
+  sampleTag: "Illustrative",
+  relief: { before: "Without Nexaio", after: "With Nexaio", beforeLabel: "every step is someone's job", afterLabel: "one judgment call reaches a person" },
 };
 
 export const homeServices = {
@@ -74,7 +56,7 @@ export const homeServices = {
   title: "Built for home services.",
   body: "Roofing is first; more trades as we take them on.",
   live: {
-    badge: "Live now",
+    badge: "First trade",
     label: "Roofing",
     line: "Storm spikes, estimates that go quiet, insurance questions that need a person.",
     link: "Nexaio for roofing",

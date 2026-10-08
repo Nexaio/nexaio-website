@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import AiCore from "../../components/AiCore";
 import { Closing } from "../../components/Cta";
 import JsonLd from "../../components/JsonLd";
 import MediaSlot from "../../components/MediaSlot";
@@ -30,7 +29,7 @@ export default function CompanyPage() {
           </div>
           <div className="hero-media enter d3">
             <MediaSlot slot="companyOperations" shape="wide">
-              <AiCore size="sm" state="idle" />
+              <p className="h3 media-line">{mission.statement}</p>
             </MediaSlot>
           </div>
         </div>
@@ -54,12 +53,11 @@ export default function CompanyPage() {
         </div>
       </section>
 
-      <section className="section" aria-labelledby="mission-title">
+      <section className="section" aria-labelledby="facts-title">
         <div className="wrap mission" data-reveal>
-          <h2 className="eyebrow" id="mission-title">
-            {mission.eyebrow}
+          <h2 className="eyebrow" id="facts-title">
+            At a glance
           </h2>
-          <p className="statement">{mission.statement}</p>
           <dl className="facts">
             {facts.map((f) => (
               <div key={f.term}>

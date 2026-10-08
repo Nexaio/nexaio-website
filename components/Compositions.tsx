@@ -1,17 +1,17 @@
 import type { CSSProperties, ReactNode } from "react";
 import { crmStages } from "../content/samples";
+import { nebulaPlate } from "../content/media";
 import AiCore from "./AiCore";
 import Icon from "./Icon";
 
-/** The visible label every product presentation carries. */
+/** The visible label every sample or illustration carries. */
 export function ViewTag({ children = "Product view · sample data" }: { children?: string }) {
   return <span className="view-tag">{children}</span>;
 }
 
 /**
- * A small, cropped product fragment behind glass (V2.2: never a hero, at
- * most two on /product, at most one per /demo chapter), labelled
- * "Product detail · sample data".
+ * A small, cropped product fragment behind glass, labelled. Kept for later
+ * pages; V2.3 shows no product UI on Home, Product, Demo or Roofing.
  */
 export function ProductDetail({ children }: { children: ReactNode }) {
   return (
@@ -25,93 +25,120 @@ export function ProductDetail({ children }: { children: ReactNode }) {
 }
 
 /**
- * The AI does the work (V2.3, replaces the Systems → Core → Team stage).
- * Three lanes, each a labelled sample: what comes in, the steps the AI
- * handles on its own, and where it lands — a count of steps done by the AI
- * against the one that needs a person. The point is relief: routine
- * follow-through happens without anyone being assigned more work.
+ * A panel of the ambient navy field (the darker still of the reference
+ * plate) with content over it: the shared atmosphere for page heroes and
+ * cards, instead of lit white surfaces or floating objects.
+ */
+export function Atmosphere({ children, className = "" }: { children?: ReactNode; className?: string }) {
+  return (
+    <div className={`atmo${className ? ` ${className}` : ""}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={nebulaPlate.ambient} alt="" loading="lazy" decoding="async" />
+      <div className="atmo-shade" aria-hidden="true" />
+      {children ? <div className="atmo-over">{children}</div> : null}
+    </div>
+  );
+}
+
+type FlowInput = { label: string; status: "live" | "design" };
+type FlowStep = { id: string; title: string; line: string };
+
+/**
+ * What Nexaio does (V2.3 repair): one vertical flow. Many kinds of work come
+ * in at the top (illustrative, not a list of connected channels), converge
+ * on Nexaio AI, which handles the routine, follows up and responds, stops
+ * when the customer replies, and brings in a person only when it is needed.
+ * The relief row at the end makes the reduction plain: without Nexaio every
+ * step is someone's job; with it, one judgment call reaches a person.
  *
- * The first two lanes are supported now. The third is the founders' design
- * direction and is marked "In design · not live" until the Product
- * capability attestation (G3) verifies it. Step counts are steps in the
- * sample, never business figures. Plain lists in HTML; the sequential
- * lighting is CSS while the stage is on screen (`data-loop`), static under
- * reduced motion. The export keeps its V2.2 name for the page and the guard.
+ * Plain HTML lists; the converging lines and the step lighting are CSS/SVG
+ * motion while the stage is on screen (`data-loop`), static under reduced
+ * motion. Items the Product capability attestation (G3) has not verified
+ * carry the "In design · not live" tag. The export keeps its name for the
+ * page and the guard.
  */
 export function SystemsStage({
   flow,
 }: {
   flow: {
-    inLabel: string;
-    aiLabel: string;
-    outLabel: string;
-    tallyAi: string;
-    tallyPerson: string;
-    sampleTag: string;
+    inputs: FlowInput[];
+    moreInputs: string;
+    ai: string;
+    aiSub: string;
+    steps: FlowStep[];
     designTag: string;
-    lanes: { id: string; label: string; input: string; steps: string[]; person: string; status: "live" | "design" }[];
+    sampleTag: string;
+    relief: { before: string; after: string; beforeLabel: string; afterLabel: string };
   };
 }) {
+  const n = flow.inputs.length;
   return (
-    <div className="flow" data-loop="">
-      <div className="flow-head" aria-hidden="true">
-        <span>{flow.inLabel}</span>
-        <span>{flow.aiLabel}</span>
-        <span>
-          {flow.outLabel}
-          <em className="flow-legend">
-            <i className="is-ai" /> {flow.tallyAi} <i className="is-person" /> {flow.tallyPerson}
-          </em>
-        </span>
+    <div className="wf" data-loop="">
+      <ul className="wf-inputs" aria-label="What comes in">
+        {flow.inputs.map((inp, i) => (
+          <li key={inp.label} className={inp.status === "design" ? "is-design" : undefined} style={{ "--k": i } as CSSProperties}>
+            {inp.label}
+            {inp.status === "design" ? <em className="lane-tag">{flow.designTag}</em> : null}
+          </li>
+        ))}
+        <li className="wf-more">{flow.moreInputs}</li>
+      </ul>
+      <svg className="wf-converge" viewBox="0 0 1000 140" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        {flow.inputs.map((inp, i) => {
+          const x = ((i + 0.5) / n) * 1000;
+          const d = `M${x} 0C${x} 70 500 60 500 140`;
+          return (
+            <g key={inp.label} style={{ "--k": i } as CSSProperties}>
+              <path className="wf-link" d={d} pathLength={100} />
+              <path className="wf-pulse" d={d} pathLength={100} />
+            </g>
+          );
+        })}
+      </svg>
+      <div className="wf-ai">
+        <AiCore size="sm" state="working" />
+        <b>{flow.ai}</b>
+        <small>{flow.aiSub}</small>
       </div>
-      {flow.lanes.map((lane, li) => {
-        const design = lane.status === "design";
-        return (
-          <article
-            key={lane.id}
-            id={`lane-${lane.id}`}
-            className={`lane${design ? " lane--design" : ""}`}
-            style={{ "--l": li } as CSSProperties}
-            aria-label={`${lane.label}${design ? `, ${flow.designTag}` : ""}`}
-          >
-            <header className="lane-top">
-              <b>{lane.label}</b>
-              {design ? <span className="lane-tag">{flow.designTag}</span> : <ViewTag>{flow.sampleTag}</ViewTag>}
-            </header>
-            <div className="lane-in">
-              <span className="lane-chip lane-chip--in">{lane.input}</span>
-              <i className="lane-link" aria-hidden="true" />
-            </div>
-            <div className="lane-ai">
-              <AiCore size="xs" state={design ? "idle" : "working"} />
-              <ol className="lane-steps">
-                {lane.steps.map((step, k) => (
-                  <li key={step} style={{ "--k": k } as CSSProperties}>
-                    <Icon name="check" size={13} />
-                    {step}
-                  </li>
-                ))}
-              </ol>
-            </div>
-            <div className="lane-out">
-              <div className="tally" role="img" aria-label={`${lane.steps.length} ${flow.tallyAi.toLowerCase()}, 1 ${flow.tallyPerson.toLowerCase()}`}>
-                <span className="tally-bar" aria-hidden="true">
-                  <i style={{ flex: lane.steps.length }} />
-                  <i style={{ flex: 1 }} />
-                </span>
-                <span className="tally-nums" aria-hidden="true">
-                  <b>{lane.steps.length}</b>
-                  <b className="is-person">1</b>
-                </span>
-              </div>
-              <span className="lane-chip lane-chip--person">
+      <ol className="wf-steps">
+        {flow.steps.map((s, i) => (
+          <li key={s.id} id={`wf-${s.id}`} className={i === flow.steps.length - 1 ? "is-human" : undefined} style={{ "--k": i } as CSSProperties}>
+            <span className="wf-n" aria-hidden="true">
+              {i === flow.steps.length - 1 ? <Icon name="users" size={14} /> : <Icon name="check" size={14} />}
+            </span>
+            <b>{s.title}</b>
+            <p>{s.line}</p>
+          </li>
+        ))}
+      </ol>
+      <div className="wf-relief" role="img" aria-label={`${flow.relief.before}: ${flow.relief.beforeLabel}. ${flow.relief.after}: ${flow.relief.afterLabel}.`}>
+        <div className="wf-row is-before">
+          <b>{flow.relief.before}</b>
+          <span className="wf-icons">
+            {Array.from({ length: 6 }, (_, i) => (
+              <i key={i} className="is-person" style={{ "--k": i } as CSSProperties}>
                 <Icon name="users" size={13} />
-                {lane.person}
-              </span>
-            </div>
-          </article>
-        );
-      })}
+              </i>
+            ))}
+          </span>
+          <em>{flow.relief.beforeLabel}</em>
+        </div>
+        <div className="wf-row is-after">
+          <b>{flow.relief.after}</b>
+          <span className="wf-icons">
+            {Array.from({ length: 5 }, (_, i) => (
+              <i key={i} className="is-ai" style={{ "--k": i } as CSSProperties}>
+                <AiCore size="xs" state="working" />
+              </i>
+            ))}
+            <i className="is-person" style={{ "--k": 5 } as CSSProperties}>
+              <Icon name="users" size={13} />
+            </i>
+          </span>
+          <em>{flow.relief.afterLabel}</em>
+        </div>
+        <ViewTag>{flow.sampleTag}</ViewTag>
+      </div>
     </div>
   );
 }
@@ -136,10 +163,7 @@ export function CrmSlab({ label }: { label: string }) {
   );
 }
 
-/**
- * "Your CRM — the record" beside "Nexaio AI — the work" (/product): the
- * not-another-CRM idea as one visual.
- */
+/** "Your CRM — the record" beside "Nexaio AI — the work" (/product). */
 export function CrmSplit({
   crm,
   ai,
@@ -165,9 +189,8 @@ export function CrmSplit({
       </div>
       <div className="crm-split-side crm-split-side--ai">
         <p className="crm-split-h">
-          {ai.label} <span>— {ai.sub}</span>
+          <AiCore size="xs" state="working" /> {ai.label} <span>— {ai.sub}</span>
         </p>
-        <AiCore size="sm" state="working" />
         <ul className="crm-split-list">
           {ai.items.map((x) => (
             <li key={x}>

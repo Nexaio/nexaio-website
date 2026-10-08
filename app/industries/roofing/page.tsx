@@ -12,7 +12,7 @@ import { breadcrumbJsonLd, pageMetadata } from "../../../lib/seo";
 export const metadata: Metadata = pageMetadata({
   title: "Nexaio for roofing companies",
   description:
-    "Roofing is Nexaio's first live industry. AI agents keep every storm enquiry, quiet estimate and insurance handoff moving, alongside your CRM.",
+    "Roofing is Nexaio's first trade. AI agents keep every storm enquiry, quiet estimate and insurance handoff moving, alongside the CRM you already run.",
   path: "/industries/roofing",
 });
 
@@ -46,7 +46,7 @@ export default function RoofingPage() {
             </div>
           </div>
           <div className="hero-media enter d3">
-            <MediaSlot slot="roofingHero" shape="wide" float={<AiCore size="lg" state="working" />}>
+            <MediaSlot slot="roofingHero" shape="wide">
               <ul className="event-chips" aria-label="Sample events">
                 {roofingHeroEvents.map((e) => (
                   <li key={e.title}>
@@ -72,9 +72,8 @@ export default function RoofingPage() {
           <ol className="vignettes">
             {vignettes.items.map((v, i) => (
               <li key={v.id} id={v.id} className="vignette" data-reveal>
-                <AiCore size="sm" state={v.core} />
                 <span className="chapter-n">
-                  {String(i + 1).padStart(2, "0")} · {v.label}
+                  <AiCore size="xs" state={v.core} /> {String(i + 1).padStart(2, "0")} · {v.label}
                 </span>
                 <h3 className="h3">{v.title}</h3>
                 <p>{v.body}</p>

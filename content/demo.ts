@@ -10,8 +10,8 @@
  * "coming soon", no empty box. `demoVideo` below is the older demo-video
  * record that lib/cta.ts reads for the demo button label; it stays null.
  *
- * Every screen is recreated from the product with sample data. Never describe
- * these screens as a live account, a demo account or real footage.
+ * The chapters are illustrations with sample data, never product screens, a
+ * live account, a demo account or real footage.
  * Keep this file free of imports.
  */
 
@@ -49,18 +49,21 @@ export const demoHero = {
   eyebrow: "Demo",
   title: "One enquiry,",
   titleDim: "start to finish.",
-  lede: "Follow one sample enquiry from the website form to the monthly report. Every screen is recreated from the product with sample data.",
+  lede: "Follow one sample enquiry from the website form to the monthly report: what the AI did at each step, and the one moment a person was needed.",
 };
 
-export type DemoChapterView = "intake" | "messages" | "report" | null;
 type CoreState = "idle" | "listening" | "working" | "handoff";
 
+/**
+ * Five chapters of one sample enquiry. Each is an illustration of what the
+ * AI did, never a product screen: the product's interface is not final and is
+ * not shown anywhere on the site (V2.3).
+ */
 export const demoChapters: {
   id: string;
   title: string;
   line: string;
   aiDid: string[];
-  view: DemoChapterView;
   core: CoreState;
 }[] = [
   {
@@ -68,7 +71,6 @@ export const demoChapters: {
     title: "A new enquiry arrives",
     line: "A homeowner reports hail damage on the website form at 07:12.",
     aiDid: ["Recorded it once", "Acknowledged it in your wording", "Made Dana the owner"],
-    view: "intake",
     core: "listening",
   },
   {
@@ -76,7 +78,6 @@ export const demoChapters: {
     title: "Everyone sees who owns what",
     line: "Your team sees what the agents are handling and what needs a person.",
     aiDid: ["Showed the owner", "Flagged what needs a person", "Marked each action verified or not"],
-    view: null,
     core: "working",
   },
   {
@@ -84,7 +85,6 @@ export const demoChapters: {
     title: "An estimate goes quiet",
     line: "The estimate went out last week and the homeowner hasn't replied.",
     aiDid: ["Followed up in your wording", "Stopped when they replied"],
-    view: "messages",
     core: "working",
   },
   {
@@ -92,7 +92,6 @@ export const demoChapters: {
     title: "The homeowner needs a person",
     line: "They ask how the insurance side would work. That's a conversation for your team.",
     aiDid: ["Handed it to Dana", "Attached the whole history", "Held the follow-up"],
-    view: null,
     core: "handoff",
   },
   {
@@ -100,7 +99,6 @@ export const demoChapters: {
     title: "What the owner sees each month",
     line: "The report shows what got done, what was verified and what it doesn't measure.",
     aiDid: ["Counted the work done", "Labelled unconfirmed work", "Made no revenue claims"],
-    view: "report",
     core: "idle",
   },
 ];
@@ -108,7 +106,7 @@ export const demoChapters: {
 export const demoFaq = [
   {
     q: "Is this a live account?",
-    a: "No. Every screen on this page is a recreation of the Nexaio product interface, filled with sample data. It isn't a live account, and no customer or prospect information is shown.",
+    a: "No. This page illustrates how the AI agents handle one sample enquiry. It isn't a live account or the product's interface, and no customer or prospect information is shown.",
   },
   {
     q: "Why does the example follow a roofing company?",

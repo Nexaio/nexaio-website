@@ -28,13 +28,9 @@ export default function Home() {
     <>
       <JsonLd data={homeJsonLd()} />
 
-      {/* The living field sits behind the whole page (canvas, fixed). The CSS
-          hero field underneath stands in without script or canvas. */}
-      <AiCore size="hero" state="idle" />
-
-      {/* 1. Hero: the category and the claim over the Quantum Nebula. No product window on Home. */}
-      <section className="hero hero--nebula" aria-labelledby="hero-title">
-        <div className="hero-field" aria-hidden="true" />
+      {/* 1. Hero over the reference-locked ambient field, anchored in this section. */}
+      <section className="hero hero--field" aria-labelledby="hero-title">
+        <AiCore size="hero" state="idle" />
         <div className="hero-scrim" aria-hidden="true" />
         <div className="wrap">
           <div className="hero-copy">
@@ -61,10 +57,10 @@ export default function Home() {
       </section>
 
       <div className="signal-flow" data-signal="">
-        {/* 2. The explainer: renders only with a real, approved film. */}
+        {/* 2. The explainer film, directly below the hero: renders only with a real render. */}
         <ExplainerVideo placement="home" />
 
-        {/* 3. The AI does the routine work; people only get the judgment calls. */}
+        {/* 3. What Nexaio does: many things come in, the AI handles the routine, people only when needed. */}
         <section className="section" id="flow" aria-labelledby="flow-title">
           <div className="wrap">
             <div className="sec-head sec-head--split" data-reveal>
@@ -75,7 +71,6 @@ export default function Home() {
                   <span className="display-line dim">{flow.titleDim}</span>
                 </h2>
               </div>
-              <p className="body">{flow.body}</p>
             </div>
             <div data-reveal>
               <SystemsStage flow={flow} />
@@ -98,7 +93,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 5. Built for home services: Roofing is the live industry. */}
+        {/* 5. Built for home services; roofing is the first trade. */}
         <section className="section" aria-labelledby="homes-title">
           <div className="wrap">
             <div className="sec-head sec-head--split" data-reveal>

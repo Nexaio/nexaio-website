@@ -1,12 +1,12 @@
 /**
- * /product copy (V2.2 packet §3): what the AI agents actually do around the
+ * /product copy (V2.3 repair): what the AI agents actually do around the
  * customer's CRM. Five jobs, each limited to what the approved capability
- * material marks as supported now; at most two small, labelled product
- * fragments on the page. Copy budget: at most 450 words in <main>.
- * Keep this file free of imports.
+ * material marks as supported now. No product UI is shown: the product's
+ * interface is not final, so the page illustrates the work, not screens.
+ * Copy budget: at most 450 words in <main>. Keep this file free of imports.
  */
 
-/** The Core state shown beside each job (same names as content/journey.ts). */
+/** The spark state shown beside each job (same names as content/journey.ts). */
 type CoreState = "idle" | "listening" | "working" | "handoff";
 
 export const productHero = {
@@ -31,48 +31,15 @@ export const split = {
   },
 };
 
-/** At most two small fragments on the page; one is used. */
-export type JobFragment = "messages" | "report" | null;
-
 export const jobs = {
   eyebrow: "Five jobs",
   title: "What the AI agents actually do.",
   items: [
-    {
-      id: "respond",
-      title: "Respond",
-      body: "Each new enquiry is acknowledged in your wording and given an owner.",
-      core: "listening" as CoreState,
-      fragment: null as JobFragment,
-    },
-    {
-      id: "follow-up",
-      title: "Follow up",
-      body: "Follow-ups go out at the times you set, and stop when the customer replies.",
-      core: "working" as CoreState,
-      fragment: "messages" as JobFragment,
-    },
-    {
-      id: "coordinate",
-      title: "Coordinate",
-      body: "Your team sees who owns what and what needs a person today.",
-      core: "working" as CoreState,
-      fragment: null as JobFragment,
-    },
-    {
-      id: "hand-off",
-      title: "Hand off",
-      body: "Pricing, insurance and anything unclear go to a person, with the history.",
-      core: "handoff" as CoreState,
-      fragment: null as JobFragment,
-    },
-    {
-      id: "report",
-      title: "Report",
-      body: "A monthly report shows what got done and what was verified.",
-      core: "idle" as CoreState,
-      fragment: null as JobFragment,
-    },
+    { id: "respond", title: "Respond", body: "Each new enquiry is acknowledged in your wording and given an owner.", core: "listening" as CoreState },
+    { id: "follow-up", title: "Follow up", body: "Follow-ups go out at the times you set, and stop when the customer replies.", core: "working" as CoreState },
+    { id: "coordinate", title: "Coordinate", body: "Your team sees who owns what and what needs a person today.", core: "working" as CoreState },
+    { id: "hand-off", title: "Hand off", body: "Pricing, insurance and anything unclear go to a person, with the history.", core: "handoff" as CoreState },
+    { id: "report", title: "Report", body: "A monthly report shows what got done and what was verified.", core: "idle" as CoreState },
   ],
 };
 
@@ -91,22 +58,14 @@ export const fit = {
   eyebrow: "Works with your systems",
   title: "Honest about what connects.",
   columns: [
-    {
-      tone: "yes" as const,
-      title: "Usually straightforward",
-      items: ["Website forms", "Google Workspace or Microsoft 365 email", "Leads in your CRM"],
-    },
+    { tone: "yes" as const, title: "Usually straightforward", items: ["Website forms", "Google Workspace or Microsoft 365 email", "Leads in your CRM"] },
     {
       tone: "scoped" as const,
       title: "Confirmed during scoping",
       note: "Depends on the access each system allows.",
       items: ["Two-way CRM sync", "Phone systems and call tracking", "Ad lead forms"],
     },
-    {
-      tone: "no" as const,
-      title: "Not something we do",
-      items: ["Replace your CRM", "Estimating or crew dispatch", "Phone answering"],
-    },
+    { tone: "no" as const, title: "Not something we do", items: ["Replace your CRM", "Estimating or crew dispatch", "Phone answering"] },
   ],
 };
 

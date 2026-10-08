@@ -1,23 +1,11 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
 import AiCore from "../../components/AiCore";
-import { CrmSplit, ProductDetail } from "../../components/Compositions";
+import { Atmosphere, CrmSplit, ViewTag } from "../../components/Compositions";
 import { Closing, CtaPair } from "../../components/Cta";
 import Faq from "../../components/Faq";
 import Icon from "../../components/Icon";
 import JsonLd from "../../components/JsonLd";
-import { MessagesView, ProductWindow, ReportView } from "../../components/ProductViews";
-import {
-  control,
-  fit,
-  jobs,
-  productClosing,
-  productFaq,
-  productHero,
-  setup,
-  split,
-  type JobFragment,
-} from "../../content/product";
+import { control, fit, jobs, productClosing, productFaq, productHero, setup, split } from "../../content/product";
 import { breadcrumbJsonLd, pageMetadata } from "../../lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -26,20 +14,6 @@ export const metadata: Metadata = pageMetadata({
     "Nexaio's AI agents work around your CRM: they respond to enquiries, follow up, coordinate your team, hand off judgment calls and report what got done.",
   path: "/product",
 });
-
-/** The two small product fragments this page allows (V2.2 packet §2). */
-const fragments: Record<Exclude<JobFragment, null>, ReactNode> = {
-  messages: (
-    <ProductWindow section="messages" rail={false} description="a follow-up conversation that stopped when the customer replied">
-      <MessagesView />
-    </ProductWindow>
-  ),
-  report: (
-    <ProductWindow section="reports" rail={false} description="the monthly report: what Nexaio did, what it confirmed and what it does not measure">
-      <ReportView />
-    </ProductWindow>
-  ),
-};
 
 export default function ProductPage() {
   return (
@@ -60,8 +34,18 @@ export default function ProductPage() {
               <CtaPair hero />
             </div>
           </div>
-          <div className="page-hero-core enter d3">
-            <AiCore size="lg" state="working" />
+          <div className="enter d3">
+            <Atmosphere className="atmo--panel">
+              <ul className="job-chips" aria-label="The five jobs">
+                {jobs.items.map((job) => (
+                  <li key={job.id}>
+                    <AiCore size="xs" state={job.core} />
+                    {job.title}
+                  </li>
+                ))}
+              </ul>
+              <ViewTag>Illustrative</ViewTag>
+            </Atmosphere>
           </div>
         </div>
       </section>
@@ -90,14 +74,13 @@ export default function ProductPage() {
           </div>
           <ol className="jobs">
             {jobs.items.map((job, i) => (
-              <li key={job.id} id={job.id} className={`job${job.fragment ? " job--frag" : ""}`} data-reveal>
+              <li key={job.id} id={job.id} className="job" data-reveal>
                 <AiCore size="sm" state={job.core} />
                 <div className="job-copy">
                   <span className="job-n">{String(i + 1).padStart(2, "0")}</span>
                   <h3 className="h3">{job.title}</h3>
                   <p>{job.body}</p>
                 </div>
-                {job.fragment ? <ProductDetail>{fragments[job.fragment]}</ProductDetail> : null}
               </li>
             ))}
           </ol>
@@ -139,10 +122,7 @@ export default function ProductPage() {
                 <ul>
                   {col.items.map((item) => (
                     <li key={item}>
-                      <Icon
-                        name={col.tone === "yes" ? "check" : col.tone === "scoped" ? "scope" : "minus"}
-                        size={16}
-                      />
+                      <Icon name={col.tone === "yes" ? "check" : col.tone === "scoped" ? "scope" : "minus"} size={16} />
                       {item}
                     </li>
                   ))}

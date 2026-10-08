@@ -1,15 +1,26 @@
 /**
- * Cinematic media slots (the "Field Daylight" moments).
- *
- * Each slot renders a lit surface (CSS only) until real footage or stills are
- * approved. To drop in an asset: put the files in public/media/, set `asset`,
- * and fill in the approval record. Generated footage is allowed only as brand
- * mood: never a product screen, a customer, a testimonial, a real company's
- * branding, or an implied real job or place.
- *
- * `generated` must say whether the asset came from a video or image model, so
- * the page can label it when needed. Keep this file free of imports.
+ * Media: the reference-locked ambient field, the cinematic media slots and
+ * the explainer video record. Keep this file free of imports.
  */
+
+/**
+ * The ambient field plate (V2.3 repair, Website canonical r37 / route r323).
+ * The founders' wide midnight-navy reference is used directly as the hero
+ * plate for the protected founder preview. Usage rights for public
+ * production use are NOT cleared: before any Production release the plate
+ * must be replaced by licensed or original artwork of equivalent composition
+ * (or its rights cleared) and `rightsCleared` flipped with the receipt.
+ */
+export const nebulaPlate = {
+  src: "/media/nexaio-nebula-reference.webp",
+  /** Darker, softened still of the same field for section and page atmospheres. */
+  ambient: "/media/nexaio-nebula-poster.webp",
+  width: 2000,
+  height: 1332,
+  provenance: "Uploaded reference IMG_6418 (2026-10-08), sha256 65a92a68…; copied unchanged into public/media/.",
+  scope: "preview-only" as const,
+  rightsCleared: false,
+};
 
 export type MediaAsset = {
   kind: "video" | "image";
@@ -25,8 +36,8 @@ export type MediaSlot = {
   id: string;
   /** What the slot should eventually show; used as the design brief. */
   brief: string;
-  /** The lit surface drawn until an asset is approved (warm, cool or daylight light source). */
-  fallback: "warm" | "cool" | "daylight";
+  /** Until an asset is approved every slot shows the ambient navy field. */
+  fallback: "navy";
   asset: MediaAsset | null;
 };
 
@@ -34,77 +45,118 @@ export const mediaSlots: Record<string, MediaSlot> = {
   roofingHero: {
     id: "roofingHero",
     brief: "Wide, film-graded dusk shot: a roofing crew finishing a roof, truck in frame, no readable branding.",
-    fallback: "warm",
+    fallback: "navy",
     asset: null,
   },
   roofingStorm: {
     id: "roofingStorm",
     brief: "Storm clouds breaking over a residential street; calm, not dramatic; no damage close-ups.",
-    fallback: "cool",
+    fallback: "navy",
     asset: null,
   },
   companyOperations: {
     id: "companyOperations",
     brief: "An office at the start of the day: phones, screens out of focus, people unrecognisable.",
-    fallback: "daylight",
+    fallback: "navy",
     asset: null,
   },
 };
 
 /**
- * The explainer video (V2.2 packet §5): a 60-second film of the Core carrying
- * one enquiry. It renders on the homepage (under the hero) and at the top of
- * /demo ONLY when `explainerVideo` is set AND its record is complete:
- * every file under public/media/, captions, transcript, and an approval
- * record naming who approved it, when, when it must be re-checked, and the
- * rights and licences behind the footage, music and voice. Until then the
- * site renders nothing in its place: no placeholder, no slot, no notice.
- *
- * No asset exists yet (V2.2-B "explainer asset" produces it).
+ * The explainer video (V2.3): a short motion-graphics film rendered from the
+ * site's own visual language (no stock footage, no third-party assets, no
+ * voice). It renders directly below the homepage hero ONLY when this record is
+ * complete: every file under public/media/, open captions or a WebVTT track,
+ * a transcript, and an approval record naming who approved it for the current
+ * stage, when, when it must be re-checked, the rights behind it and who
+ * checked the on-screen text. Until then nothing renders in its place.
  */
 export type ExplainerVideo = {
   /** Used above the player and as the VideoObject name. Include "Nexaio". */
   title: string;
   /** One or two sentences; also the VideoObject description. */
   description: string;
-  /** H.264 MP4 under public/media/ (1920×1080, ≤ 8 MB). */
+  /** H.264 MP4 under public/media/. */
   src: string;
   /** WebM under public/media/. */
   webmSrc: string;
-  /** 16:9 poster frame under public/media/ (1920×1080). */
+  /** 16:9 poster frame under public/media/. */
   poster: string;
-  /** English WebVTT captions under public/media/, on by default. */
-  captionsSrc: string;
-  /** ISO 8601 duration, e.g. "PT60S". */
+  /**
+   * Captions: either a WebVTT file under public/media/ (`captionsSrc`) or
+   * open captions burned into the picture (`openCaptions: true`, in which
+   * case every spoken-equivalent line is on screen and in `transcript`).
+   */
+  captionsSrc: string | null;
+  openCaptions: boolean;
+  /** ISO 8601 duration, e.g. "PT42S". */
   duration: string;
-  /** Date first published on nexaio.co, e.g. "2026-10-20". */
+  /** Date first published to a preview, e.g. "2026-10-08". */
   uploadDate: string;
-  /** Full transcript, one paragraph per entry. */
+  /** Every on-screen line, in order. */
   transcript: string[];
-  /** True if any imagery or voice came from a generative model. */
+  /** True if any imagery came from a generative model (none here). */
   generated: boolean;
+  /** Which approval stage this record represents. */
+  stage: "preview" | "public";
   approval: {
     approvedBy: string;
     approvedOn: string;
     /** Date by which the film must be re-checked against the product. */
     reviewBy: string;
-    /** Footage, music, voice and font licences, and any consents. */
+    /** Rights behind footage, music, voice and fonts. */
     rights: string;
-    /** Who checked the captions against the narration. */
+    /** Who checked the on-screen text / captions. */
     captions: string;
   };
 };
 
-export const explainerVideo: ExplainerVideo | null = null;
+/**
+ * Preview cut, 42 s, 1920×1080, 30 fps, rendered from the storyboard page in
+ * the evidence kit (headless Chrome, MediaRecorder: VP9 WebM + H.264 MP4) over
+ * the site's own ambient field. Open captions: every line is on screen and in
+ * the transcript. Stage "preview": not yet approved for public release.
+ */
+export const explainerVideo: ExplainerVideo | null = {
+  title: "Nexaio in 42 seconds",
+  description: "What the AI agents do around your CRM, in 42 seconds.",
+  src: "/media/nexaio-explainer.mp4",
+  webmSrc: "/media/nexaio-explainer.webm",
+  poster: "/media/nexaio-explainer-poster.webp",
+  captionsSrc: null,
+  openCaptions: true,
+  duration: "PT42S",
+  uploadDate: "2026-10-08",
+  transcript: [
+    "Every home-service business runs on enquiries.",
+    "Your CRM keeps the record. The work between the systems still falls on people.",
+    "Nexaio adds AI agents around the systems you already use.",
+    "They acknowledge, route and follow up, in your wording, on your timing.",
+    "When the customer replies, the chase stops.",
+    "People only get the real exceptions, with the whole thread.",
+    "Keep your CRM. Add the AI that does the work.",
+  ],
+  generated: false,
+  stage: "preview",
+  approval: {
+    approvedBy: "Preview cut prepared by the Website builder for the protected preview; public release approval pending",
+    approvedOn: "2026-10-08",
+    reviewBy: "2026-11-08",
+    rights: "Original motion graphics rendered from site source (evidence/…/gates/explainer/storyboard.html); backdrop is the ambient poster derived from the uploaded reference plate, so the same preview-only rights limit applies; no stock footage, music, voice or third-party assets; Geist fonts under the SIL Open Font License",
+    captions: "Open captions checked line by line against the transcript by the builder; no audio track",
+  },
+};
 
-/** True only for a complete, approved record. The single render condition. */
+/** True only for a complete record. The single render condition. */
 export function explainerReady(v: ExplainerVideo | null): v is ExplainerVideo {
   if (!v) return false;
   const filled = (x: unknown) => typeof x === "string" && x.trim() !== "";
-  const files = [v.src, v.webmSrc, v.poster, v.captionsSrc];
+  const files = [v.src, v.webmSrc, v.poster, ...(v.captionsSrc ? [v.captionsSrc] : [])];
+  const captioned = v.openCaptions === true || filled(v.captionsSrc);
   return (
     [v.title, v.description, v.duration, v.uploadDate, ...files].every(filled) &&
     files.every((f) => f.startsWith("/media/")) &&
+    captioned &&
     /^PT(\d+H)?(\d+M)?(\d+S)?$/.test(v.duration) &&
     v.duration !== "PT" &&
     !Number.isNaN(Date.parse(v.uploadDate)) &&
@@ -112,6 +164,7 @@ export function explainerReady(v: ExplainerVideo | null): v is ExplainerVideo {
     v.transcript.length > 0 &&
     v.transcript.every(filled) &&
     typeof v.generated === "boolean" &&
+    (v.stage === "preview" || v.stage === "public") &&
     [v.approval?.approvedBy, v.approval?.approvedOn, v.approval?.reviewBy, v.approval?.rights, v.approval?.captions].every(filled)
   );
 }
